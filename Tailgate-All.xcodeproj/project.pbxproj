@@ -422,6 +422,7 @@
 				2C8269D81B3A8A4500D32E88 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2C8269D91B3A8A4500D32E88 /* Build configuration list for PBXNativeTarget "Tailgate-AllTests" */ = {
 			isa = XCConfigurationList;
@@ -430,6 +431,7 @@
 				2C8269DB1B3A8A4500D32E88 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
