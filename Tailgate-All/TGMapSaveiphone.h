@@ -1,21 +1,19 @@
 //
-//  TGMapSave.h
-//  Taligate
+//  TGMapSaveiphone.h
+//  Tailgate-All
 //
-//  Created by Soumarsi Kundu on 13/06/15.
+//  Created by Soumarsi Kundu on 27/06/15.
 //  Copyright (c) 2015 esolz. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import "TGGlobal.h"
-@interface TGMapSave : UIView
+@interface TGMapSaveiphone : UIView
 {
-    UIView *BackgroundView , *ContentBackView;
-    UILabel *FirstLabel , *SecondLabel , *ThirdLabel , *FourthLabel , *FifthLabel;
-    UIButton *FinalSubmitButton , *FinalCancelButton;
-    UIDevice *device;
+      UIView *BackgroundView , *ContentBackView;
+      UILabel *FirstLabel , *SecondLabel , *ThirdLabel , *FourthLabel , *FifthLabel;
+        UIButton *FinalSubmitButton , *FinalCancelButton;
 }
-
 @property (nonatomic , weak) id<TGGlobal>Delegate;
 @property (nonatomic) UIButton * PlacesLabel;
 @property (nonatomic) UIButton * PackegeLabel;

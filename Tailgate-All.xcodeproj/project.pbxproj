@@ -60,6 +60,7 @@
 		2C934CB11B3BD6BF008DDA62 /* UIImage+TGGlobalImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C934CAE1B3BD6BF008DDA62 /* UIImage+TGGlobalImage.m */; };
 		2C934CB41B3BD742008DDA62 /* NSString+TGGlobalString.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C934CB31B3BD742008DDA62 /* NSString+TGGlobalString.m */; };
 		2C934CBA1B3BE4B0008DDA62 /* TGselectVenueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C934CB91B3BE4B0008DDA62 /* TGselectVenueViewController.m */; };
+		2CA381A81B3EBC6C00D5230F /* TGMapSaveiphone.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA381A71B3EBC6C00D5230F /* TGMapSaveiphone.m */; };
 		8788A4188DE13F39FDFB5246 /* libPods-Tailgate-All.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB79F4F155DC11B9D6F58E9 /* libPods-Tailgate-All.a */; };
 /* End PBXBuildFile section */
 
@@ -148,6 +149,8 @@
 		2C934CB31B3BD742008DDA62 /* NSString+TGGlobalString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TGGlobalString.m"; sourceTree = "<group>"; };
 		2C934CB81B3BE4B0008DDA62 /* TGselectVenueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGselectVenueViewController.h; sourceTree = "<group>"; };
 		2C934CB91B3BE4B0008DDA62 /* TGselectVenueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGselectVenueViewController.m; sourceTree = "<group>"; };
+		2CA381A61B3EBC6C00D5230F /* TGMapSaveiphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGMapSaveiphone.h; sourceTree = "<group>"; };
+		2CA381A71B3EBC6C00D5230F /* TGMapSaveiphone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGMapSaveiphone.m; sourceTree = "<group>"; };
 		40CC305035C9823589A06768 /* libPods-Tailgate-AllTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tailgate-AllTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		489034D543C78A075C78749A /* Pods-Tailgate-All.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tailgate-All.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tailgate-All/Pods-Tailgate-All.release.xcconfig"; sourceTree = "<group>"; };
 		572E0C7588F3A19CCF14799E /* Pods-Tailgate-AllTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tailgate-AllTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tailgate-AllTests/Pods-Tailgate-AllTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -315,6 +318,8 @@
 				2C3E26801B3C1E3700A08D5E /* RTCanvas.m */,
 				2C3E26811B3C1E3700A08D5E /* RTdrawline.h */,
 				2C3E26821B3C1E3700A08D5E /* RTdrawline.m */,
+				2CA381A61B3EBC6C00D5230F /* TGMapSaveiphone.h */,
+				2CA381A71B3EBC6C00D5230F /* TGMapSaveiphone.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -537,6 +542,7 @@
 				2C3E26701B3C163D00A08D5E /* TGMapSave.m in Sources */,
 				2C3E26731B3C164C00A08D5E /* TGMapViewController.m in Sources */,
 				2C3E269B1B3C1F6800A08D5E /* IQGeometry+Distance.m in Sources */,
+				2CA381A81B3EBC6C00D5230F /* TGMapSaveiphone.m in Sources */,
 				2C934CB11B3BD6BF008DDA62 /* UIImage+TGGlobalImage.m in Sources */,
 				2C3E26671B3C10FF00A08D5E /* TGforgotpasswordViewController.m in Sources */,
 				2C934CB01B3BD6BF008DDA62 /* UIColor+TGGlobalColor.m in Sources */,

@@ -16,4 +16,5 @@
 +(UIFont *)ButtonLabel;
 +(UIFont *)PickerLabel;
 +(UIFont *)LoginLabel;
++(UIFont *)iphonemapsave;
 @end

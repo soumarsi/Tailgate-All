@@ -43,4 +43,8 @@
 {
     return [UIFont fontWithName:RalewaySemiBold size:14];
 }
++(UIFont *)iphonemapsave
+{
+    return [UIFont fontWithName:RalewaySemiBold size:9.0f];
+}
 @end

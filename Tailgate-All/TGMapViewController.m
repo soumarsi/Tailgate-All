@@ -19,6 +19,7 @@
 #import "NSString+TGGlobalString.h"
 #import "TGMapSave.h"
 #import "RTCanvas.h"
+#import "TGMapSaveiphone.h"
 
 #ifdef DEBUG
 
@@ -56,6 +57,7 @@
     BOOL blankCheck;
     UIActivityIndicatorView *activityIndi;
     TGMapSave *MapSave;
+    TGMapSaveiphone *mapSaveIphone;
 }
 
 @end
@@ -207,13 +209,13 @@
     
     
     
-    PickerBckView  = [[UIView alloc]initWithFrame:CGRectMake(0.0f,600.0f, self.view.frame.size.width, self.view.frame.size.height-500.0f)];
+    PickerBckView  = [[UIView alloc]init];
     [PickerBckView setBackgroundColor:[UIColor whiteColor]];
     [PickerBckView setAlpha:1.0f];
     [self.view addSubview:PickerBckView];
     [PickerBckView setHidden:YES];
     
-    DataPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0,600, self.view.frame.size.width, self.view.frame.size.height-530.0f)];
+    DataPickerView = [[UIPickerView alloc] init];
     DataPickerView.layer.zPosition=9;
     DataPickerView.backgroundColor=[UIColor clearColor];
     DataPickerView.dataSource = self;
@@ -223,14 +225,14 @@
     [self.view addSubview:DataPickerView];
     [DataPickerView setHidden:YES];
     
-    DoneButton = [[UIButton alloc]initWithFrame:CGRectMake(900, 610, 83, 35)];
+    DoneButton = [[UIButton alloc]init];
     [DoneButton setBackgroundColor:[UIColor clearColor]];
     [DoneButton setBackgroundImage:[UIImage imageNamed:@"done"] forState:UIControlStateNormal];
     [DoneButton addTarget:self action:@selector(Done:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:DoneButton];
     [DoneButton setHidden:YES];
     
-    CancelButton = [[UIButton alloc]initWithFrame:CGRectMake(800, 610, 83, 35)];
+    CancelButton = [[UIButton alloc]init];
     [CancelButton setBackgroundColor:[UIColor clearColor]];
     [CancelButton setBackgroundImage:[UIImage imageNamed:@"cancel"] forState:UIControlStateNormal];
     [CancelButton addTarget:self action:@selector(CancelButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -261,6 +263,10 @@
         SettingsImage.frame = CGRectMake(self.view.frame.size.width-43-8, 28, 28, 28);
         BeconsView.frame = CGRectMake(self.view.frame.size.width-105, 23, 40, 40);
         DisableView.frame = CGRectMake(self.view.frame.size.width-105, 20.0f, 140.0f, 50.0f);
+        PickerBckView.frame = CGRectMake(0.0f, self.view.frame.size.height-200, self.view.frame.size.width, 200);
+        DataPickerView.frame = CGRectMake(0.0f, self.view.frame.size.height-150, self.view.frame.size.width, 200);
+        DoneButton.frame = CGRectMake(self.view.frame.size.width-190, self.view.frame.size.height-190, 83, 35);;
+        CancelButton.frame = CGRectMake(self.view.frame.size.width-100, self.view.frame.size.height-190, 83, 35);;
     }
     else
     {
@@ -268,6 +274,10 @@
         SettingsImage.frame = CGRectMake(953, 28, 28, 28);
         BeconsView.frame = CGRectMake(865, 23, 40, 40);
         DisableView.frame = CGRectMake(865.0f, 20.0f, 180.0f, 50.0f);
+        PickerBckView.frame = CGRectMake(0.0f,600.0f, self.view.frame.size.width, self.view.frame.size.height-500.0f);
+        DataPickerView.frame = CGRectMake(0,600, self.view.frame.size.width, self.view.frame.size.height-530.0f);
+        DoneButton.frame = CGRectMake(900, 610, 83, 35);
+        CancelButton.frame = CGRectMake(800, 610, 83, 35);
     }
     // Do any additional setup after loading the view.
     
@@ -312,105 +322,131 @@
     
     if([self.Type isEqualToString:@"Oxford"])
     {
-        if ([EditView.ButtonLabel.text isEqualToString:@"Select the order from list"])
+//        if ([EditView.ButtonLabel.text isEqualToString:@"Select the order from list"])
+//        {
+//            
+//        }
+//        else
+//        {
+//                [DisableView setHidden:YES];
+//                
+//                UIView *screenshotview = [[UIView alloc]initWithFrame:CGRectMake(1025, 72.0f, self.view.frame.size.width, self.view.frame.size.height-70)];
+//                [screenshotview setBackgroundColor:[UIColor clearColor]];
+//                [BackGroundView addSubview:screenshotview];
+//                
+//                
+//                NSString *staticMapUrl = [NSString stringWithFormat:@"http://maps.google.com/maps/api/staticmap?markers=color:red|%f,%f&zoom=%d&size=1024x698&sensor=true",[[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"]]floatValue],[[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"]]floatValue],zoommap];
+//                
+//                
+//                
+//                NSURL *mapUrl = [NSURL URLWithString:[staticMapUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+//                UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:mapUrl]];
+//                
+//                MapView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0.0f, self.view.frame.size.width, self.view.frame.size.height-70)];
+//                [MapView setImage:image];
+//                [screenshotview addSubview:MapView];
+//                
+//                
+//                UIImageView *backview = [[UIImageView alloc]initWithFrame:CGRectMake(315.0f, 102.0f, 387.5f, 237.5f)];
+//                [backview setImage:[UIImage imageNamed:@"mappopupdown"]];
+//                [screenshotview addSubview:backview];
+//                
+//                
+//                UILabel *ButtonLabel = [[UILabel alloc]initWithFrame:CGRectMake(25.0f,23.0f, 340.0f, 45.0f)];
+//                [ButtonLabel setBackgroundColor:[UIColor clearColor]];
+//                [ButtonLabel setText:[NSString stringWithFormat:@"%@",EditView.ButtonLabel.text]];
+//                [ButtonLabel setTextAlignment:NSTextAlignmentLeft];
+//                [ButtonLabel setTextColor:[UIColor BlackColor]];
+//                [ButtonLabel setFont:[UIFont ButtonLabel]];
+//                [backview addSubview:ButtonLabel];
+//                
+//                UITextView *_DescriptionText = [[UITextView alloc]initWithFrame:CGRectMake(25,75,340,120)];
+//                _DescriptionText.font = [UIFont ButtonLabel];
+//                _DescriptionText.backgroundColor = [UIColor clearColor];
+//                _DescriptionText.textColor = [UIColor BlackColor];
+//                _DescriptionText.scrollEnabled = YES;
+//                _DescriptionText.pagingEnabled = YES;
+//                _DescriptionText.editable = NO;
+//                _DescriptionText.delegate = self;
+//                _DescriptionText.text = [NSString stringWithFormat:@"%@",self.packegeNameString];
+//                _DescriptionText.layer.borderWidth = 1.5f;
+//                _DescriptionText.layer.borderColor = [[UIColor colorWithRed:(179.0f/255.0f) green:(179.0f/255.0f) blue:(179.0f/255.0f) alpha:1] CGColor];
+//                _DescriptionText.textAlignment = NSTextAlignmentLeft;
+//                _DescriptionText.layer.cornerRadius = 3.0f;
+//                [_DescriptionText setAutocorrectionType:UITextAutocorrectionTypeNo];
+//                [backview addSubview:_DescriptionText];
+//                
+//                [self imageWithView:screenshotview];
+//                
+//                
+//                [SelectedBecons setButtonLabel:[NSString stringWithFormat:@"%@",EditView.ButtonLabel.text]];
+//                [SelectedBecons setDescriptionText:[NSString stringWithFormat:@"%@",EditView.DescriptionText.text]];
+//                
+//                NSDictionary *dict = [[NSDictionary alloc]initWithObjectsAndKeys:[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"]],@"lat",[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"]],@"long", nil];
+//                
+//                [SavedDataArray addObject:dict];
+
+        
+        if ([device.model isEqualToString:@"iPhone"]||[device.model isEqualToString:@"iPhone Simulator"]||[device.model isEqualToString:@"iPod touch"] )
         {
-            
+            mapSaveIphone = [[TGMapSaveiphone alloc]initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+            [self.view addSubview:mapSaveIphone];
         }
         else
         {
-                [DisableView setHidden:YES];
-                
-                UIView *screenshotview = [[UIView alloc]initWithFrame:CGRectMake(1025, 72.0f, self.view.frame.size.width, self.view.frame.size.height-70)];
-                [screenshotview setBackgroundColor:[UIColor clearColor]];
-                [BackGroundView addSubview:screenshotview];
-                
-                
-                NSString *staticMapUrl = [NSString stringWithFormat:@"http://maps.google.com/maps/api/staticmap?markers=color:red|%f,%f&zoom=%d&size=1024x698&sensor=true",[[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"]]floatValue],[[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"]]floatValue],zoommap];
-                
-                
-                
-                NSURL *mapUrl = [NSURL URLWithString:[staticMapUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-                UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:mapUrl]];
-                
-                MapView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0.0f, self.view.frame.size.width, self.view.frame.size.height-70)];
-                [MapView setImage:image];
-                [screenshotview addSubview:MapView];
-                
-                
-                UIImageView *backview = [[UIImageView alloc]initWithFrame:CGRectMake(315.0f, 102.0f, 387.5f, 237.5f)];
-                [backview setImage:[UIImage imageNamed:@"mappopupdown"]];
-                [screenshotview addSubview:backview];
-                
-                
-                UILabel *ButtonLabel = [[UILabel alloc]initWithFrame:CGRectMake(25.0f,23.0f, 340.0f, 45.0f)];
-                [ButtonLabel setBackgroundColor:[UIColor clearColor]];
-                [ButtonLabel setText:[NSString stringWithFormat:@"%@",EditView.ButtonLabel.text]];
-                [ButtonLabel setTextAlignment:NSTextAlignmentLeft];
-                [ButtonLabel setTextColor:[UIColor BlackColor]];
-                [ButtonLabel setFont:[UIFont ButtonLabel]];
-                [backview addSubview:ButtonLabel];
-                
-                UITextView *_DescriptionText = [[UITextView alloc]initWithFrame:CGRectMake(25,75,340,120)];
-                _DescriptionText.font = [UIFont ButtonLabel];
-                _DescriptionText.backgroundColor = [UIColor clearColor];
-                _DescriptionText.textColor = [UIColor BlackColor];
-                _DescriptionText.scrollEnabled = YES;
-                _DescriptionText.pagingEnabled = YES;
-                _DescriptionText.editable = NO;
-                _DescriptionText.delegate = self;
-                _DescriptionText.text = [NSString stringWithFormat:@"%@",self.packegeNameString];
-                _DescriptionText.layer.borderWidth = 1.5f;
-                _DescriptionText.layer.borderColor = [[UIColor colorWithRed:(179.0f/255.0f) green:(179.0f/255.0f) blue:(179.0f/255.0f) alpha:1] CGColor];
-                _DescriptionText.textAlignment = NSTextAlignmentLeft;
-                _DescriptionText.layer.cornerRadius = 3.0f;
-                [_DescriptionText setAutocorrectionType:UITextAutocorrectionTypeNo];
-                [backview addSubview:_DescriptionText];
-                
-                [self imageWithView:screenshotview];
-                
-                
-                [SelectedBecons setButtonLabel:[NSString stringWithFormat:@"%@",EditView.ButtonLabel.text]];
-                [SelectedBecons setDescriptionText:[NSString stringWithFormat:@"%@",EditView.DescriptionText.text]];
-                
-                NSDictionary *dict = [[NSDictionary alloc]initWithObjectsAndKeys:[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"]],@"lat",[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"]],@"long", nil];
-                
-                [SavedDataArray addObject:dict];
-
-            
-    MapSave = [[TGMapSave alloc]initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
-    [self.view addSubview:MapSave];
+            MapSave = [[TGMapSave alloc]initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+            [self.view addSubview:MapSave];
+        }
     
     //////////////-================AfterSavePickerView==========///////////////
+        
+        AfterSavePickerView  = [[UIView alloc]init];
+        [AfterSavePickerView setBackgroundColor:[UIColor whiteColor]];
+        [AfterSavePickerView setAlpha:1.0f];
+        [self.view addSubview:AfterSavePickerView];
+        [AfterSavePickerView setHidden:YES];
+        
+        PopupPicker = [[UIPickerView alloc] init];
+        PopupPicker.layer.zPosition=9;
+        PopupPicker.backgroundColor=[UIColor clearColor];
+        PopupPicker.dataSource = self;
+        PopupPicker.delegate = self;
+        PopupPicker.tag = 2;
+        PopupPicker.showsSelectionIndicator = YES;
+        [self.view addSubview:PopupPicker];
+        [PopupPicker setHidden:YES];
+        
+        PopupDoneButton = [[UIButton alloc]init];
+        [PopupDoneButton setBackgroundColor:[UIColor clearColor]];
+        [PopupDoneButton setBackgroundImage:[UIImage imageNamed:@"done"] forState:UIControlStateNormal];
+        [PopupDoneButton addTarget:self action:@selector(PickerDone:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:PopupDoneButton];
+        [PopupDoneButton setHidden:YES];
+        
+        PopupCancelButton = [[UIButton alloc]init];
+        [PopupCancelButton setBackgroundColor:[UIColor clearColor]];
+        [PopupCancelButton setBackgroundImage:[UIImage imageNamed:@"cancel"] forState:UIControlStateNormal];
+        [PopupCancelButton addTarget:self action:@selector(PickerCancelButton:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:PopupCancelButton];
+        [PopupCancelButton setHidden:YES];
+        
+        if ([device.model isEqualToString:@"iPhone"]||[device.model isEqualToString:@"iPhone Simulator"]||[device.model isEqualToString:@"iPod touch"] )
+        {
+            AfterSavePickerView.frame = CGRectMake(0.0f,self.view.frame.size.height-210, self.view.frame.size.width, 210.0f);
+            PopupPicker.frame = CGRectMake(0,self.view.frame.size.height-170, self.view.frame.size.width, 180.0f);
+            PopupDoneButton.frame = CGRectMake(self.view.frame.size.width-190, self.view.frame.size.height-205, 83, 35);
+            PopupCancelButton.frame = CGRectMake( self.view.frame.size.width-100, self.view.frame.size.height-205, 83, 35);
+        }
+       
+        else
+        {
+            AfterSavePickerView.frame = CGRectMake(0.0f,600.0f, self.view.frame.size.width, self.view.frame.size.height-500.0f);
+            PopupPicker.frame = CGRectMake(0,600, self.view.frame.size.width, self.view.frame.size.height-530.0f);
+            PopupDoneButton.frame = CGRectMake(900, 610, 83, 35);
+            PopupCancelButton.frame = CGRectMake(800, 610, 83, 35);
+        }
     
-    AfterSavePickerView  = [[UIView alloc]initWithFrame:CGRectMake(0.0f,600.0f, self.view.frame.size.width, self.view.frame.size.height-500.0f)];
-    [AfterSavePickerView setBackgroundColor:[UIColor whiteColor]];
-    [AfterSavePickerView setAlpha:1.0f];
-    [self.view addSubview:AfterSavePickerView];
-    [AfterSavePickerView setHidden:YES];
-    
-    PopupPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0,600, self.view.frame.size.width, self.view.frame.size.height-530.0f)];
-    PopupPicker.layer.zPosition=9;
-    PopupPicker.backgroundColor=[UIColor clearColor];
-    PopupPicker.dataSource = self;
-    PopupPicker.delegate = self;
-    PopupPicker.tag = 2;
-    PopupPicker.showsSelectionIndicator = YES;
-    [self.view addSubview:PopupPicker];
-    [PopupPicker setHidden:YES];
-    
-    PopupDoneButton = [[UIButton alloc]initWithFrame:CGRectMake(900, 610, 83, 35)];
-    [PopupDoneButton setBackgroundColor:[UIColor clearColor]];
-    [PopupDoneButton setBackgroundImage:[UIImage imageNamed:@"done"] forState:UIControlStateNormal];
-    [PopupDoneButton addTarget:self action:@selector(PickerDone:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:PopupDoneButton];
-    [PopupDoneButton setHidden:YES];
-    
-    PopupCancelButton = [[UIButton alloc]initWithFrame:CGRectMake(800, 610, 83, 35)];
-    [PopupCancelButton setBackgroundColor:[UIColor clearColor]];
-    [PopupCancelButton setBackgroundImage:[UIImage imageNamed:@"cancel"] forState:UIControlStateNormal];
-    [PopupCancelButton addTarget:self action:@selector(PickerCancelButton:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:PopupCancelButton];
-    [PopupCancelButton setHidden:YES];
+
     
     if ([self.Type isEqualToString:@"Oxford"])
     {
@@ -486,7 +522,7 @@
 
       
     }];
-        }
+     //   }
 
     }
     else
@@ -830,14 +866,26 @@
         if (piece.frame.origin.y >4)
         {
             
-            DebugLog(@"entry");
             
-            BeconsView = [[TGBecons alloc]initWithFrame:CGRectMake(865, 23, 40, 40)];
+            
+            BeconsView = [[TGBecons alloc]init];
             BeconsView.TgDelegate = self;
             [BeconsView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Becons"]]];
             [BeconsView configure];
             [BackGroundView addSubview:BeconsView];
             [DisableView setHidden:NO];
+            
+            if ([device.model isEqualToString:@"iPhone"]||[device.model isEqualToString:@"iPhone Simulator"]||[device.model isEqualToString:@"iPod touch"] )
+            {
+                
+                BeconsView.frame = CGRectMake(self.view.frame.size.width-105, 23, 40, 40);;
+            }
+            else
+            {
+                BeconsView.frame = CGRectMake(865, 23, 40, 40);
+            }
+            
+            
         }
     }
     
@@ -851,15 +899,15 @@
     
     if ([gestureRecognizer state] == UIGestureRecognizerStateEnded)
     {
+         NSLog(@"---- %f------%f-------%f------%f",piece.frame.origin.x,piece.frame.origin.y,piece.frame.size.width,piece.frame.size.height);
         
         
-        BeconsView.userInteractionEnabled = NO;
-        if (piece.frame.origin.y >60)
+        if (piece.frame.origin.y >68)
         {
             DebugLog(@"MAP PIN SMALL VIEW IS OPENNING");
             
             //    ------------------PK----------------12-6-15-----------//
-            
+            BeconsView.userInteractionEnabled = NO;
             if (globalClass.connectedToNetwork == YES) {
                 
                 [globalClass GlobalStringDict:[NSString stringWithFormat:@"action.php?mode=orderList&located=false&locationId=%@",self.locationId] Globalstr:@"" Withblock:^(id result, NSError *error) {
@@ -906,8 +954,32 @@
             
             EditView = [[TGMapEdit alloc]init];
             [BackGroundView addSubview:EditView];
-           // [EditView addSubview:locationTableview];
-            
+
+            if ([device.model isEqualToString:@"iPhone"]||[device.model isEqualToString:@"iPhone Simulator"]||[device.model isEqualToString:@"iPod touch"] )
+            {
+                
+                if(self.view.frame.size.width == 320)
+                {
+                    EditView.frame = CGRectMake(0, 140, 320, 237.5f);
+                        EditView.backview.image = [UIImage imageNamed:@"mappopupdown5s"];
+                
+
+                }
+                else
+                {
+              
+                    EditView.frame = CGRectMake(-8, 140, self.view.frame.size.width-10, 237.5f);
+                    EditView.backview.image = [UIImage imageNamed:@"mappopupdown"];
+           
+                }
+                
+                NSLog(@"---- %f------%f-------%f------%f",piece.frame.origin.x,piece.frame.origin.y,piece.frame.size.width,piece.frame.size.height);
+                
+            }
+            else
+            {
+                //BeconsView.userInteractionEnabled = NO;
+             NSLog(@"---- %f------%f-------%f------%f",piece.frame.origin.x,piece.frame.origin.y,piece.frame.size.width,piece.frame.size.height);
             if ( piece.frame.origin.x< 650 && piece.frame.origin.y > 170 && piece.frame.origin.y< 515)
             {
                 DebugLog(@"1st");
@@ -952,7 +1024,7 @@
                 EditView.frame = CGRectMake(piece.frame.origin.x-330, piece.frame.origin.y-250, 387.5f, 237.5f);
                 EditView.backview.image = [UIImage imageNamed:@"mappopupdown"];
             }
-
+            }
             DebugLog(@"piece------ %f--------%f",piece.frame.origin.x,piece.frame.origin.y);
             
             CLGeocoder *geocoder1 = [[CLGeocoder alloc] init];
@@ -996,17 +1068,27 @@
              [DisableView setHidden:NO];
             
         }
-        else if (piece.frame.origin.y<59)
+        else if (piece.frame.origin.y<67)
         {
             [BeconsView removeFromSuperview];
-            
+            BeconsView.userInteractionEnabled = YES;
             [targetView removeFromSuperview];
+            [DisableView setHidden:YES];
             
-            BeconsView = [[TGBecons alloc]initWithFrame:CGRectMake(865, 23, 40, 40)];
+            BeconsView = [[TGBecons alloc]init];
             BeconsView.TgDelegate = self;
             [BeconsView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Becons"]]];
             [BeconsView configure];
             [BackGroundView addSubview:BeconsView];
+            if ([device.model isEqualToString:@"iPhone"]||[device.model isEqualToString:@"iPhone Simulator"]||[device.model isEqualToString:@"iPod touch"] )
+            {
+                
+                BeconsView.frame = CGRectMake(self.view.frame.size.width-105, 23, 40, 40);;
+            }
+            else
+            {
+                BeconsView.frame = CGRectMake(865, 23, 40, 40);
+            }
         }
         
     }
@@ -1359,22 +1441,27 @@
     if ([CheckString isEqualToString:@"Place"])
     {
         [MapSave.PlacesLabel setTitle:savepickerName forState:UIControlStateNormal];
+        [mapSaveIphone.PlacesLabel setTitle:savepickerName forState:UIControlStateNormal];
     }
     else if ([CheckString isEqualToString:@"package"])
     {
         [MapSave.PackegeLabel setTitle:savepickerName forState:UIControlStateNormal];
+        [mapSaveIphone.PackegeLabel setTitle:savepickerName forState:UIControlStateNormal];
     }
     else if ([CheckString isEqualToString:@"Distance"])
     {
         [MapSave.DistanceLabel setTitle:savepickerName forState:UIControlStateNormal];
+        [mapSaveIphone.DistanceLabel setTitle:savepickerName forState:UIControlStateNormal];
     }
     else if ([CheckString isEqualToString:@"Road"])
     {
         [MapSave.RoadLabel setTitle:savepickerName forState:UIControlStateNormal];
+        [mapSaveIphone.RoadLabel setTitle:savepickerName forState:UIControlStateNormal];
     }
     else if ([CheckString isEqualToString:@"color"])
     {
         [MapSave.ColorLabel setTitle:savepickerName forState:UIControlStateNormal];
+        [mapSaveIphone.ColorLabel setTitle:savepickerName forState:UIControlStateNormal];
     }
     
 }
@@ -1415,6 +1502,7 @@
 -(void)FinalCanCel:(UIButton *)sender
 {
     [MapSave removeFromSuperview];
+    [mapSaveIphone removeFromSuperview];
 }
 -(void)PickerCancelButton:(UIButton *)sender
 {
