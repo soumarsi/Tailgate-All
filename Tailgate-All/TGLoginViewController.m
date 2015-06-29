@@ -26,8 +26,8 @@
     [super viewDidLoad];
     
     self.GlobalClass = [[TGGlobalClass alloc]init];
-    self.userName.text = @"Admin";
-    self.passWord.text = @"admin";
+//    self.userName.text = @"Admin";
+//    self.passWord.text = @"admin";
 
     // Do any additional setup after loading the view, typically from a nib.
 }
@@ -127,18 +127,21 @@
     {
         if ([self.userName.text isEqualToString:@""])
         {
+            self.userName.text = @"";
             self.userName.placeholder = [NSString check_username];
             [self.userName setValue:[UIColor redColor]forKeyPath:@"_placeholderLabel.textColor"];
             [self.userName setValue:[UIFont LoginLabel] forKeyPath:@"_placeholderLabel.font"];
         }
         else if ([self.passWord.text isEqualToString:@""])
         {
+            self.passWord.text = @"";
             self.passWord.placeholder = [NSString check_password];
             [self.passWord setValue:[UIColor redColor]forKeyPath:@"_placeholderLabel.textColor"];
             [self.passWord setValue:[UIFont LoginLabel] forKeyPath:@"_placeholderLabel.font"];
         }
         else if ([self.userName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet] ].length <1)
         {
+            self.userName.text = @"";
             self.userName.placeholder = [NSString check_username];
             [self.userName setValue:[UIColor redColor]forKeyPath:@"_placeholderLabel.textColor"];
             [self.userName setValue:[UIFont LoginLabel] forKeyPath:@"_placeholderLabel.font"];

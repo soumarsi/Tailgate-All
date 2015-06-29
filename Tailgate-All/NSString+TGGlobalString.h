@@ -12,6 +12,7 @@
 
 +(NSString *)check_username;
 +(NSString *)check_password;
++(NSString *)check_Email;
 +(NSString *)check_internet;
 +(NSString *)check_internet_title;
 +(NSString *)Ok;
@@ -19,4 +20,6 @@
 +(NSString *)Login_Failed;
 +(NSString *)Norecordfound;
 +(NSString *)Noorderfound;
++(NSString *)usernotfound;
++(NSString *)resetPassword;
 @end

@@ -322,69 +322,69 @@
     
     if([self.Type isEqualToString:@"Oxford"])
     {
-//        if ([EditView.ButtonLabel.text isEqualToString:@"Select the order from list"])
-//        {
-//            
-//        }
-//        else
-//        {
-//                [DisableView setHidden:YES];
-//                
-//                UIView *screenshotview = [[UIView alloc]initWithFrame:CGRectMake(1025, 72.0f, self.view.frame.size.width, self.view.frame.size.height-70)];
-//                [screenshotview setBackgroundColor:[UIColor clearColor]];
-//                [BackGroundView addSubview:screenshotview];
-//                
-//                
-//                NSString *staticMapUrl = [NSString stringWithFormat:@"http://maps.google.com/maps/api/staticmap?markers=color:red|%f,%f&zoom=%d&size=1024x698&sensor=true",[[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"]]floatValue],[[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"]]floatValue],zoommap];
-//                
-//                
-//                
-//                NSURL *mapUrl = [NSURL URLWithString:[staticMapUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-//                UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:mapUrl]];
-//                
-//                MapView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0.0f, self.view.frame.size.width, self.view.frame.size.height-70)];
-//                [MapView setImage:image];
-//                [screenshotview addSubview:MapView];
-//                
-//                
-//                UIImageView *backview = [[UIImageView alloc]initWithFrame:CGRectMake(315.0f, 102.0f, 387.5f, 237.5f)];
-//                [backview setImage:[UIImage imageNamed:@"mappopupdown"]];
-//                [screenshotview addSubview:backview];
-//                
-//                
-//                UILabel *ButtonLabel = [[UILabel alloc]initWithFrame:CGRectMake(25.0f,23.0f, 340.0f, 45.0f)];
-//                [ButtonLabel setBackgroundColor:[UIColor clearColor]];
-//                [ButtonLabel setText:[NSString stringWithFormat:@"%@",EditView.ButtonLabel.text]];
-//                [ButtonLabel setTextAlignment:NSTextAlignmentLeft];
-//                [ButtonLabel setTextColor:[UIColor BlackColor]];
-//                [ButtonLabel setFont:[UIFont ButtonLabel]];
-//                [backview addSubview:ButtonLabel];
-//                
-//                UITextView *_DescriptionText = [[UITextView alloc]initWithFrame:CGRectMake(25,75,340,120)];
-//                _DescriptionText.font = [UIFont ButtonLabel];
-//                _DescriptionText.backgroundColor = [UIColor clearColor];
-//                _DescriptionText.textColor = [UIColor BlackColor];
-//                _DescriptionText.scrollEnabled = YES;
-//                _DescriptionText.pagingEnabled = YES;
-//                _DescriptionText.editable = NO;
-//                _DescriptionText.delegate = self;
-//                _DescriptionText.text = [NSString stringWithFormat:@"%@",self.packegeNameString];
-//                _DescriptionText.layer.borderWidth = 1.5f;
-//                _DescriptionText.layer.borderColor = [[UIColor colorWithRed:(179.0f/255.0f) green:(179.0f/255.0f) blue:(179.0f/255.0f) alpha:1] CGColor];
-//                _DescriptionText.textAlignment = NSTextAlignmentLeft;
-//                _DescriptionText.layer.cornerRadius = 3.0f;
-//                [_DescriptionText setAutocorrectionType:UITextAutocorrectionTypeNo];
-//                [backview addSubview:_DescriptionText];
-//                
-//                [self imageWithView:screenshotview];
-//                
-//                
-//                [SelectedBecons setButtonLabel:[NSString stringWithFormat:@"%@",EditView.ButtonLabel.text]];
-//                [SelectedBecons setDescriptionText:[NSString stringWithFormat:@"%@",EditView.DescriptionText.text]];
-//                
-//                NSDictionary *dict = [[NSDictionary alloc]initWithObjectsAndKeys:[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"]],@"lat",[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"]],@"long", nil];
-//                
-//                [SavedDataArray addObject:dict];
+        if ([EditView.ButtonLabel.text isEqualToString:@"Select the order from list"])
+        {
+            
+        }
+        else
+        {
+                [DisableView setHidden:YES];
+                
+                UIView *screenshotview = [[UIView alloc]initWithFrame:CGRectMake(1025, 72.0f, self.view.frame.size.width, self.view.frame.size.height-70)];
+                [screenshotview setBackgroundColor:[UIColor clearColor]];
+                [BackGroundView addSubview:screenshotview];
+                
+                
+                NSString *staticMapUrl = [NSString stringWithFormat:@"http://maps.google.com/maps/api/staticmap?markers=color:red|%f,%f&zoom=%d&size=1024x698&sensor=true",[[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"]]floatValue],[[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"]]floatValue],zoommap];
+                
+                
+                
+                NSURL *mapUrl = [NSURL URLWithString:[staticMapUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:mapUrl]];
+                
+                MapView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0.0f, self.view.frame.size.width, self.view.frame.size.height-70)];
+                [MapView setImage:image];
+                [screenshotview addSubview:MapView];
+                
+                
+                UIImageView *backview = [[UIImageView alloc]initWithFrame:CGRectMake(315.0f, 102.0f, 387.5f, 237.5f)];
+                [backview setImage:[UIImage imageNamed:@"mappopupdown"]];
+                [screenshotview addSubview:backview];
+                
+                
+                UILabel *ButtonLabel = [[UILabel alloc]initWithFrame:CGRectMake(25.0f,23.0f, 340.0f, 45.0f)];
+                [ButtonLabel setBackgroundColor:[UIColor clearColor]];
+                [ButtonLabel setText:[NSString stringWithFormat:@"%@",EditView.ButtonLabel.text]];
+                [ButtonLabel setTextAlignment:NSTextAlignmentLeft];
+                [ButtonLabel setTextColor:[UIColor BlackColor]];
+                [ButtonLabel setFont:[UIFont ButtonLabel]];
+                [backview addSubview:ButtonLabel];
+                
+                UITextView *_DescriptionText = [[UITextView alloc]initWithFrame:CGRectMake(25,75,340,120)];
+                _DescriptionText.font = [UIFont ButtonLabel];
+                _DescriptionText.backgroundColor = [UIColor clearColor];
+                _DescriptionText.textColor = [UIColor BlackColor];
+                _DescriptionText.scrollEnabled = YES;
+                _DescriptionText.pagingEnabled = YES;
+                _DescriptionText.editable = NO;
+                _DescriptionText.delegate = self;
+                _DescriptionText.text = [NSString stringWithFormat:@"%@",self.packegeNameString];
+                _DescriptionText.layer.borderWidth = 1.5f;
+                _DescriptionText.layer.borderColor = [[UIColor colorWithRed:(179.0f/255.0f) green:(179.0f/255.0f) blue:(179.0f/255.0f) alpha:1] CGColor];
+                _DescriptionText.textAlignment = NSTextAlignmentLeft;
+                _DescriptionText.layer.cornerRadius = 3.0f;
+                [_DescriptionText setAutocorrectionType:UITextAutocorrectionTypeNo];
+                [backview addSubview:_DescriptionText];
+                
+                [self imageWithView:screenshotview];
+                
+                
+                [SelectedBecons setButtonLabel:[NSString stringWithFormat:@"%@",EditView.ButtonLabel.text]];
+                [SelectedBecons setDescriptionText:[NSString stringWithFormat:@"%@",EditView.DescriptionText.text]];
+                
+                NSDictionary *dict = [[NSDictionary alloc]initWithObjectsAndKeys:[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"]],@"lat",[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"]],@"long", nil];
+                
+                [SavedDataArray addObject:dict];
 
         
         if ([device.model isEqualToString:@"iPhone"]||[device.model isEqualToString:@"iPhone Simulator"]||[device.model isEqualToString:@"iPod touch"] )
@@ -522,7 +522,7 @@
 
       
     }];
-     //   }
+        }
 
     }
     else
@@ -601,7 +601,6 @@
             [EditView setHidden:YES];
             
             [self finalURLFire];    //-----------Final URL FUNCTION-----------
-
             
         }
     }

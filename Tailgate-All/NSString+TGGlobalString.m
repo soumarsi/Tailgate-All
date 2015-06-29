@@ -46,4 +46,16 @@
 {
     return @"order not found";
 }
++(NSString *)check_Email
+{
+    return @"Please enter valid email";
+}
++(NSString *)usernotfound
+{
+    return @"user not found";
+}
++(NSString *)resetPassword
+{
+    return @"Please check your mail to reset password";
+}
 @end

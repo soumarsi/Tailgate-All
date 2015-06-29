@@ -12,5 +12,6 @@
 - (IBAction)signinButton:(UIButton *)sender;
 - (IBAction)forgotPasswordButton:(UIButton *)sender;
 @property (weak, nonatomic) IBOutlet UITextField *emailText;
+@property (strong, nonatomic) UIAlertView *alertShow;
 
 @end
