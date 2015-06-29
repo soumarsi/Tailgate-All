@@ -800,9 +800,11 @@
                 
                 DebugLog(@"ESLE COMING=============>");
                 
+                [savedLocationArray removeAllObjects];
+                
                 locationDataArray = [result objectForKey:@"locationdata"];
-                               for (data = 0; data < locationDataArray.count; data++) {
-               // for (data = 0; data < 2; data++) {
+            for (data = 0; data < locationDataArray.count; data++)
+            {
                     
                     locationDataDict = [[NSMutableDictionary alloc]init];
                     
@@ -812,13 +814,8 @@
                     
                     [savedLocationArray addObject:locationDataDict];
                     
-//                   descString = [NSString stringWithFormat:@"%@ %@",[[savedLocationArray objectAtIndex:data] objectForKey:@"package_name"],[[savedLocationArray objectAtIndex:data] objectForKey:@"package_price"]];
-//                                   
-//                    packageID = [NSString stringWithFormat:@"%@",[[savedLocationArray objectAtIndex:data] objectForKey:@"package_id"]];
-                    
-                }
-    
-                [searchtableview removeFromSuperview];
+            }
+                [locationTableview removeFromSuperview];
                 locationTableview = [[UITableView alloc]initWithFrame:CGRectMake(25,74,340,95)];
                 locationTableview.delegate=self;
                 locationTableview.dataSource=self;
