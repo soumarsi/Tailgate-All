@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "TGMapEdit.h"
 
-@interface TGMapViewController : UIViewController<UIGestureRecognizerDelegate,TGGlobal,UIPickerViewDataSource,UIPickerViewDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface TGMapViewController : UIViewController<UIGestureRecognizerDelegate,TGGlobal,UIPickerViewDataSource,UIPickerViewDelegate,UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>
 {
     UIView *BackGroundView,*HeaderView,*HeaderLineView;
     UILabel *HeaderLabel;
@@ -50,6 +50,7 @@
 @property (nonatomic) float LocationLattitude;
 @property (nonatomic) float LocationLongitude;
 @property (nonatomic, strong)NSString *Type;
+@property (nonatomic, strong) UIActionSheet *settingsPopUp;
 @property (nonatomic, strong) NSMutableArray *PlaceaArray;
 @property (nonatomic, strong) NSMutableArray *PackageArray;
 @property (nonatomic, strong) NSMutableArray *DistanceArray;

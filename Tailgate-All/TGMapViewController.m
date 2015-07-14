@@ -20,6 +20,7 @@
 #import "TGMapSave.h"
 #import "RTCanvas.h"
 #import "TGMapSaveiphone.h"
+#import "TGLoginViewController.h"
 
 #ifdef DEBUG
 
@@ -202,7 +203,14 @@
     
     SettingsImage = [[UIImageView alloc]init];
     [SettingsImage setImage:[UIImage imageNamed:@"settings"]];
-    [HeaderView addSubview:SettingsImage];
+   // [HeaderView addSubview:SettingsImage];
+    
+    
+    
+    UIButton *settingsButton = [[UIButton alloc]init];
+    [settingsButton setBackgroundColor:[UIColor ClearColor]];
+   // [settingsButton addTarget:self action:@selector(Settings:) forControlEvents:UIControlEventTouchUpInside];
+    //[HeaderView addSubview:settingsButton];
     
     DebugLog(@"LATITUDE----------> %f",self.LocationLattitude);
     DebugLog(@"LONGITUDE------> %f",self.LocationLongitude);
@@ -261,6 +269,7 @@
     {
         BackButton.frame = CGRectMake(15, 28, 28, 28);
         SettingsImage.frame = CGRectMake(self.view.frame.size.width-43-8, 28, 28, 28);
+        settingsButton.frame = CGRectMake(self.view.frame.size.width-43-8, 28, 28, 28);
         BeconsView.frame = CGRectMake(self.view.frame.size.width-105, 23, 40, 40);
         DisableView.frame = CGRectMake(self.view.frame.size.width-105, 20.0f, 140.0f, 50.0f);
         PickerBckView.frame = CGRectMake(0.0f, self.view.frame.size.height-200, self.view.frame.size.width, 200);
@@ -272,6 +281,7 @@
     {
         BackButton.frame = CGRectMake(30, 28, 28, 28);
         SettingsImage.frame = CGRectMake(953, 28, 28, 28);
+        settingsButton.frame = CGRectMake(953, 28, 28, 28);
         BeconsView.frame = CGRectMake(865, 23, 40, 40);
         DisableView.frame = CGRectMake(865.0f, 20.0f, 180.0f, 50.0f);
         PickerBckView.frame = CGRectMake(0.0f,600.0f, self.view.frame.size.width, self.view.frame.size.height-500.0f);
@@ -816,7 +826,7 @@
                     
             }
                 [locationTableview removeFromSuperview];
-                locationTableview = [[UITableView alloc]initWithFrame:CGRectMake(25,74,340,95)];
+                locationTableview = [[UITableView alloc]init];//WithFrame:CGRectMake(25,74,340,95)];
                 locationTableview.delegate=self;
                 locationTableview.dataSource=self;
                 locationTableview.allowsSelection = YES;
@@ -827,6 +837,15 @@
                 DebugLog(@"AKKKKKKKKKK------------> %@",savedLocationArray);
                 
 
+                if([[UIScreen mainScreen]bounds].size.width == 320)
+                {
+                    locationTableview.frame = CGRectMake(25,74,260,95);
+                }
+                else
+                {
+                   locationTableview.frame = CGRectMake(25,74,340,95);
+                }
+                
                 
             }
         }];
@@ -1224,12 +1243,19 @@
     [textlbl setFont:[UIFont systemFontOfSize:15.0f]];
     [cell addSubview:textlbl];
     
-    checkbox = [[UIButton alloc]initWithFrame:CGRectMake(cell.frame.origin.x+cell.frame.size.width-10.0f, 14, 15.0f, 15.0f)];
+    checkbox = [[UIButton alloc]init];//WithFrame:CGRectMake(cell.frame.origin.x+cell.frame.size.width-10.0f, 14, 15.0f, 15.0f)];
     [checkbox setImage:[UIImage imageNamed:@"uncheck"] forState:UIControlStateNormal];
     checkbox.tag=indexPath.row;
     [cell addSubview:checkbox];
     
-  
+    if ([[UIScreen mainScreen]bounds].size.width == 320)
+    {
+        checkbox.frame = CGRectMake(245, 14, 15.0f, 15.0f);
+    }
+    else
+    {
+        checkbox.frame = CGRectMake(cell.frame.origin.x+cell.frame.size.width-10.0f, 14, 15.0f, 15.0f);
+    }
     
     if (check_box_number==indexPath.row)
     {
@@ -1335,10 +1361,7 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
--(void)Settings:(UIButton *)sender
-{
-    
-}
+
 -(void)finalURLFire{
     
     DebugLog(@"packegeid---- %@",img);

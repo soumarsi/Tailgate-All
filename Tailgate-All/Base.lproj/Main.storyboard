@@ -44,8 +44,14 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Header" translatesAutoresizingMaskIntoConstraints="NO" id="3Tu-w2-l67">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="145"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="600" id="FKR-JR-IUT"/>
                                     <constraint firstAttribute="height" constant="145" id="Q5H-zz-fww"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="FKR-JR-IUT"/>
+                                    </mask>
+                                </variation>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logoimage" translatesAutoresizingMaskIntoConstraints="NO" id="tX8-dT-tWr">
                                 <rect key="frame" x="149" y="55" width="303" height="74"/>

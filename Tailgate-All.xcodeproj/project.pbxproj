@@ -443,6 +443,7 @@
 				TargetAttributes = {
 					2C8269AF1B3A8A4500D32E88 = {
 						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = K22GQFS8BW;
 					};
 				};
 			};
@@ -665,9 +666,12 @@
 			baseConfigurationReference = D843553E1595051477CC0BCB /* Pods-Tailgate-All.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: ESolz Technologies Pvt Ltd (K22GQFS8BW)";
 				INFOPLIST_FILE = "Tailgate-All/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = Tailgate;
+				PROVISIONING_PROFILE = "74165d49-4a5e-419d-b4b2-d85391c66213";
 			};
 			name = Debug;
 		};
@@ -676,9 +680,12 @@
 			baseConfigurationReference = 489034D543C78A075C78749A /* Pods-Tailgate-All.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: ESolz Technologies Pvt Ltd (K22GQFS8BW)";
 				INFOPLIST_FILE = "Tailgate-All/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = Tailgate;
+				PROVISIONING_PROFILE = "74165d49-4a5e-419d-b4b2-d85391c66213";
 			};
 			name = Release;
 		};
