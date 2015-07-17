@@ -110,7 +110,7 @@
 		2C3E26AF1B3C20B100A08D5E /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		2C3E26B11B3C20C300A08D5E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		2C3E26B31B3C20CC00A08D5E /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
-		2C8269B01B3A8A4500D32E88 /* Tailgate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tailgate.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C8269B01B3A8A4500D32E88 /* Tailgategroup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tailgategroup.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C8269B41B3A8A4500D32E88 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2C8269B51B3A8A4500D32E88 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2C8269B71B3A8A4500D32E88 /* TGAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TGAppDelegate.h; sourceTree = "<group>"; };
@@ -236,7 +236,7 @@
 		2C8269B11B3A8A4500D32E88 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2C8269B01B3A8A4500D32E88 /* Tailgate.app */,
+				2C8269B01B3A8A4500D32E88 /* Tailgategroup.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -429,7 +429,7 @@
 			);
 			name = "Tailgate-All";
 			productName = "Tailgate-All";
-			productReference = 2C8269B01B3A8A4500D32E88 /* Tailgate.app */;
+			productReference = 2C8269B01B3A8A4500D32E88 /* Tailgategroup.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -443,7 +443,6 @@
 				TargetAttributes = {
 					2C8269AF1B3A8A4500D32E88 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = K22GQFS8BW;
 					};
 				};
 			};
@@ -596,6 +595,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -640,6 +640,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -666,12 +667,12 @@
 			baseConfigurationReference = D843553E1595051477CC0BCB /* Pods-Tailgate-All.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: ESolz Technologies Pvt Ltd (K22GQFS8BW)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Tailgate-All/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = Tailgate;
-				PROVISIONING_PROFILE = "74165d49-4a5e-419d-b4b2-d85391c66213";
+				PRODUCT_NAME = Tailgategroup;
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -680,12 +681,12 @@
 			baseConfigurationReference = 489034D543C78A075C78749A /* Pods-Tailgate-All.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: ESolz Technologies Pvt Ltd (K22GQFS8BW)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Tailgate-All/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = Tailgate;
-				PROVISIONING_PROFILE = "74165d49-4a5e-419d-b4b2-d85391c66213";
+				PRODUCT_NAME = Tailgategroup;
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
