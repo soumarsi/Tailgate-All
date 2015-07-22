@@ -134,6 +134,7 @@
     [UserData setObject:[userdetails objectForKey:@"email"] forKey:@"email"];
     [UserData setObject:[userdetails objectForKey:@"type"] forKey:@"type"];
     [UserData setObject:@"YES" forKey:@"Logout"];
+    [UserData setObject:@"YES" forKey:@"Remember"];
     [UserData synchronize];
 }
 - (BOOL)connectedToNetwork

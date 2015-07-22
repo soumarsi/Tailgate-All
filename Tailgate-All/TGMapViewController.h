@@ -44,6 +44,7 @@
     NSString *savepickerName;
     UIDevice *device;
     NSInteger check_box_number;
+   
 }
 @property (nonatomic,strong)NSString *VenueName;
 @property (nonatomic, strong)NSString *locationId;

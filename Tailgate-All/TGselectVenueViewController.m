@@ -189,6 +189,7 @@
     if (buttonIndex == 0)
     {
         [[NSUserDefaults standardUserDefaults]setObject:@"NO" forKey:@"Logout"];
+        [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"Remember"];
         
         [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
         

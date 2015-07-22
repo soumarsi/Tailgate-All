@@ -108,41 +108,7 @@
     
 //    ----------Already Saved Data--------
     
-    if (globalClass.connectedToNetwork == YES) {
-        
-        [globalClass GlobalDict:[NSString stringWithFormat:@"action.php?mode=orderList&located=true&locationId=%@",self.locationId] Withblock:^(id result, NSError *error) {
-            
-            DebugLog(@"SAVED DATA RETURN DATA--------->%@",result);
-            
-            
-            if ([[result objectForKey:@"message"] isEqualToString:[NSString Norecordfound] ]) {
-                
-                DebugLog(@"NO RECORD FOUND");
-                
-            }else{
-                
-                preDataArray = [result objectForKey:@"orderdata"];
-                
-                DebugLog(@"pREdATAaRRAY--------->%lu",(unsigned long)preDataArray.count);
-                
-                for (data = 0; data < preDataArray.count; data ++)
-                {
-                    preSavedDict = [[NSMutableDictionary alloc]init];
-
-                    [preSavedDict setObject:[[preDataArray objectAtIndex:data]objectForKey:@"event_date"] forKey:@"event_date"];
-                    [preSavedDict setObject:[[preDataArray objectAtIndex:data] objectForKey:@"lat"] forKey:@"lat"];
-                    [preSavedDict setObject:[[preDataArray objectAtIndex:data] objectForKey:@"long"] forKey:@"long"];
-                    [SavedDataArray addObject:preSavedDict];
-                }
-                
-                [self applymapview];
-                
-                
-            }
-            
-        }];
-    }
-
+    [self firstdata];
     
     
     //------
@@ -292,6 +258,47 @@
     // Do any additional setup after loading the view.
     
     
+}
+
+-(void)firstdata
+{
+    if (globalClass.connectedToNetwork == YES) {
+        
+        [SavedDataArray removeAllObjects];
+        
+        [globalClass GlobalDict:[NSString stringWithFormat:@"action.php?mode=orderList&located=true&locationId=%@",self.locationId] Withblock:^(id result, NSError *error) {
+            
+            DebugLog(@"SAVED DATA RETURN DATA--------->%@",result);
+            
+            
+            if ([[result objectForKey:@"message"] isEqualToString:[NSString Norecordfound] ]) {
+                
+                DebugLog(@"NO RECORD FOUND");
+                
+            }else{
+                
+                preDataArray = [result objectForKey:@"orderdata"];
+                
+                DebugLog(@"pREdATAaRRAY--------->%lu",(unsigned long)preDataArray.count);
+                
+                for (data = 0; data < preDataArray.count; data ++)
+                {
+                    preSavedDict = [[NSMutableDictionary alloc]init];
+                    
+                    [preSavedDict setObject:[[preDataArray objectAtIndex:data]objectForKey:@"event_date"] forKey:@"event_date"];
+                    [preSavedDict setObject:[[preDataArray objectAtIndex:data] objectForKey:@"lat"] forKey:@"lat"];
+                    [preSavedDict setObject:[[preDataArray objectAtIndex:data] objectForKey:@"long"] forKey:@"long"];
+                    [SavedDataArray addObject:preSavedDict];
+                }
+                
+                [self applymapview];
+                
+                
+            }
+            
+        }];
+    }
+
 }
 
 -(void)applymapview
@@ -618,6 +625,8 @@
 
 -(void)CanCel:(UIButton *)sender
 {
+    [self firstdata];
+    
     [EditView setHidden:YES];
     [SelectedBecons setHidden:YES];
     [PickerBckView setHidden:YES];
@@ -625,7 +634,7 @@
     [DoneButton setHidden:YES];
     [CancelButton setHidden:YES];
     [DisableView setHidden:YES];
-}
+ }
 -(void)checkbox:(UIButton *)sender{
     
     DebugLog(@"CHECK BOX TAPPED");
@@ -903,10 +912,7 @@
             
         }
     }
-    
-
 }
-
 
 - (void)adjustAnchorPointForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer targetView:(TGBecons *)targetView
 {
@@ -1340,15 +1346,86 @@
 }
 - (void)mapView:(GMSMapView *)mapView didDragMarker:(GMSMarker *)marker
 {
-    DebugLog(@">>> mapView:didDragMarker: %@", [marker description]);
+   // DebugLog(@">>> mapView:didDragMarker: %@", [marker description]);
 }
 - (void)mapView:(GMSMapView *)mapView didEndDraggingMarker:(GMSMarker *)marker
 {
-    DebugLog(@">>> mapView:didEndDraggingMarker: %@", [marker description]);
+    DebugLog(@">>> mapView:didEndDraggingMarker:%f  ------  %f", marker.position.latitude,marker.position.longitude);
+    
+    if (globalClass.connectedToNetwork == YES) {
+        
+        [globalClass GlobalStringDict:[NSString stringWithFormat:@"action.php?mode=orderList&located=false&locationId=%@",self.locationId] Globalstr:@"" Withblock:^(id result, NSError *error) {
+            DebugLog(@"LOCATION IDDDDD-----> %@",self.locationId);
+            DebugLog(@"MAP GLOBAL CLASS RETURN DATA--------->%@",result);
+            
+            if ([[result objectForKey:@"message"] isEqualToString:[NSString Norecordfound] ]) {
+                
+                DebugLog(@"NO RECORD FOUND");
+                
+                blankCheck = YES;
+                
+            }else{
+                
+                [DataArray removeAllObjects];
+                
+                blankCheck = NO;
+                
+                orderArray = [[NSMutableArray alloc]init];
+                orderArray = [result objectForKey:@"orderdata"];
+                
+                DebugLog(@"ORDER DATA------> %@",orderArray);
+                DebugLog(@"ORDER DATA COUNT------> %lu",(unsigned long)orderArray.count);
+                
+                for (data = 0; data < orderArray.count; data ++)
+                {
+                    orderDict = [[NSMutableDictionary alloc]init];
+                    
+                    [orderDict setObject:[[orderArray objectAtIndex:data]objectForKey:@"first_name"] forKey:@"first_name"];
+                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"last_name"] forKey:@"last_name"];
+                    [orderDict setObject:[[orderArray objectAtIndex:data]objectForKey:@"event_date"] forKey:@"event_date"];
+                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"order_date"] forKey:@"order_date"];
+                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"user_email"] forKey:@"user_email"];
+                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"transaction_id"] forKey:@"transaction_id"];
+                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"order_id"] forKey:@"order_id"];
+                    [DataArray addObject:orderDict];
+                }
+                
+                [DataPickerView reloadAllComponents];
+            }
+            
+        }];
+    }
+    
+    EditView = [[TGMapEdit alloc]init];
+    [BackGroundView addSubview:EditView];
+    
+    if ([device.model isEqualToString:@"iPhone"]||[device.model isEqualToString:@"iPhone Simulator"]||[device.model isEqualToString:@"iPod touch"] )
+    {
+        
+        if(self.view.frame.size.width == 320)
+        {
+            EditView.frame = CGRectMake(0, 140, 320, 237.5f);
+            EditView.backview.image = [UIImage imageNamed:@"mappopupdown5s"];
+            
+            
+        }
+        else
+        {
+            
+            EditView.frame = CGRectMake(-8, 140, self.view.frame.size.width-10, 237.5f);
+            EditView.backview.image = [UIImage imageNamed:@"mappopupdown"];
+            
+        }
+        
+    }
+    
+    
+    
+    
 }
 - (void)mapView:(GMSMapView *)mapView didCancelDraggingMarker:(GMSMarker *)marker
 {
-    DebugLog(@">>> mapView:didCancelDraggingMarker: %@", [marker description]);
+   // DebugLog(@">>> mapView:didCancelDraggingMarker: %@",[marker description]);
 }
 -(void)mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition*)position {
     zoommap = mapView_.camera.zoom;
@@ -1511,6 +1588,7 @@
      [self applymapview];
         
         [MapSave removeFromSuperview];
+        [mapSaveIphone removeFromSuperview];
     [SelectedBecons removeFromSuperview];
     
     [EditView setHidden:YES];

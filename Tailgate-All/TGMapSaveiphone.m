@@ -30,7 +30,7 @@
         [BackgroundView setBackgroundColor:[UIColor AlphaBackground]];
         [self addSubview:BackgroundView];
         
-        ContentBackView  = [[UIView alloc]initWithFrame:CGRectMake([[UIScreen mainScreen]bounds].origin.x+5, [[UIScreen mainScreen]bounds].origin.y+90, [[UIScreen mainScreen]bounds].size.width-10, 330)];
+        ContentBackView  = [[UIView alloc]initWithFrame:CGRectMake([[UIScreen mainScreen]bounds].origin.x+5, [[UIScreen mainScreen]bounds].origin.y+90, [[UIScreen mainScreen]bounds].size.width-10, 430)];
         [ContentBackView setBackgroundColor:[UIColor LabelWhiteColor]];
         ContentBackView.layer.cornerRadius = 5.0f;
         [self addSubview:ContentBackView];
@@ -135,10 +135,10 @@
         
         self.ColorLabel = [[UIButton alloc]init];
         [self.ColorLabel setBackgroundColor:[UIColor MapSaveBackgroundColor]];
-        [self.ColorLabel setImageEdgeInsets:UIEdgeInsetsMake(0, 105, 0, 0)];
-        [self.ColorLabel setTitleEdgeInsets:UIEdgeInsetsMake(1.0f, -15, 0, 0)];
+        [self.ColorLabel setImageEdgeInsets:UIEdgeInsetsMake(0, 275, 0, 0)];
+        [self.ColorLabel setTitleEdgeInsets:UIEdgeInsetsMake(1.0f, -25, 0, 0)];
         [self.ColorLabel setTitle:@"Color" forState:UIControlStateNormal];
-        self.ColorLabel.titleLabel.textAlignment = NSTextAlignmentCenter;
+        self.ColorLabel.titleLabel.textAlignment = NSTextAlignmentLeft;
         [self.ColorLabel setTitleColor:[UIColor BlackColor] forState:UIControlStateNormal];
         self.ColorLabel.titleLabel.font = [UIFont iphonemapsave];
         [self.ColorLabel setImage:[UIImage DropDwonImage] forState:UIControlStateNormal];
@@ -169,14 +169,14 @@
             SecondLabel.frame = CGRectMake(ContentBackView.frame.origin.x+5, FirstLabel.frame.origin.y+70, 60, 30);
             ThirdLabel.frame = CGRectMake(ContentBackView.frame.origin.x+200, SecondLabel.frame.origin.y+35, 100, 30);
             FourthLabel.frame = CGRectMake(ContentBackView.frame.origin.x+5, ThirdLabel.frame.origin.y+70, 140, 30);
-            FifthLabel.frame = CGRectMake(ContentBackView.frame.origin.x+5, FourthLabel.frame.origin.y+30, 300, 60);
+            FifthLabel.frame = CGRectMake(ContentBackView.frame.origin.x+5, FourthLabel.frame.origin.y+65, 300, 60);
             self.PlacesLabel.frame = CGRectMake([[UIScreen mainScreen]bounds].origin.x+5, FirstLabel.frame.origin.y+35, 260, 30);
             self.PackegeLabel.frame = CGRectMake(SecondLabel.frame.size.width+20, FirstLabel.frame.origin.y+70, 170, 30);
             self.DistanceLabel.frame = CGRectMake(ContentBackView.frame.origin.x+5, SecondLabel.frame.origin.y+35, 180, 30);
             self.RoadLabel.frame = CGRectMake(ContentBackView.frame.origin.x+5, ThirdLabel.frame.origin.y+35, 260, 30);
-            self.ColorLabel.frame = CGRectMake(FourthLabel.frame.size.width+20, ThirdLabel.frame.origin.y+70, 130, 30);
-            FinalSubmitButton.frame = CGRectMake(ContentBackView.frame.size.width/2-83-7.5f, FourthLabel.frame.origin.y+95, 83.0f, 35);
-            FinalCancelButton.frame = CGRectMake(ContentBackView.frame.size.width/2+7.5f, FourthLabel.frame.origin.y+95, 83.0f, 35);
+            self.ColorLabel.frame = CGRectMake(5, ThirdLabel.frame.origin.y+100, 300, 30);
+            FinalSubmitButton.frame = CGRectMake(ContentBackView.frame.size.width/2-83-7.5f, FourthLabel.frame.origin.y+140, 83.0f, 35);
+            FinalCancelButton.frame = CGRectMake(ContentBackView.frame.size.width/2+7.5f, FourthLabel.frame.origin.y+140, 83.0f, 35);
             
         }
         else if ([[UIScreen mainScreen]bounds].size.width == 375)
@@ -185,14 +185,14 @@
             SecondLabel.frame = CGRectMake(ContentBackView.frame.origin.x+35, FirstLabel.frame.origin.y+70, 60, 30);
             ThirdLabel.frame = CGRectMake(ContentBackView.frame.origin.x+230, SecondLabel.frame.origin.y+35, 100, 30);
             FourthLabel.frame = CGRectMake(ContentBackView.frame.origin.x+35, ThirdLabel.frame.origin.y+70, 140, 30);
-            FifthLabel.frame = CGRectMake(ContentBackView.frame.origin.x+35, FourthLabel.frame.origin.y+30, 300, 60);
+            FifthLabel.frame = CGRectMake(ContentBackView.frame.origin.x+35, FourthLabel.frame.origin.y+65, 300, 60);
             self.PlacesLabel.frame = CGRectMake([[UIScreen mainScreen]bounds].origin.x+35, FirstLabel.frame.origin.y+35, 260, 30);
             self.PackegeLabel.frame = CGRectMake(SecondLabel.frame.size.width+50, FirstLabel.frame.origin.y+70, 170, 30);
             self.DistanceLabel.frame = CGRectMake(ContentBackView.frame.origin.x+35, SecondLabel.frame.origin.y+35, 180, 30);
             self.RoadLabel.frame = CGRectMake(ContentBackView.frame.origin.x+35, ThirdLabel.frame.origin.y+35, 260, 30);
-            self.ColorLabel.frame = CGRectMake(FourthLabel.frame.size.width+50, ThirdLabel.frame.origin.y+70, 130, 30);
-            FinalSubmitButton.frame = CGRectMake(ContentBackView.frame.size.width/2-83-7.5f, FourthLabel.frame.origin.y+95, 83.0f, 35);
-            FinalCancelButton.frame = CGRectMake(ContentBackView.frame.size.width/2+7.5f, FourthLabel.frame.origin.y+95, 83.0f, 35);
+            self.ColorLabel.frame = CGRectMake([[UIScreen mainScreen]bounds].origin.x+35, ThirdLabel.frame.origin.y+100, 300, 30);
+            FinalSubmitButton.frame = CGRectMake(ContentBackView.frame.size.width/2-83-7.5f, FourthLabel.frame.origin.y+140, 83.0f, 35);
+            FinalCancelButton.frame = CGRectMake(ContentBackView.frame.size.width/2+7.5f, FourthLabel.frame.origin.y+140, 83.0f, 35);
         }
         else
         {
@@ -200,14 +200,14 @@
             SecondLabel.frame = CGRectMake(ContentBackView.frame.origin.x+50, FirstLabel.frame.origin.y+70, 60, 30);
             ThirdLabel.frame = CGRectMake(ContentBackView.frame.origin.x+245, SecondLabel.frame.origin.y+35, 100, 30);
             FourthLabel.frame = CGRectMake(ContentBackView.frame.origin.x+50, ThirdLabel.frame.origin.y+70, 140, 30);
-            FifthLabel.frame = CGRectMake(ContentBackView.frame.origin.x+50, FourthLabel.frame.origin.y+30, 300, 60);
+            FifthLabel.frame = CGRectMake(ContentBackView.frame.origin.x+50, FourthLabel.frame.origin.y+65, 300, 60);
             self.PlacesLabel.frame = CGRectMake([[UIScreen mainScreen]bounds].origin.x+50, FirstLabel.frame.origin.y+35, 260, 30);
             self.PackegeLabel.frame = CGRectMake(SecondLabel.frame.size.width+65, FirstLabel.frame.origin.y+70, 170, 30);
             self.DistanceLabel.frame = CGRectMake(ContentBackView.frame.origin.x+50, SecondLabel.frame.origin.y+35, 180, 30);
             self.RoadLabel.frame = CGRectMake(ContentBackView.frame.origin.x+50, ThirdLabel.frame.origin.y+35, 260, 30);
-            self.ColorLabel.frame = CGRectMake(FourthLabel.frame.size.width+65, ThirdLabel.frame.origin.y+70, 130, 30);
-            FinalSubmitButton.frame = CGRectMake(ContentBackView.frame.size.width/2-83-7.5f, FourthLabel.frame.origin.y+95, 83.0f, 35);
-            FinalCancelButton.frame = CGRectMake(ContentBackView.frame.size.width/2+7.5f, FourthLabel.frame.origin.y+95, 83.0f, 35);
+            self.ColorLabel.frame = CGRectMake([[UIScreen mainScreen]bounds].origin.x+50, ThirdLabel.frame.origin.y+100, 300, 30);
+            FinalSubmitButton.frame = CGRectMake(ContentBackView.frame.size.width/2-83-7.5f, FourthLabel.frame.origin.y+140, 83.0f, 35);
+            FinalCancelButton.frame = CGRectMake(ContentBackView.frame.size.width/2+7.5f, FourthLabel.frame.origin.y+140, 83.0f, 35);
 
         }
         

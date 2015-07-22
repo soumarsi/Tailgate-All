@@ -8,6 +8,7 @@
 
 #import "TGAppDelegate.h"
 #import <GoogleMaps/GoogleMaps.h>
+#import "TGselectVenueViewController.h"
 @interface TGAppDelegate ()
 
 @end
@@ -17,6 +18,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    if ([[[NSUserDefaults standardUserDefaults]objectForKey:@"Remember"] isEqualToString:@"YES"])
+    {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        TGselectVenueViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"TGselectVenueViewController"];
+        [(UINavigationController*)self.window.rootViewController pushViewController:vc animated:NO];
+    }
+    
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [GMSServices provideAPIKey:@"AIzaSyDF0Sl8FZFPzyLO3yCrhaFwwzf7wwPmX5o"];
     return YES;
