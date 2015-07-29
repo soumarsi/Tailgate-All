@@ -202,19 +202,6 @@
     [self.view addSubview:DataPickerView];
     [DataPickerView setHidden:YES];
     
-    DoneButton = [[UIButton alloc]init];
-    [DoneButton setBackgroundColor:[UIColor clearColor]];
-    [DoneButton setBackgroundImage:[UIImage imageNamed:@"done"] forState:UIControlStateNormal];
-    [DoneButton addTarget:self action:@selector(Done:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:DoneButton];
-    [DoneButton setHidden:YES];
-    
-    CancelButton = [[UIButton alloc]init];
-    [CancelButton setBackgroundColor:[UIColor clearColor]];
-    [CancelButton setBackgroundImage:[UIImage imageNamed:@"cancel"] forState:UIControlStateNormal];
-    [CancelButton addTarget:self action:@selector(CancelButton:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:CancelButton];
-    [CancelButton setHidden:YES];
     
     
     
@@ -232,7 +219,20 @@
     
 
 
+    DoneButton = [[UIButton alloc]init];
+    [DoneButton setBackgroundColor:[UIColor clearColor]];
+    [DoneButton setBackgroundImage:[UIImage imageNamed:@"done"] forState:UIControlStateNormal];
+    [DoneButton addTarget:self action:@selector(Done:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:DoneButton];
+    [DoneButton setHidden:YES];
     
+    CancelButton = [[UIButton alloc]init];
+    [CancelButton setBackgroundColor:[UIColor clearColor]];
+    [CancelButton setBackgroundImage:[UIImage imageNamed:@"cancel"] forState:UIControlStateNormal];
+    [CancelButton addTarget:self action:@selector(CancelButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:CancelButton];
+    [CancelButton setHidden:YES];
+
     
     
 
@@ -313,13 +313,14 @@
                     [preSavedDict setObject:[[preDataArray objectAtIndex:data] objectForKey:@"order_id"] forKey:@"order_id"];
                     [preSavedDict setObject:[[preDataArray objectAtIndex:data] objectForKey:@"package_id"] forKey:@"package_id"];
                     [preSavedDict setObject:[[preDataArray objectAtIndex:data] objectForKey:@"first_name"] forKey:@"firstname"];
-                    [preSavedDict setObject:[[preDataArray objectAtIndex:data] objectForKey:@"first_name"] forKey:@"lastname"];
+                    [preSavedDict setObject:[[preDataArray objectAtIndex:data] objectForKey:@"last_name"] forKey:@"lastname"];
                     [preSavedDict setObject:[[preDataArray objectAtIndex:data]objectForKey:@"package_name"] forKey:@"package_name"];
                     [preSavedDict setObject:[[preDataArray objectAtIndex:data]objectForKey:@"placeid"] forKey:@"placeid"];
                     [preSavedDict setObject:[[preDataArray objectAtIndex:data]objectForKey:@"pktyid"] forKey:@"pktyid"];
                     [preSavedDict setObject:[[preDataArray objectAtIndex:data]objectForKey:@"distanceid"] forKey:@"distanceid"];
                     [preSavedDict setObject:[[preDataArray objectAtIndex:data]objectForKey:@"colorid"] forKey:@"colorid"];
                     [preSavedDict setObject:[[preDataArray objectAtIndex:data]objectForKey:@"roadid"] forKey:@"roadid"];
+                    [preSavedDict setObject:[[preDataArray objectAtIndex:data]objectForKey:@"event_name"] forKey:@"event_name"];
                     
                     [SavedDataArray addObject:preSavedDict];
                 }
@@ -749,7 +750,7 @@
         retval.font = [UIFont PickerLabel];
         retval.textAlignment= NSTextAlignmentCenter;
         retval.textColor = [UIColor blackColor];
-        retval.text = [NSString stringWithFormat:@"%@  %@",[[DataArray objectAtIndex:row] objectForKey:@"event_name"],[[DataArray objectAtIndex:row] objectForKey:@"event_date"]];
+        retval.text = [NSString stringWithFormat:@"%@  %@",[[self.orderArrayDropdown objectAtIndex:row] objectForKey:@"event_name"],[[self.orderArrayDropdown objectAtIndex:row] objectForKey:@"event_date"]];
         return retval;
 
     }
@@ -765,7 +766,14 @@
     retval.font = [UIFont PickerLabel];
     retval.textAlignment= NSTextAlignmentCenter;
     retval.textColor = [UIColor blackColor];
+        if ([self.Type isEqualToString:@"Oxford"])
+        {
+           retval.text = [NSString stringWithFormat:@"%@ %@",[[DataArray objectAtIndex:row] objectForKey:@"first_name"],[[DataArray objectAtIndex:row] objectForKey:@"last_name"]];
+        }
+        else
+        {
     retval.text = [NSString stringWithFormat:@"%@ %@  %@",[[DataArray objectAtIndex:row] objectForKey:@"first_name"],[[DataArray objectAtIndex:row] objectForKey:@"last_name"],[[DataArray objectAtIndex:row] objectForKey:@"event_date"]];
+        }
     return retval;
     }
     return nil;
@@ -783,6 +791,10 @@
     if (pickerView.tag == 2)
     {
         return self.GlobalPickerArray.count;
+    }
+    else if (pickerView.tag == 3)
+    {
+        return self.orderArrayDropdown.count;
     }
     else{
     return DataArray.count;
@@ -827,14 +839,22 @@
              }
     else if (pickerView.tag == 3)
     {
-        DataString = [NSString stringWithFormat:@"%@  %@",[[DataArray objectAtIndex:[oxfordPicker selectedRowInComponent:component]] objectForKey:@"event_name"],[[DataArray objectAtIndex:[oxfordPicker selectedRowInComponent:component]] objectForKey:@"event_date"]];
+        DataString = [NSString stringWithFormat:@"%@  %@",[[self.orderArrayDropdown objectAtIndex:[oxfordPicker selectedRowInComponent:component]] objectForKey:@"event_name"],[[self.orderArrayDropdown objectAtIndex:[oxfordPicker selectedRowInComponent:component]] objectForKey:@"event_date"]];
         
-        orderID = [[DataArray objectAtIndex:[oxfordPicker selectedRowInComponent:component]] objectForKey:@"event_id"];
+        orderID = [[self.orderArrayDropdown objectAtIndex:[oxfordPicker selectedRowInComponent:component]] objectForKey:@"event_id"];
     }
     else{
-    DataString = [NSString stringWithFormat:@"%@ %@  %@",[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"first_name"],[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"last_name"],[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"event_date"]];
-    
-    orderID = [[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"order_id"]; //-----------Required Final PK
+        
+        if ([self.Type isEqualToString:@"Oxford"])
+        {
+            DataString = [NSString stringWithFormat:@"%@ %@",[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"first_name"],[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"last_name"]];
+        }else{
+        
+            DataString = [NSString stringWithFormat:@"%@ %@  %@",[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"first_name"],[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"last_name"],[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"event_date"]];
+            
+            orderID = [[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"order_id"]; //-----------Required Final PK
+
+        }
     
     DebugLog(@"ORDER ID---------> %@",orderID);
     }
@@ -843,17 +863,104 @@
 ///---------///---------//------
 -(void)Done:(UIButton *)sender
 {
+    NSLog(@"asche oxford");
     
     if ([self.Type isEqualToString:@"Oxford"])
     {
+        if ([chekoxford isEqualToString:@"order"])
+        {
+            [PickerBckView setHidden:YES];
+            [DataPickerView setHidden:YES];
+            [DoneButton setHidden:YES];
+            [CancelButton setHidden:YES];
+            editoxfordmapView.orderButtonLabel.text = [NSString stringWithFormat:@"%@",DataString];
+            
+            activityIndi = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            activityIndi.backgroundColor=[UIColor clearColor];
+            activityIndi.hidesWhenStopped = YES;
+            activityIndi.frame=CGRectMake(160.0f,90.0f,50.0f,50.0f);
+            activityIndi.userInteractionEnabled=YES;
+            //                activityCheck = YES;
+            [activityIndi startAnimating];
+            [EditView addSubview: activityIndi];
+            
+            //    ---------------------For Order List-----------------
+            
+            if (globalClass.connectedToNetwork == YES ) {
+                
+                
+                [globalClass GlobalStringDict:[NSString stringWithFormat:@"action.php?mode=oxfordOrderList&event_id=%@&buyer_id=%@",eventID,buyerID] Globalstr:@"" Withblock:^(id result, NSError *error) {
+                    
+                    DebugLog(@"location DATA RETURN DATA--------->%@",result);
+                    
+                    if ([[result objectForKey:@"message"] isEqualToString:[NSString Noorderfound] ]|| [[result objectForKey:@"locationdata"] isKindOfClass:[NSNull class]] || [result objectForKey:@"locationdata"]  == (id)[NSNull null]) {
+                        
+                        DebugLog(@"NO ORDER LIST FOUND");
+                        
+                        [activityIndi stopAnimating];
+                        
+                        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Alert" message:@"No order found" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        [alert show];
+                        
+                    }else{
+                        
+                        DebugLog(@"ESLE COMING=============>");
+                        
+                        [savedLocationArray removeAllObjects];
+                        
+                        locationDataArray = [result objectForKey:@"orderdata"];
+                        for (data = 0; data < locationDataArray.count; data++)
+                        {
+                            
+                            locationDataDict = [[NSMutableDictionary alloc]init];
+                            
+//                            [locationDataDict setObject:[[locationDataArray objectAtIndex:data]objectForKey:@"package_name"] forKey:@"package_name"];
+                            [locationDataDict setObject:[[locationDataArray objectAtIndex:data] objectForKey:@"package_info"] forKey:@"package_info"];
+                            [locationDataDict setObject:[[locationDataArray objectAtIndex:data] objectForKey:@"order_id"] forKey:@"order_id"];
+                            
+                            [savedLocationArray addObject:locationDataDict];
+                            
+                        }
+                        [locationTableview removeFromSuperview];
+                        locationTableview = [[UITableView alloc]init];//WithFrame:CGRectMake(25,74,340,95)];
+                        locationTableview.delegate=self;
+                        locationTableview.dataSource=self;
+                        locationTableview.allowsSelection = YES;
+                        locationTableview.separatorStyle=UITableViewCellSeparatorStyleSingleLine;
+                        locationTableview.backgroundColor=[UIColor clearColor];
+                        locationTableview.showsVerticalScrollIndicator = NO;
+                        [editoxfordmapView addSubview:locationTableview];
+                        DebugLog(@"AKKKKKKKKKK------------> %@",savedLocationArray);
+                        
+                        
+                        if([[UIScreen mainScreen]bounds].size.width == 320)
+                        {
+                            locationTableview.frame = CGRectMake(25,120,260,77);
+                        }
+                        else
+                        {
+                            locationTableview.frame = CGRectMake(25,120,340,77);
+                        }
+                        
+                        
+                    }
+                }];
+            }
+            
+        }
+        else
+        {
+            NSLog(@"asche oxford");
+            
         [PickerBckView setHidden:YES];
         [oxfordPicker setHidden:YES];
         [DoneButton setHidden:YES];
         [CancelButton setHidden:YES];
         editoxfordmapView.ButtonLabel.text = [NSString stringWithFormat:@"%@",DataString];
+//        [editoxfordmapView.orderDropdownButton setBackgroundColor:[UIColor greenColor]];
         [editoxfordmapView.orderDropdownButton setHidden:NO];
         
-        
+        }
       }
     else
     {
@@ -1023,7 +1130,7 @@
  
                     }else{
                         blankCheck = NO;
-                        [DataArray removeAllObjects];
+                        self.orderArrayDropdown = [[NSMutableArray alloc]init];
                         _eventArray = [[NSMutableArray alloc]init];
                         _eventArray = [result objectForKey:@"orderdata"];
                         
@@ -1036,7 +1143,7 @@
                             [orderDict setObject:[[_eventArray objectAtIndex:data]objectForKey:@"event_name"] forKey:@"event_name"];
                             [orderDict setObject:[[_eventArray objectAtIndex:data] objectForKey:@"event_date"] forKey:@"event_date"];
                             [orderDict setObject:[[_eventArray objectAtIndex:data]objectForKey:@"event_id"] forKey:@"event_id"];
-                            [DataArray addObject:orderDict];
+                            [self.orderArrayDropdown addObject:orderDict];
                         }
                         [oxfordPicker reloadAllComponents];
                         
@@ -1137,6 +1244,62 @@
             }
             else
             {
+                
+                if ([self.Type isEqualToString:@"Oxford"])
+                {
+                    editoxfordmapView = [[TGMapoxfordedit alloc]init];
+                    [editoxfordmapView.orderDropdownButton setHidden:YES];
+                    [BackGroundView addSubview:editoxfordmapView];
+                    //BeconsView.userInteractionEnabled = NO;
+                    NSLog(@"---- %f------%f-------%f------%f",piece.frame.origin.x,piece.frame.origin.y,piece.frame.size.width,piece.frame.size.height);
+                    if ( piece.frame.origin.x< 650 && piece.frame.origin.y > 170 && piece.frame.origin.y< 515)
+                    {
+                        DebugLog(@"1st");
+                        
+                        editoxfordmapView.frame = CGRectMake(piece.frame.origin.x +30, piece.frame.origin.y-140, 387.5f, 300.5f);
+                        editoxfordmapView.backview.image = [UIImage imageNamed:@"mappopupoxford"];
+                        
+                    }
+                    else if (piece.frame.origin.x > 650 && piece.frame.origin.x < 1024 && piece.frame.origin.y > 170 && piece.frame.origin.y< 515)
+                    {
+                        DebugLog(@"2nd");
+                        
+                        editoxfordmapView.frame = CGRectMake(piece.frame.origin.x-380, piece.frame.origin.y-140, 387.5f, 300.5f);
+                        editoxfordmapView.backview.image = [UIImage imageNamed:@"mappopupoxfordright"];
+                        
+                    }
+                    else if (piece.frame.origin.x > 0 && piece.frame.origin.x< 650 && piece.frame.origin.y < 170 && piece.frame.origin.y > 0)
+                    {
+                        DebugLog(@"3rd");
+                        
+                        editoxfordmapView.frame = CGRectMake(piece.frame.origin.x-140, piece.frame.origin.y+45, 387.5f, 300.5f);
+                        editoxfordmapView.backview.image = [UIImage imageNamed:@"mappopupoxfordup"];
+                    }
+                    else if (piece.frame.origin.x > 650 && piece.frame.origin.x < 980 && piece.frame.origin.y < 170 && piece.frame.origin.y > 0)
+                    {
+                        DebugLog(@"4th");
+                        
+                        editoxfordmapView.frame = CGRectMake(piece.frame.origin.x-300, piece.frame.origin.y+45, 387.5f, 300.5f);
+                        editoxfordmapView.backview.image = [UIImage imageNamed:@"mappopupoxfordup"];
+                    }
+                    else if (piece.frame.origin.x > 0 && piece.frame.origin.x< 650 && piece.frame.origin.y > 515 && piece.frame.origin.y < 729)
+                    {
+                        DebugLog(@"5th");
+                        
+                        editoxfordmapView.frame=CGRectMake(piece.frame.origin.x-30, piece.frame.origin.y-250, 387.5f, 300.5f);
+                        editoxfordmapView.backview.image = [UIImage imageNamed:@"mappopupoxforddown"];
+                    }
+                    else if (piece.frame.origin.x > 650 && piece.frame.origin.x < 980 && piece.frame.origin.y > 515 && piece.frame.origin.y < 729)
+                    {
+                        DebugLog(@"7th");
+                        
+                        editoxfordmapView.frame = CGRectMake(piece.frame.origin.x-330, piece.frame.origin.y-250, 387.5f, 300.5f);
+                        editoxfordmapView.backview.image = [UIImage imageNamed:@"mappopupoxforddown"];
+                    }
+
+                }
+                else
+                {
                 EditView = [[TGMapEdit alloc]init];
                 [BackGroundView addSubview:EditView];
                 //BeconsView.userInteractionEnabled = NO;
@@ -1227,7 +1390,7 @@
              }];
             
              [DisableView setHidden:NO];
-            
+            }
         }
         else if (piece.frame.origin.y<67)
         {
@@ -1325,7 +1488,6 @@
     
     searchtext = [NSString stringWithFormat:@"%@",[SearchTextfield.text stringByReplacingCharactersInRange:range withString:string]];
     
-    
     if ([searchtext isEqualToString:@""]) {
         
         [searchtableview setHidden:YES];
@@ -1381,12 +1543,47 @@
     cell.selectionStyle = NO;
     
     
-    UILabel *textlbl = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, 200, 30)];
-    textlbl.text = [NSString stringWithFormat:@"%@ %@",[[savedLocationArray objectAtIndex:indexPath.row] objectForKey:@"package_name"],[[savedLocationArray objectAtIndex:indexPath.row] objectForKey:@"package_price"]];
-    [textlbl setTextColor:[UIColor BlackColor]];
-    [textlbl setBackgroundColor:[UIColor ClearColor]];
-    [textlbl setFont:[UIFont systemFontOfSize:15.0f]];
-    [cell addSubview:textlbl];
+    if ([self.Type isEqualToString:@"Oxford"])
+    {
+        UILabel *textlbl = [[UILabel alloc] init];
+        
+        //-----Checking if iPhone 6 or not----//
+        
+        if ([UIScreen mainScreen].bounds.size.width > 320) {
+            
+            textlbl.frame = CGRectMake(5, 5, 290, 30);
+        }else{
+            
+            textlbl.frame = CGRectMake(5, 5, 220, 30);
+        }
+        
+        //-----Adjusting font size according to string length-----//
+        
+        if ([[[savedLocationArray objectAtIndex:indexPath.row] objectForKey:@"package_info"] length] > 23) {
+            
+            [textlbl setFont:[UIFont systemFontOfSize:10.0f]];
+            
+        }else{
+            
+            [textlbl setFont:[UIFont systemFontOfSize:15.0f]];
+        }
+        
+        textlbl.text = [NSString stringWithFormat:@"%@",[[savedLocationArray objectAtIndex:indexPath.row] objectForKey:@"package_info"]];
+        [textlbl setTextColor:[UIColor BlackColor]];
+        [textlbl setBackgroundColor:[UIColor ClearColor]];
+        
+        [cell addSubview:textlbl];
+    
+    }else{
+    
+        UILabel *textlbl = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, 200, 30)];
+        textlbl.text = [NSString stringWithFormat:@"%@ %@",[[savedLocationArray objectAtIndex:indexPath.row] objectForKey:@"package_name"],[[savedLocationArray objectAtIndex:indexPath.row] objectForKey:@"package_price"]];
+        [textlbl setTextColor:[UIColor BlackColor]];
+        [textlbl setBackgroundColor:[UIColor ClearColor]];
+        [textlbl setFont:[UIFont systemFontOfSize:15.0f]];
+        [cell addSubview:textlbl];
+        
+    }
     
     checkbox = [[UIButton alloc]init];//WithFrame:CGRectMake(cell.frame.origin.x+cell.frame.size.width-10.0f, 14, 15.0f, 15.0f)];
     [checkbox setImage:[UIImage imageNamed:@"uncheck"] forState:UIControlStateNormal];
@@ -1428,10 +1625,13 @@
                 [checkbox setImage:[UIImage imageNamed:@"check"] forState:UIControlStateNormal];
                 
                 check_box_number=indexPath.row;
+                
+                finalorderID = [NSString stringWithFormat:@"%@",[[savedLocationArray objectAtIndex:indexPath.row] objectForKey:@"order_id"]];
+                packageInfo = [NSString stringWithFormat:@"%@",[[savedLocationArray objectAtIndex:indexPath.row] objectForKey:@"package_info"]];
                 self.packegeIdString = [NSString stringWithFormat:@"%@",[[savedLocationArray objectAtIndex:indexPath.row] objectForKey:@"package_id"]];
                 self.packegeNameString = [NSString stringWithFormat:@"%@ %@",[[savedLocationArray objectAtIndex:indexPath.row] objectForKey:@"package_name"],[[savedLocationArray objectAtIndex:indexPath.row] objectForKey:@"package_price"]];
                 EditView.submitButton.alpha = 1.0f;
-                
+                editoxfordmapView.submitButton.alpha = 1.0f;
                 [locationTableview reloadData];
             }
             else
@@ -1498,13 +1698,17 @@
     NSData *imageData = UIImageJPEGRepresentation(img, 0.8f);
     
     if (globalClass.connectedToNetwork == YES ) {
-      
-        NSDictionary *dict = [globalClass saveStringDict:[NSString stringWithFormat:@"action.php?mode=chooseLocation&packageId=%@&orderId=%@&lat=%@&long=%@&sectionid=%@&place=&packagetype=&distance=&color=&road=&userid=%@",self.packegeIdString,orderID,[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"],[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"],self.locationId,[[NSUserDefaults standardUserDefaults]objectForKey:@"userid"]] savestr:@"string" saveimagedata:imageData ];
-                
-        NSLog(@"dict--- %@",dict);
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:[NSString success] message:@"Successfuly Submitted" delegate:self cancelButtonTitle:[NSString Ok] otherButtonTitles:nil, nil];
         
-        [alert show];
+        
+      
+            NSDictionary *dict = [globalClass saveStringDict:[NSString stringWithFormat:@"action.php?mode=chooseLocation&packageId=%@&orderId=%@&lat=%@&long=%@&sectionid=%@&place=&packagetype=&distance=&color=&road=&userid=%@",self.packegeIdString,orderID,[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"],[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"],self.locationId,[[NSUserDefaults standardUserDefaults]objectForKey:@"userid"]] savestr:@"string" saveimagedata:imageData ];
+            
+            NSLog(@"dict--- %@",dict);
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:[NSString success] message:@"Successfuly Submitted" delegate:self cancelButtonTitle:[NSString Ok] otherButtonTitles:nil, nil];
+            
+            [alert show];
+            
+        
   
     }
     
@@ -1620,7 +1824,7 @@
     
     if (globalClass.connectedToNetwork == YES ) {
         
-        NSDictionary*dict = [globalClass saveStringDict:[NSString stringWithFormat:@"action.php?mode=chooseLocation&packageId=%@&orderId=%@&lat=%@&long=%@&sectionid=%@&place=%@&packagetype=%@&distance=%@&color=%@&road=%@&userid=%@",self.packegeIdString,orderID,[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"],[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"],self.locationId,self.savePlaceId,self.savePackegeId,self.saveDistanceId,self.saveColorId,self.saveRoadId,[[NSUserDefaults standardUserDefaults]objectForKey:@"userid"]] savestr:@"string" saveimagedata:imageData];
+        NSDictionary*dict = [globalClass saveStringDict:[NSString stringWithFormat:@"action.php?mode=chooseLocation&packageId=1&orderId=%@&lat=%@&long=%@&sectionid=%@&place=%@&packagetype=%@&distance=%@&color=%@&road=%@&userid=%@",finalorderID,[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"],[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"],self.locationId,self.savePlaceId,self.savePackegeId,self.saveDistanceId,self.saveColorId,self.saveRoadId,[[NSUserDefaults standardUserDefaults]objectForKey:@"userid"]] savestr:@"string" saveimagedata:imageData];
             
             DebugLog(@"result--- %@",dict);
 
@@ -1634,6 +1838,7 @@
 
         
     [MapSave removeFromSuperview];
+       
     [mapSaveIphone removeFromSuperview];
     [SelectedBecons removeFromSuperview];
     [EditView setHidden:YES];
@@ -1682,7 +1887,7 @@
                 NSLog(@"savedataarray-=-==--= %@", [[SavedDataArray objectAtIndex:k]objectForKey:@"tag"]);
                 
                 self.packegeIdString = [[SavedDataArray objectAtIndex:k]objectForKey:@"package_id"];
-                orderID = [[SavedDataArray objectAtIndex:k]objectForKey:@"order_id"];
+                finalorderID = [[SavedDataArray objectAtIndex:k]objectForKey:@"order_id"];
                 editOrderDate = [NSString stringWithFormat:@"%@",[[SavedDataArray objectAtIndex:k]objectForKey:@"event_date"]];
                 editPackageName = [[SavedDataArray objectAtIndex:k]objectForKey:@"package_name"];
                 editOrderFirstName =[[SavedDataArray objectAtIndex:k]objectForKey:@"firstname"];
@@ -1692,6 +1897,7 @@
                 self.saveDistanceId = [[SavedDataArray objectAtIndex:k]objectForKey:@"distanceid"];
                 self.saveColorId = [[SavedDataArray objectAtIndex:k]objectForKey:@"colorid"];
                 self.saveRoadId = [[SavedDataArray objectAtIndex:k]objectForKey:@"roadid"];
+                editOxfordEventName = [[SavedDataArray objectAtIndex:k]objectForKey:@"event_name"];
                 break;
             }
             
@@ -1732,9 +1938,11 @@
         [screenshotview addSubview:backview];
         
         
+        NSLog(@"----- %@----%@---- %@----- %@----%@",editOxfordEventName,editOrderDate,editOrderFirstName,editOrderSecondName,editPackageName);
+        
         UILabel *ButtonLabel = [[UILabel alloc]initWithFrame:CGRectMake(25.0f,23.0f, 340.0f, 45.0f)];
         [ButtonLabel setBackgroundColor:[UIColor clearColor]];
-        [ButtonLabel setText:[NSString stringWithFormat:@"%@ %@  %@",editOrderFirstName,editOrderSecondName,editOrderDate]];
+        [ButtonLabel setText:[NSString stringWithFormat:@"%@%@",editOxfordEventName,editOrderDate]];
         [ButtonLabel setTextAlignment:NSTextAlignmentLeft];
         [ButtonLabel setTextColor:[UIColor BlackColor]];
         [ButtonLabel setFont:[UIFont ButtonLabel]];
@@ -1748,7 +1956,7 @@
         _DescriptionText.pagingEnabled = YES;
         _DescriptionText.editable = NO;
         _DescriptionText.delegate = self;
-        _DescriptionText.text = [NSString stringWithFormat:@"%@",editPackageName];
+        _DescriptionText.text = [NSString stringWithFormat:@"%@ %@\n%@",editOrderFirstName,editOrderSecondName,editPackageName];
         _DescriptionText.layer.borderWidth = 1.5f;
         _DescriptionText.layer.borderColor = [[UIColor colorWithRed:(179.0f/255.0f) green:(179.0f/255.0f) blue:(179.0f/255.0f) alpha:1] CGColor];
         _DescriptionText.textAlignment = NSTextAlignmentLeft;
@@ -2090,6 +2298,7 @@
 -(void)DropDownoxfordevent:(UIButton *)sender
 {
     NSLog(@"entry");
+    chekoxford = @"event";
     
     if (blankCheck == YES) {
         
@@ -2100,7 +2309,7 @@
         
     }else{
     
-        DebugLog(@"Dataarray------ %@", DataArray);
+        DebugLog(@"Dataarray------ %@", self.orderArrayDropdown);
         
         
         [PickerBckView setHidden:NO];
@@ -2109,8 +2318,8 @@
         [CancelButton setHidden:NO];
         
         [oxfordPicker selectRow:0 inComponent:0 animated:NO];
-        DataString = [NSString stringWithFormat:@"%@  %@",[[DataArray objectAtIndex:[oxfordPicker selectedRowInComponent:0]] objectForKey:@"event_name"],[[DataArray objectAtIndex:[oxfordPicker selectedRowInComponent:0]] objectForKey:@"event_date"]];
-        orderID = [[DataArray objectAtIndex:[oxfordPicker selectedRowInComponent:0]] objectForKey:@"event_id"];
+        DataString = [NSString stringWithFormat:@"%@  %@",[[self.orderArrayDropdown objectAtIndex:[oxfordPicker selectedRowInComponent:0]] objectForKey:@"event_name"],[[self.orderArrayDropdown objectAtIndex:[oxfordPicker selectedRowInComponent:0]] objectForKey:@"event_date"]];
+        orderID = [[self.orderArrayDropdown objectAtIndex:[oxfordPicker selectedRowInComponent:0]] objectForKey:@"event_id"];
 
         
     
@@ -2119,10 +2328,13 @@
 }
 -(void)DropDownoxfordorder:(UIButton *)sender
 {
+    chekoxford = @"order";
+    
+    DebugLog(@"DropDownOxfordOrder----->");
  
     if (globalClass.connectedToNetwork == YES) {
         
-        [globalClass parameterstring:[NSString stringWithFormat:@"action.php?mode=oxfordOrderList&event_id=%@",orderID] withblock:^(id result, NSError *error) {
+        [globalClass parameterstring:[NSString stringWithFormat:@"action.php?mode=oxfordOrderUserList&event_id=%@",orderID] withblock:^(id result, NSError *error) {
             
             if ([[result objectForKey:@"message"] isEqualToString:[NSString Norecordfound] ]) {
                 
@@ -2146,14 +2358,24 @@
                     orderDict = [[NSMutableDictionary alloc]init];
                     [orderDict setObject:[[orderArray objectAtIndex:data]objectForKey:@"first_name"] forKey:@"first_name"];
                     [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"last_name"] forKey:@"last_name"];
-                    [orderDict setObject:[[orderArray objectAtIndex:data]objectForKey:@"event_date"] forKey:@"event_date"];
-                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"order_date"] forKey:@"order_date"];
-                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"user_email"] forKey:@"user_email"];
-                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"transaction_id"] forKey:@"transaction_id"];
-                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"order_id"] forKey:@"order_id"];
+                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"event_id"] forKey:@"event_id"];
+                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"buyer_id"] forKey:@"buyer_id"];
                     [DataArray addObject:orderDict];
                 }
                 [DataPickerView reloadAllComponents];
+                
+                [DataPickerView selectRow:0 inComponent:0 animated:NO];
+                DataString = [NSString stringWithFormat:@"%@ %@",[[orderArray objectAtIndex:[DataPickerView selectedRowInComponent:0]] objectForKey:@"first_name"],[[orderArray objectAtIndex:[DataPickerView selectedRowInComponent:0]] objectForKey:@"last_name"]];
+                eventID = [[orderArray objectAtIndex:[DataPickerView selectedRowInComponent:0]] objectForKey:@"event_id"];
+                buyerID = [[orderArray objectAtIndex:[DataPickerView selectedRowInComponent:0]] objectForKey:@"buyer_id"];
+                
+                DebugLog(@"ORDER STRING------> %@",orderString);
+                DebugLog(@"ORDER STRING ID---> %@",orderID);
+                
+                [PickerBckView setHidden:NO];
+                [DataPickerView setHidden:NO];
+                [DoneButton setHidden:NO];
+                [CancelButton setHidden:NO];
             }
             
         }];
@@ -2171,6 +2393,212 @@
 }
 -(void)Submitoxford:(UIButton *)sender
 {
+   
+        if ([EditView.ButtonLabel.text isEqualToString:@"Select the order from list"])
+        {
+            
+        }
+        else
+        {
+             [editoxfordmapView removeFromSuperview];
+            
+            [DisableView setHidden:YES];
+            
+            UIView *screenshotview = [[UIView alloc]initWithFrame:CGRectMake(1025, 72.0f, 1024,698)];
+            [screenshotview setBackgroundColor:[UIColor clearColor]];
+            [BackGroundView addSubview:screenshotview];
+            
+            
+            NSString *staticMapUrl = [NSString stringWithFormat:@"http://maps.google.com/maps/api/staticmap?markers=color:red|%f,%f&zoom=%d&size=1024x698&sensor=true",[[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"]]floatValue],[[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"]]floatValue],zoommap];
+            
+            
+            
+            NSURL *mapUrl = [NSURL URLWithString:[staticMapUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:mapUrl]];
+            
+            MapView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0.0f, 1024, 698)];
+            [MapView setImage:image];
+            [screenshotview addSubview:MapView];
+            
+            
+            UIImageView *backview = [[UIImageView alloc]initWithFrame:CGRectMake(315.0f, 102.0f, 387.5f, 237.5f)];
+            [backview setImage:[UIImage imageNamed:@"mappopupdown"]];
+            [screenshotview addSubview:backview];
+            
+            
+            UILabel *ButtonLabel = [[UILabel alloc]initWithFrame:CGRectMake(25.0f,23.0f, 340.0f, 45.0f)];
+            [ButtonLabel setBackgroundColor:[UIColor clearColor]];
+            [ButtonLabel setText:[NSString stringWithFormat:@"%@",editoxfordmapView.ButtonLabel.text]];
+            [ButtonLabel setTextAlignment:NSTextAlignmentLeft];
+            [ButtonLabel setTextColor:[UIColor BlackColor]];
+            [ButtonLabel setFont:[UIFont ButtonLabel]];
+            [backview addSubview:ButtonLabel];
+            
+            UITextView *_DescriptionText = [[UITextView alloc]initWithFrame:CGRectMake(25,75,340,120)];
+            _DescriptionText.font = [UIFont ButtonLabel];
+            _DescriptionText.backgroundColor = [UIColor clearColor];
+            _DescriptionText.textColor = [UIColor BlackColor];
+            _DescriptionText.scrollEnabled = YES;
+            _DescriptionText.pagingEnabled = YES;
+            _DescriptionText.editable = NO;
+            _DescriptionText.delegate = self;
+            _DescriptionText.text = [NSString stringWithFormat:@"%@\n%@",editoxfordmapView.orderButtonLabel.text,packageInfo];
+            _DescriptionText.layer.borderWidth = 1.5f;
+            _DescriptionText.layer.borderColor = [[UIColor colorWithRed:(179.0f/255.0f) green:(179.0f/255.0f) blue:(179.0f/255.0f) alpha:1] CGColor];
+            _DescriptionText.textAlignment = NSTextAlignmentLeft;
+            _DescriptionText.layer.cornerRadius = 3.0f;
+            [_DescriptionText setAutocorrectionType:UITextAutocorrectionTypeNo];
+            [backview addSubview:_DescriptionText];
+            
+            [self imageWithView:screenshotview];
+            
+            
+            [SelectedBecons setButtonLabel:[NSString stringWithFormat:@"%@",EditView.ButtonLabel.text]];
+            [SelectedBecons setDescriptionText:[NSString stringWithFormat:@"%@",EditView.DescriptionText.text]];
+            
+            NSDictionary *dict = [[NSDictionary alloc]initWithObjectsAndKeys:[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"]],@"lat",[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"]],@"long", nil];
+            
+            [SavedDataArray addObject:dict];
+            
+            
+            if ([device.model isEqualToString:@"iPhone"]||[device.model isEqualToString:@"iPhone Simulator"]||[device.model isEqualToString:@"iPod touch"] )
+            {
+                mapSaveIphone = [[TGMapSaveiphone alloc]initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+                [self.view addSubview:mapSaveIphone];
+            }
+            else
+            {
+                MapSave = [[TGMapSave alloc]initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+                [self.view addSubview:MapSave];
+            }
+            
+            //////////////-================AfterSavePickerView==========///////////////
+            
+            AfterSavePickerView  = [[UIView alloc]init];
+            [AfterSavePickerView setBackgroundColor:[UIColor whiteColor]];
+            [AfterSavePickerView setAlpha:1.0f];
+            [self.view addSubview:AfterSavePickerView];
+            [AfterSavePickerView setHidden:YES];
+            
+            PopupPicker = [[UIPickerView alloc] init];
+            PopupPicker.layer.zPosition=9;
+            PopupPicker.backgroundColor=[UIColor clearColor];
+            PopupPicker.dataSource = self;
+            PopupPicker.delegate = self;
+            PopupPicker.tag = 2;
+            PopupPicker.showsSelectionIndicator = YES;
+            [self.view addSubview:PopupPicker];
+            [PopupPicker setHidden:YES];
+            
+            PopupDoneButton = [[UIButton alloc]init];
+            [PopupDoneButton setBackgroundColor:[UIColor clearColor]];
+            [PopupDoneButton setBackgroundImage:[UIImage imageNamed:@"done"] forState:UIControlStateNormal];
+            [PopupDoneButton addTarget:self action:@selector(PickerDone:) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:PopupDoneButton];
+            [PopupDoneButton setHidden:YES];
+            
+            PopupCancelButton = [[UIButton alloc]init];
+            [PopupCancelButton setBackgroundColor:[UIColor clearColor]];
+            [PopupCancelButton setBackgroundImage:[UIImage imageNamed:@"cancel"] forState:UIControlStateNormal];
+            [PopupCancelButton addTarget:self action:@selector(PickerCancelButton:) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:PopupCancelButton];
+            [PopupCancelButton setHidden:YES];
+            
+            if ([device.model isEqualToString:@"iPhone"]||[device.model isEqualToString:@"iPhone Simulator"]||[device.model isEqualToString:@"iPod touch"] )
+            {
+                AfterSavePickerView.frame = CGRectMake(0.0f,self.view.frame.size.height-210, self.view.frame.size.width, 210.0f);
+                PopupPicker.frame = CGRectMake(0,self.view.frame.size.height-170, self.view.frame.size.width, 180.0f);
+                PopupDoneButton.frame = CGRectMake(self.view.frame.size.width-190, self.view.frame.size.height-205, 83, 35);
+                PopupCancelButton.frame = CGRectMake( self.view.frame.size.width-100, self.view.frame.size.height-205, 83, 35);
+            }
+            
+            else
+            {
+                AfterSavePickerView.frame = CGRectMake(0.0f,600.0f, self.view.frame.size.width, self.view.frame.size.height-500.0f);
+                PopupPicker.frame = CGRectMake(0,600, self.view.frame.size.width, self.view.frame.size.height-530.0f);
+                PopupDoneButton.frame = CGRectMake(900, 610, 83, 35);
+                PopupCancelButton.frame = CGRectMake(800, 610, 83, 35);
+            }
+            
+            
+            
+            if ([self.Type isEqualToString:@"Oxford"])
+            {
+                Typecheck = 2;
+            }
+            else
+            {
+                Typecheck = 1;
+            }
+            
+            [globalClass GlobalDict:[NSString stringWithFormat:@"action.php?mode=placeInfo&type=%d",Typecheck] Withblock:^(id result, NSError *error)
+             {
+                 if ([[result objectForKey:@"message"] isEqualToString:[NSString success]])
+                 {
+                     self.PlaceaArray = [result objectForKey:@"placeinfodata"];
+                     
+                 }
+                 else
+                 {
+                     
+                     
+                 }
+                 [globalClass GlobalDict:[NSString stringWithFormat:@"action.php?mode=packagetypeInfo&type=%d",Typecheck] Withblock:^(id result, NSError *error)
+                  {
+                      if ([[result objectForKey:@"message"] isEqualToString:[NSString success]])
+                      {
+                          self.PackageArray = [result objectForKey:@"packagetypedata"];
+                      }
+                      else{
+                          
+                          
+                      }
+                      [globalClass GlobalDict:[NSString stringWithFormat:@"action.php?mode=distanceInfo"] Withblock:^(id result, NSError *error)
+                       {
+                           if ([[result objectForKey:@"message"] isEqualToString:[NSString success]])
+                           {
+                               self.DistanceArray = [result objectForKey:@"distancedata"];
+                           }
+                           else
+                           {
+                               
+                           }
+                           [globalClass GlobalDict:[NSString stringWithFormat:@"action.php?mode=roadInfo&type=%d",Typecheck] Withblock:^(id result, NSError *error)
+                            {
+                                if ([[result objectForKey:@"message"] isEqualToString:[NSString success]])
+                                {
+                                    self.RoadArray = [result objectForKey:@"roaddata"];
+                                }
+                                else{
+                                    
+                                    
+                                }
+                                [globalClass GlobalDict:[NSString stringWithFormat:@"action.php?mode=colorInfo"] Withblock:^(id result, NSError *error) {
+                                    if ([[result objectForKey:@"message"] isEqualToString:[NSString success]])
+                                    {
+                                        
+                                        self.ColorArray = [result objectForKey:@"colordata"];
+                                    }
+                                    else
+                                    {
+                                        
+                                    }
+                                }];
+                                
+                                
+                            }];
+                           
+                           
+                       }];
+                      
+                      
+                  }];
+                 
+                 
+             }];
+        }
+        
+    
     
 }
 

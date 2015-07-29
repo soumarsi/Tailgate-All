@@ -92,7 +92,7 @@
         _DescriptionText.delegate = self;
         _DescriptionText.textAlignment = NSTextAlignmentLeft;
         [_DescriptionText setAutocorrectionType:UITextAutocorrectionTypeNo];
-        [_BackPopupView addSubview:_DescriptionText];
+        //[_BackPopupView addSubview:_DescriptionText];
 
         
         CancelButton = [[UIButton alloc]init];

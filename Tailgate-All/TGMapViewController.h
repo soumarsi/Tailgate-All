@@ -17,7 +17,10 @@
     UIView *PickerBckView,*AfterSavePickerView;
     UIPickerView *DataPickerView,*PopupPicker,*oxfordPicker;
     NSString *DataString;
+    NSString *orderString;
     NSString *orderID;
+    NSString *eventID;
+    NSString *buyerID;
     NSString *descString;
     UIButton *DoneButton,*CancelButton,*PopupDoneButton,*PopupCancelButton;
     UIView *BeconsImage;
@@ -45,7 +48,9 @@
     UIDevice *device;
     NSInteger check_box_number;
     NSString *editPackageId,*editOrderId,*editOrderDate,*editPackageName,*editOrderFirstName,*editOrderSecondName;
-    
+    NSString *chekoxford;
+    NSString *finalorderID,*packageInfo;
+    NSString *editOxfordEventName;
 }
 @property (nonatomic,strong)NSString *VenueName;
 @property (nonatomic, strong)NSString *locationId;
@@ -66,5 +71,6 @@
 @property (nonatomic, strong) NSString *saveDistanceId;
 @property (nonatomic, strong) NSString *saveRoadId;
 @property (nonatomic, strong) NSString *saveColorId;
+@property (nonatomic, strong) NSMutableArray *orderArrayDropdown;
 @property (nonatomic, strong) NSMutableArray *eventArray;
 @end
