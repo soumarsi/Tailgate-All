@@ -21,7 +21,7 @@
 #import "RTCanvas.h"
 #import "TGMapSaveiphone.h"
 #import "TGLoginViewController.h"
-
+#import "TGMapoxfordedit.h"
 #ifdef DEBUG
 
 #define DebugLog(...) NSLog(__VA_ARGS__)
@@ -35,6 +35,7 @@
 @interface TGMapViewController ()<TGBecons,MKMapViewDelegate,CLLocationManagerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,GMDraggableMarkerManagerDelegate,GMSMapViewDelegate,UITextViewDelegate,UIAlertViewDelegate>
 {
     TGMapEdit *EditView;
+    TGMapoxfordedit *editoxfordmapView;
     NSMutableArray *DataArray;
     NSMutableArray *preDataArray;
     NSMutableArray *savedLocationArray;
@@ -59,8 +60,10 @@
     UIActivityIndicatorView *activityIndi;
     TGMapSave *MapSave;
     TGMapSaveiphone *mapSaveIphone;
+    GMSMarker *markerpoint;
 }
-
+@property (weak, nonatomic, readwrite) id<GMDraggableMarkerManagerDelegate> dragdelegate;
+@property (weak, nonatomic) id<TGGlobal>editdelegate;
 @end
 
 @implementation TGMapViewController
@@ -215,8 +218,24 @@
     
     
     
+    //this is only for type of oxford:
+    
+    oxfordPicker = [[UIPickerView alloc] init];
+    oxfordPicker.layer.zPosition=9;
+    oxfordPicker.backgroundColor=[UIColor clearColor];
+    oxfordPicker.dataSource = self;
+    oxfordPicker.delegate = self;
+    oxfordPicker.tag = 3;
+    oxfordPicker.showsSelectionIndicator = YES;
+    [self.view addSubview:oxfordPicker];
+    [oxfordPicker setHidden:YES];
+    
+
 
     
+    
+    
+
     //becons image--=====
     
     BeconsView = [[TGBecons alloc]init];
@@ -240,6 +259,7 @@
         DisableView.frame = CGRectMake(self.view.frame.size.width-105, 20.0f, 140.0f, 50.0f);
         PickerBckView.frame = CGRectMake(0.0f, self.view.frame.size.height-200, self.view.frame.size.width, 200);
         DataPickerView.frame = CGRectMake(0.0f, self.view.frame.size.height-150, self.view.frame.size.width, 200);
+        oxfordPicker.frame = CGRectMake(0.0f, self.view.frame.size.height-150, self.view.frame.size.width, 200);
         DoneButton.frame = CGRectMake(self.view.frame.size.width-190, self.view.frame.size.height-190, 83, 35);;
         CancelButton.frame = CGRectMake(self.view.frame.size.width-100, self.view.frame.size.height-190, 83, 35);;
     }
@@ -252,6 +272,7 @@
         DisableView.frame = CGRectMake(865.0f, 20.0f, 180.0f, 50.0f);
         PickerBckView.frame = CGRectMake(0.0f,600.0f, self.view.frame.size.width, self.view.frame.size.height-500.0f);
         DataPickerView.frame = CGRectMake(0,600, self.view.frame.size.width, self.view.frame.size.height-530.0f);
+        oxfordPicker.frame = CGRectMake(0,600, self.view.frame.size.width, self.view.frame.size.height-530.0f);
         DoneButton.frame = CGRectMake(900, 610, 83, 35);
         CancelButton.frame = CGRectMake(800, 610, 83, 35);
     }
@@ -288,6 +309,18 @@
                     [preSavedDict setObject:[[preDataArray objectAtIndex:data]objectForKey:@"event_date"] forKey:@"event_date"];
                     [preSavedDict setObject:[[preDataArray objectAtIndex:data] objectForKey:@"lat"] forKey:@"lat"];
                     [preSavedDict setObject:[[preDataArray objectAtIndex:data] objectForKey:@"long"] forKey:@"long"];
+                    [preSavedDict setObject:[NSString stringWithFormat:@"%d",data] forKey:@"tag"];
+                    [preSavedDict setObject:[[preDataArray objectAtIndex:data] objectForKey:@"order_id"] forKey:@"order_id"];
+                    [preSavedDict setObject:[[preDataArray objectAtIndex:data] objectForKey:@"package_id"] forKey:@"package_id"];
+                    [preSavedDict setObject:[[preDataArray objectAtIndex:data] objectForKey:@"first_name"] forKey:@"firstname"];
+                    [preSavedDict setObject:[[preDataArray objectAtIndex:data] objectForKey:@"first_name"] forKey:@"lastname"];
+                    [preSavedDict setObject:[[preDataArray objectAtIndex:data]objectForKey:@"package_name"] forKey:@"package_name"];
+                    [preSavedDict setObject:[[preDataArray objectAtIndex:data]objectForKey:@"placeid"] forKey:@"placeid"];
+                    [preSavedDict setObject:[[preDataArray objectAtIndex:data]objectForKey:@"pktyid"] forKey:@"pktyid"];
+                    [preSavedDict setObject:[[preDataArray objectAtIndex:data]objectForKey:@"distanceid"] forKey:@"distanceid"];
+                    [preSavedDict setObject:[[preDataArray objectAtIndex:data]objectForKey:@"colorid"] forKey:@"colorid"];
+                    [preSavedDict setObject:[[preDataArray objectAtIndex:data]objectForKey:@"roadid"] forKey:@"roadid"];
+                    
                     [SavedDataArray addObject:preSavedDict];
                 }
                 
@@ -308,26 +341,31 @@
     // coordinate -33.86,151.20 at zoom level 6.
     
     [SelectedBecons removeFromSuperview];
-    
+ 
     draggableMarkerManager = [[GMDraggableMarkerManager alloc] initWithMapView:mapView_ delegate:self];
-    
-    
+
+    markerpoint.map = nil;
+    [mapView_ clear];
     DebugLog(@"savetablearray--------- > : %@", SavedDataArray);
     
     for (int k = 0; k< SavedDataArray.count; k++)
     {
         sampleMarkerLocations = [[NSMutableArray alloc] initWithObjects:[[CLLocation alloc] initWithLatitude:[[NSString stringWithFormat:@"%@",[[SavedDataArray objectAtIndex:k]objectForKey:@"lat"]]floatValue ] longitude:[[NSString stringWithFormat:@"%@",[[SavedDataArray objectAtIndex:k]objectForKey:@"long"]]floatValue ]],nil];
+        DebugLog(@"samplemarkerlocation-------- %@", sampleMarkerLocations);
+        
         for (CLLocation *sampleMarkerLocation in sampleMarkerLocations)
         {
-            GMSMarker *marker = [GMSMarker markerWithPosition:sampleMarkerLocation.coordinate];
+            markerpoint = [GMSMarker markerWithPosition:sampleMarkerLocation.coordinate];
+            markerpoint.userData = [NSString stringWithFormat:@"%@",[[SavedDataArray objectAtIndex:k]objectForKey:@"tag"]];
             
             switch (k) {
                     
                 default:
-                    [draggableMarkerManager addDraggableMarker:marker];
+                    [draggableMarkerManager addDraggableMarker:markerpoint];
                     break;
             }
-            marker.map = mapView_;
+            
+            markerpoint.map = mapView_;
         }
     }
     DebugLog(@"MAP PIN COORDINATE--------> %@",sampleMarkerLocations);
@@ -347,7 +385,7 @@
         {
                 [DisableView setHidden:YES];
                 
-                UIView *screenshotview = [[UIView alloc]initWithFrame:CGRectMake(1025, 72.0f, self.view.frame.size.width, self.view.frame.size.height-70)];
+                UIView *screenshotview = [[UIView alloc]initWithFrame:CGRectMake(1025, 72.0f, 1024,698)];
                 [screenshotview setBackgroundColor:[UIColor clearColor]];
                 [BackGroundView addSubview:screenshotview];
                 
@@ -359,7 +397,7 @@
                 NSURL *mapUrl = [NSURL URLWithString:[staticMapUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
                 UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:mapUrl]];
                 
-                MapView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0.0f, self.view.frame.size.width, self.view.frame.size.height-70)];
+                MapView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0.0f, 1024, 698)];
                 [MapView setImage:image];
                 [screenshotview addSubview:MapView];
                 
@@ -394,7 +432,7 @@
                 [backview addSubview:_DescriptionText];
                 
                 [self imageWithView:screenshotview];
-                
+          
                 
                 [SelectedBecons setButtonLabel:[NSString stringWithFormat:@"%@",EditView.ButtonLabel.text]];
                 [SelectedBecons setDescriptionText:[NSString stringWithFormat:@"%@",EditView.DescriptionText.text]];
@@ -555,7 +593,7 @@
             
             [DisableView setHidden:YES];
             
-            UIView *screenshotview = [[UIView alloc]initWithFrame:CGRectMake(1025, 72.0f, self.view.frame.size.width, self.view.frame.size.height-70)];
+            UIView *screenshotview = [[UIView alloc]initWithFrame:CGRectMake(1025, 72.0f, 1024, 698)];
             [screenshotview setBackgroundColor:[UIColor clearColor]];
             [BackGroundView addSubview:screenshotview];
             
@@ -567,7 +605,7 @@
             NSURL *mapUrl = [NSURL URLWithString:[staticMapUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
             UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:mapUrl]];
             
-            MapView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0.0f, self.view.frame.size.width, self.view.frame.size.height-70)];
+            MapView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0.0f, 1024, 698)];
             [MapView setImage:image];
             [screenshotview addSubview:MapView];
             
@@ -625,7 +663,9 @@
 
 -(void)CanCel:(UIButton *)sender
 {
-    [self firstdata];
+   [self firstdata];
+    
+   
     
     [EditView setHidden:YES];
     [SelectedBecons setHidden:YES];
@@ -694,6 +734,22 @@
         retval.textAlignment= NSTextAlignmentCenter;
         retval.textColor = [UIColor blackColor];
         retval.text = [NSString stringWithFormat:@"%@",[[self.GlobalPickerArray objectAtIndex:row] objectForKey:@"name"]];
+        return retval;
+
+    }
+    else if (pickerView.tag == 3)
+    {
+        UILabel *retval = (id)view;
+        if (!retval) {
+            retval= [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [pickerView rowSizeForComponent:component].width, [pickerView rowSizeForComponent:component].height)] ;
+        }
+        
+        DebugLog(@"DATAARRAY----IN PICKER VIEW FOR ROW----------->%lu",(unsigned long)DataArray.count);
+        
+        retval.font = [UIFont PickerLabel];
+        retval.textAlignment= NSTextAlignmentCenter;
+        retval.textColor = [UIColor blackColor];
+        retval.text = [NSString stringWithFormat:@"%@  %@",[[DataArray objectAtIndex:row] objectForKey:@"event_name"],[[DataArray objectAtIndex:row] objectForKey:@"event_date"]];
         return retval;
 
     }
@@ -769,6 +825,12 @@
 
         }
              }
+    else if (pickerView.tag == 3)
+    {
+        DataString = [NSString stringWithFormat:@"%@  %@",[[DataArray objectAtIndex:[oxfordPicker selectedRowInComponent:component]] objectForKey:@"event_name"],[[DataArray objectAtIndex:[oxfordPicker selectedRowInComponent:component]] objectForKey:@"event_date"]];
+        
+        orderID = [[DataArray objectAtIndex:[oxfordPicker selectedRowInComponent:component]] objectForKey:@"event_id"];
+    }
     else{
     DataString = [NSString stringWithFormat:@"%@ %@  %@",[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"first_name"],[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"last_name"],[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"event_date"]];
     
@@ -781,6 +843,20 @@
 ///---------///---------//------
 -(void)Done:(UIButton *)sender
 {
+    
+    if ([self.Type isEqualToString:@"Oxford"])
+    {
+        [PickerBckView setHidden:YES];
+        [oxfordPicker setHidden:YES];
+        [DoneButton setHidden:YES];
+        [CancelButton setHidden:YES];
+        editoxfordmapView.ButtonLabel.text = [NSString stringWithFormat:@"%@",DataString];
+        [editoxfordmapView.orderDropdownButton setHidden:NO];
+        
+        
+      }
+    else
+    {
     [PickerBckView setHidden:YES];
     [DataPickerView setHidden:YES];
     [DoneButton setHidden:YES];
@@ -859,7 +935,7 @@
             }
         }];
     }
-    
+    }
     
 }
 
@@ -869,6 +945,7 @@
     [DataPickerView setHidden:YES];
     [DoneButton setHidden:YES];
     [CancelButton setHidden:YES];
+    [oxfordPicker setHidden:YES];
 }
 
 - (void)dragAndDrop:(UIPanGestureRecognizer *)gestureRecognizer targetView:(TGBecons *)targetView
@@ -931,6 +1008,43 @@
             BeconsView.userInteractionEnabled = NO;
             if (globalClass.connectedToNetwork == YES) {
                 
+                if ([self.Type isEqualToString:@"Oxford"])
+                {
+                    
+                  [globalClass parameterstring:@"action.php?mode=eventList" withblock:^(id result, NSError *error) {
+                      
+                 
+                    
+                    DebugLog(@"eventlist : %@", result);
+                    if ([[result objectForKey:@"message"] isEqualToString:[NSString Norecordfound] ]) {
+                        
+                        DebugLog(@"NO RECORD FOUND");
+                        blankCheck = YES;
+ 
+                    }else{
+                        blankCheck = NO;
+                        [DataArray removeAllObjects];
+                        _eventArray = [[NSMutableArray alloc]init];
+                        _eventArray = [result objectForKey:@"orderdata"];
+                        
+                         DebugLog(@"EVENT DATA------> %@",_eventArray);
+                        
+                        for (data = 0; data < _eventArray.count; data ++)
+                        {
+                            orderDict = [[NSMutableDictionary alloc]init];
+                            
+                            [orderDict setObject:[[_eventArray objectAtIndex:data]objectForKey:@"event_name"] forKey:@"event_name"];
+                            [orderDict setObject:[[_eventArray objectAtIndex:data] objectForKey:@"event_date"] forKey:@"event_date"];
+                            [orderDict setObject:[[_eventArray objectAtIndex:data]objectForKey:@"event_id"] forKey:@"event_id"];
+                            [DataArray addObject:orderDict];
+                        }
+                        [oxfordPicker reloadAllComponents];
+                        
+                    }
+                       }];
+                }
+                else
+                {
                 [globalClass GlobalStringDict:[NSString stringWithFormat:@"action.php?mode=orderList&located=false&locationId=%@",self.locationId] Globalstr:@"" Withblock:^(id result, NSError *error) {
                      DebugLog(@"LOCATION IDDDDD-----> %@",self.locationId);
                     DebugLog(@"MAP GLOBAL CLASS RETURN DATA--------->%@",result);
@@ -972,33 +1086,59 @@
                     
                 }];
             }
+        }
             
-            EditView = [[TGMapEdit alloc]init];
-            [BackGroundView addSubview:EditView];
+         
+            
+         
 
             if ([device.model isEqualToString:@"iPhone"]||[device.model isEqualToString:@"iPhone Simulator"]||[device.model isEqualToString:@"iPod touch"] )
             {
                 
-                if(self.view.frame.size.width == 320)
+                //This is only for type of Oxford
+                if ([self.Type isEqualToString:@"Oxford"])
                 {
-                    EditView.frame = CGRectMake(0, 140, 320, 237.5f);
-                        EditView.backview.image = [UIImage imageNamed:@"mappopupdown5s"];
-                
-
+                    editoxfordmapView = [[TGMapoxfordedit alloc]init];
+                    [editoxfordmapView.orderDropdownButton setHidden:YES];
+                    [BackGroundView addSubview:editoxfordmapView];
+                    if(self.view.frame.size.width == 320)
+                    {
+                        editoxfordmapView.frame = CGRectMake(0, 140, 320, 300.5f);
+                        editoxfordmapView.backview.image = [UIImage imageNamed:@"mappopupoxford5s"];
+                        
+                        
+                    }
+                    else
+                    {
+                       editoxfordmapView.frame = CGRectMake(-8, 140, self.view.frame.size.width-10, 300.5f);
+                        editoxfordmapView.backview.image = [UIImage imageNamed:@"mappopupoxford"];
+                        
+                    }
+                    
+                    
                 }
                 else
                 {
-              
+                    EditView = [[TGMapEdit alloc]init];
+                    [BackGroundView addSubview:EditView];
+                if(self.view.frame.size.width == 320)
+                {
+                    EditView.frame = CGRectMake(0, 140, 320, 237.5f);
+                    EditView.backview.image = [UIImage imageNamed:@"mappopupdown5s"];
+                }
+                else
+                {
                     EditView.frame = CGRectMake(-8, 140, self.view.frame.size.width-10, 237.5f);
                     EditView.backview.image = [UIImage imageNamed:@"mappopupdown"];
-           
                 }
-                
+            }
                 NSLog(@"---- %f------%f-------%f------%f",piece.frame.origin.x,piece.frame.origin.y,piece.frame.size.width,piece.frame.size.height);
                 
             }
             else
             {
+                EditView = [[TGMapEdit alloc]init];
+                [BackGroundView addSubview:EditView];
                 //BeconsView.userInteractionEnabled = NO;
              NSLog(@"---- %f------%f-------%f------%f",piece.frame.origin.x,piece.frame.origin.y,piece.frame.size.width,piece.frame.size.height);
             if ( piece.frame.origin.x< 650 && piece.frame.origin.y > 170 && piece.frame.origin.y< 515)
@@ -1171,7 +1311,6 @@
     [super didReceiveMemoryWarning];
     
     
-    
     // Dispose of any resources that can be recreated.
 }
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -1339,94 +1478,6 @@
         mapView_.camera = camera;
     }
 }
-#pragma mark - GMDraggableMarkerManagerDelegate.
-- (void)mapView:(GMSMapView *)mapView didBeginDraggingMarker:(GMSMarker *)marker
-{
-    DebugLog(@">>> mapView:didBeginDraggingMarker: %@", [marker description]);
-}
-- (void)mapView:(GMSMapView *)mapView didDragMarker:(GMSMarker *)marker
-{
-   // DebugLog(@">>> mapView:didDragMarker: %@", [marker description]);
-}
-- (void)mapView:(GMSMapView *)mapView didEndDraggingMarker:(GMSMarker *)marker
-{
-    DebugLog(@">>> mapView:didEndDraggingMarker:%f  ------  %f", marker.position.latitude,marker.position.longitude);
-    
-    if (globalClass.connectedToNetwork == YES) {
-        
-        [globalClass GlobalStringDict:[NSString stringWithFormat:@"action.php?mode=orderList&located=false&locationId=%@",self.locationId] Globalstr:@"" Withblock:^(id result, NSError *error) {
-            DebugLog(@"LOCATION IDDDDD-----> %@",self.locationId);
-            DebugLog(@"MAP GLOBAL CLASS RETURN DATA--------->%@",result);
-            
-            if ([[result objectForKey:@"message"] isEqualToString:[NSString Norecordfound] ]) {
-                
-                DebugLog(@"NO RECORD FOUND");
-                
-                blankCheck = YES;
-                
-            }else{
-                
-                [DataArray removeAllObjects];
-                
-                blankCheck = NO;
-                
-                orderArray = [[NSMutableArray alloc]init];
-                orderArray = [result objectForKey:@"orderdata"];
-                
-                DebugLog(@"ORDER DATA------> %@",orderArray);
-                DebugLog(@"ORDER DATA COUNT------> %lu",(unsigned long)orderArray.count);
-                
-                for (data = 0; data < orderArray.count; data ++)
-                {
-                    orderDict = [[NSMutableDictionary alloc]init];
-                    
-                    [orderDict setObject:[[orderArray objectAtIndex:data]objectForKey:@"first_name"] forKey:@"first_name"];
-                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"last_name"] forKey:@"last_name"];
-                    [orderDict setObject:[[orderArray objectAtIndex:data]objectForKey:@"event_date"] forKey:@"event_date"];
-                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"order_date"] forKey:@"order_date"];
-                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"user_email"] forKey:@"user_email"];
-                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"transaction_id"] forKey:@"transaction_id"];
-                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"order_id"] forKey:@"order_id"];
-                    [DataArray addObject:orderDict];
-                }
-                
-                [DataPickerView reloadAllComponents];
-            }
-            
-        }];
-    }
-    
-    EditView = [[TGMapEdit alloc]init];
-    [BackGroundView addSubview:EditView];
-    
-    if ([device.model isEqualToString:@"iPhone"]||[device.model isEqualToString:@"iPhone Simulator"]||[device.model isEqualToString:@"iPod touch"] )
-    {
-        
-        if(self.view.frame.size.width == 320)
-        {
-            EditView.frame = CGRectMake(0, 140, 320, 237.5f);
-            EditView.backview.image = [UIImage imageNamed:@"mappopupdown5s"];
-            
-            
-        }
-        else
-        {
-            
-            EditView.frame = CGRectMake(-8, 140, self.view.frame.size.width-10, 237.5f);
-            EditView.backview.image = [UIImage imageNamed:@"mappopupdown"];
-            
-        }
-        
-    }
-    
-    
-    
-    
-}
-- (void)mapView:(GMSMapView *)mapView didCancelDraggingMarker:(GMSMarker *)marker
-{
-   // DebugLog(@">>> mapView:didCancelDraggingMarker: %@",[marker description]);
-}
 -(void)mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition*)position {
     zoommap = mapView_.camera.zoom;
     
@@ -1448,10 +1499,12 @@
     
     if (globalClass.connectedToNetwork == YES ) {
       
-        NSDictionary *dict = [globalClass saveStringDict:[NSString stringWithFormat:@"action.php?mode=chooseLocation&packageId=%@&orderId=%@&lat=%@&long=%@&sectionid=1&place=&packagetype=&distance=&color=&road=&userid=%@",self.packegeIdString,orderID,[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"],[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"],[[NSUserDefaults standardUserDefaults]objectForKey:@"userid"]] savestr:@"string" saveimagedata:imageData ];
+        NSDictionary *dict = [globalClass saveStringDict:[NSString stringWithFormat:@"action.php?mode=chooseLocation&packageId=%@&orderId=%@&lat=%@&long=%@&sectionid=%@&place=&packagetype=&distance=&color=&road=&userid=%@",self.packegeIdString,orderID,[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"],[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"],self.locationId,[[NSUserDefaults standardUserDefaults]objectForKey:@"userid"]] savestr:@"string" saveimagedata:imageData ];
                 
         NSLog(@"dict--- %@",dict);
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:[NSString success] message:@"Successfuly Submitted" delegate:self cancelButtonTitle:[NSString Ok] otherButtonTitles:nil, nil];
         
+        [alert show];
   
     }
     
@@ -1460,7 +1513,6 @@
 
 -(void)PlaceButton:(UIButton *)sender
 {
-    
     
     [PopupPicker selectRow:0 inComponent:0 animated:NO];
      savepickerName = [NSString stringWithFormat:@"%@",[[self.PlaceaArray objectAtIndex:[PopupPicker selectedRowInComponent:0]] objectForKey:@"name"]];
@@ -1564,33 +1616,26 @@
 -(void)FinalSubmit:(UIButton *)sender
 {
     
-    NSData *imageData = UIImageJPEGRepresentation(img, 0.7f);
+    NSData *imageData = UIImageJPEGRepresentation(img, 1.0f);
     
     if (globalClass.connectedToNetwork == YES ) {
         
-        
-        NSDictionary *dict = [globalClass saveStringDict:[NSString stringWithFormat:@"action.php?mode=chooseLocation&packageId=%@&orderId=%@&lat=%@&long=%@&sectionid=2&place=%@&packagetype=%@&distance=%@&color=%@&road=%@&userid=%@",self.packegeIdString,orderID,[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"],[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"],self.savePlaceId,self.savePackegeId,self.saveDistanceId,self.saveColorId,self.saveRoadId,[[NSUserDefaults standardUserDefaults]objectForKey:@"userid"]] savestr:@"string" saveimagedata:imageData];
+        NSDictionary*dict = [globalClass saveStringDict:[NSString stringWithFormat:@"action.php?mode=chooseLocation&packageId=%@&orderId=%@&lat=%@&long=%@&sectionid=%@&place=%@&packagetype=%@&distance=%@&color=%@&road=%@&userid=%@",self.packegeIdString,orderID,[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"],[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"],self.locationId,self.savePlaceId,self.savePackegeId,self.saveDistanceId,self.saveColorId,self.saveRoadId,[[NSUserDefaults standardUserDefaults]objectForKey:@"userid"]] savestr:@"string" saveimagedata:imageData];
             
             DebugLog(@"result--- %@",dict);
-            
-//            if ([result isEqualToString:@"success"]) {
-//                
-//                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:success message:@"Successfuly Submitted" delegate:self cancelButtonTitle:Ok otherButtonTitles:nil, nil];
-//                
-//                [alert show];
-//                
-//            }else{
-//                
-//                DebugLog(@"FAILED FINAL URL Check URL return");
-//            }
-//            
-//        }];
-     [self applymapview];
+
         
-        [MapSave removeFromSuperview];
-        [mapSaveIphone removeFromSuperview];
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:[NSString success] message:@"Successfuly Submitted" delegate:self cancelButtonTitle:[NSString Ok] otherButtonTitles:nil, nil];
+                
+                [alert show];
+                
+
+         [self firstdata];
+
+        
+    [MapSave removeFromSuperview];
+    [mapSaveIphone removeFromSuperview];
     [SelectedBecons removeFromSuperview];
-    
     [EditView setHidden:YES];
  }
 
@@ -1598,6 +1643,8 @@
 }
 -(void)FinalCanCel:(UIButton *)sender
 {
+    [self firstdata];
+    
     [MapSave removeFromSuperview];
     [mapSaveIphone removeFromSuperview];
 }
@@ -1608,6 +1655,525 @@
     PopupDoneButton.hidden = YES;
     PopupCancelButton.hidden = YES;
 }
+
+#pragma mark - GMDraggableMarkerManagerDelegate.
+- (void)mapView:(GMSMapView *)mapView didBeginDraggingMarker:(GMSMarker *)marker
+{
+    DebugLog(@">>> mapView:didBeginDraggingMarker: %@", [marker description]);
+}
+- (void)mapView:(GMSMapView *)mapView didDragMarker:(GMSMarker *)marker
+{
+    
+}
+- (void)mapView:(GMSMapView *)mapView didEndDraggingMarker:(GMSMarker *)marker
+{
+    NSLog(@"savedataarray---- %@", SavedDataArray);
+    
+    if([self.Type isEqualToString:@"Oxford"])
+    {
+        
+        
+        
+        
+        for (int k = 0; k <SavedDataArray.count; k++)
+        {
+            if ([marker.userData isEqualToString:[NSString stringWithFormat:@"%@",[[SavedDataArray objectAtIndex:k]objectForKey:@"tag"]]])
+            {
+                NSLog(@"savedataarray-=-==--= %@", [[SavedDataArray objectAtIndex:k]objectForKey:@"tag"]);
+                
+                self.packegeIdString = [[SavedDataArray objectAtIndex:k]objectForKey:@"package_id"];
+                orderID = [[SavedDataArray objectAtIndex:k]objectForKey:@"order_id"];
+                editOrderDate = [NSString stringWithFormat:@"%@",[[SavedDataArray objectAtIndex:k]objectForKey:@"event_date"]];
+                editPackageName = [[SavedDataArray objectAtIndex:k]objectForKey:@"package_name"];
+                editOrderFirstName =[[SavedDataArray objectAtIndex:k]objectForKey:@"firstname"];
+                editOrderSecondName = [[SavedDataArray objectAtIndex:k]objectForKey:@"lastname"];
+                self.savePlaceId = [[SavedDataArray objectAtIndex:k]objectForKey:@"placeid"];
+                self.savePackegeId = [[SavedDataArray objectAtIndex:k]objectForKey:@"pktyid"];
+                self.saveDistanceId = [[SavedDataArray objectAtIndex:k]objectForKey:@"distanceid"];
+                self.saveColorId = [[SavedDataArray objectAtIndex:k]objectForKey:@"colorid"];
+                self.saveRoadId = [[SavedDataArray objectAtIndex:k]objectForKey:@"roadid"];
+                break;
+            }
+            
+        }
+        
+        
+        
+        if ([device.model isEqualToString:@"iPhone"]||[device.model isEqualToString:@"iPhone Simulator"]||[device.model isEqualToString:@"iPod touch"] )
+        {
+            mapSaveIphone = [[TGMapSaveiphone alloc]initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+            [self.view addSubview:mapSaveIphone];
+        }
+        else
+        {
+            MapSave = [[TGMapSave alloc]initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+            [self.view addSubview:MapSave];
+        }
+        
+        UIView *screenshotview = [[UIView alloc]initWithFrame:CGRectMake(1025, 72.0f, 1024, 698)];
+        [screenshotview setBackgroundColor:[UIColor clearColor]];
+        [BackGroundView addSubview:screenshotview];
+        
+        
+        NSString *staticMapUrl = [NSString stringWithFormat:@"http://maps.google.com/maps/api/staticmap?markers=color:red|%f,%f&zoom=%d&size=1024x698&sensor=true",marker.position.latitude,marker.position.longitude,zoommap];
+        
+        
+        
+        NSURL *mapUrl = [NSURL URLWithString:[staticMapUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:mapUrl]];
+        
+        MapView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0.0f, 1024, 698)];
+        [MapView setImage:image];
+        [screenshotview addSubview:MapView];
+        
+        
+        UIImageView *backview = [[UIImageView alloc]initWithFrame:CGRectMake(315.0f, 102.0f, 387.5f, 237.5f)];
+        [backview setImage:[UIImage imageNamed:@"mappopupdown"]];
+        [screenshotview addSubview:backview];
+        
+        
+        UILabel *ButtonLabel = [[UILabel alloc]initWithFrame:CGRectMake(25.0f,23.0f, 340.0f, 45.0f)];
+        [ButtonLabel setBackgroundColor:[UIColor clearColor]];
+        [ButtonLabel setText:[NSString stringWithFormat:@"%@ %@  %@",editOrderFirstName,editOrderSecondName,editOrderDate]];
+        [ButtonLabel setTextAlignment:NSTextAlignmentLeft];
+        [ButtonLabel setTextColor:[UIColor BlackColor]];
+        [ButtonLabel setFont:[UIFont ButtonLabel]];
+        [backview addSubview:ButtonLabel];
+        
+        UITextView *_DescriptionText = [[UITextView alloc]initWithFrame:CGRectMake(25,75,340,120)];
+        _DescriptionText.font = [UIFont ButtonLabel];
+        _DescriptionText.backgroundColor = [UIColor clearColor];
+        _DescriptionText.textColor = [UIColor BlackColor];
+        _DescriptionText.scrollEnabled = YES;
+        _DescriptionText.pagingEnabled = YES;
+        _DescriptionText.editable = NO;
+        _DescriptionText.delegate = self;
+        _DescriptionText.text = [NSString stringWithFormat:@"%@",editPackageName];
+        _DescriptionText.layer.borderWidth = 1.5f;
+        _DescriptionText.layer.borderColor = [[UIColor colorWithRed:(179.0f/255.0f) green:(179.0f/255.0f) blue:(179.0f/255.0f) alpha:1] CGColor];
+        _DescriptionText.textAlignment = NSTextAlignmentLeft;
+        _DescriptionText.layer.cornerRadius = 3.0f;
+        [_DescriptionText setAutocorrectionType:UITextAutocorrectionTypeNo];
+        [backview addSubview:_DescriptionText];
+        
+        [self imageWithView:screenshotview];
+        
+        
+        
+      
+        
+        //////////////-================AfterSavePickerView==========///////////////
+        
+        AfterSavePickerView  = [[UIView alloc]init];
+        [AfterSavePickerView setBackgroundColor:[UIColor whiteColor]];
+        [AfterSavePickerView setAlpha:1.0f];
+        [self.view addSubview:AfterSavePickerView];
+        [AfterSavePickerView setHidden:YES];
+        
+        PopupPicker = [[UIPickerView alloc] init];
+        PopupPicker.layer.zPosition=9;
+        PopupPicker.backgroundColor=[UIColor clearColor];
+        PopupPicker.dataSource = self;
+        PopupPicker.delegate = self;
+        PopupPicker.tag = 2;
+        PopupPicker.showsSelectionIndicator = YES;
+        [self.view addSubview:PopupPicker];
+        [PopupPicker setHidden:YES];
+        
+        PopupDoneButton = [[UIButton alloc]init];
+        [PopupDoneButton setBackgroundColor:[UIColor clearColor]];
+        [PopupDoneButton setBackgroundImage:[UIImage imageNamed:@"done"] forState:UIControlStateNormal];
+        [PopupDoneButton addTarget:self action:@selector(PickerDone:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:PopupDoneButton];
+        [PopupDoneButton setHidden:YES];
+        
+        PopupCancelButton = [[UIButton alloc]init];
+        [PopupCancelButton setBackgroundColor:[UIColor clearColor]];
+        [PopupCancelButton setBackgroundImage:[UIImage imageNamed:@"cancel"] forState:UIControlStateNormal];
+        [PopupCancelButton addTarget:self action:@selector(PickerCancelButton:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:PopupCancelButton];
+        [PopupCancelButton setHidden:YES];
+        
+        if ([device.model isEqualToString:@"iPhone"]||[device.model isEqualToString:@"iPhone Simulator"]||[device.model isEqualToString:@"iPod touch"] )
+        {
+            AfterSavePickerView.frame = CGRectMake(0.0f,self.view.frame.size.height-210, self.view.frame.size.width, 210.0f);
+            PopupPicker.frame = CGRectMake(0,self.view.frame.size.height-170, self.view.frame.size.width, 180.0f);
+            PopupDoneButton.frame = CGRectMake(self.view.frame.size.width-190, self.view.frame.size.height-205, 83, 35);
+            PopupCancelButton.frame = CGRectMake( self.view.frame.size.width-100, self.view.frame.size.height-205, 83, 35);
+        }
+        
+        else
+        {
+            AfterSavePickerView.frame = CGRectMake(0.0f,600.0f, self.view.frame.size.width, self.view.frame.size.height-500.0f);
+            PopupPicker.frame = CGRectMake(0,600, self.view.frame.size.width, self.view.frame.size.height-530.0f);
+            PopupDoneButton.frame = CGRectMake(900, 610, 83, 35);
+            PopupCancelButton.frame = CGRectMake(800, 610, 83, 35);
+        }
+        
+        
+        
+        if ([self.Type isEqualToString:@"Oxford"])
+        {
+            Typecheck = 2;
+        }
+        else
+        {
+            Typecheck = 1;
+        }
+        
+        [globalClass GlobalDict:[NSString stringWithFormat:@"action.php?mode=placeInfo&type=%d",Typecheck] Withblock:^(id result, NSError *error)
+         {
+             if ([[result objectForKey:@"message"] isEqualToString:[NSString success]])
+             {
+                 self.PlaceaArray = [result objectForKey:@"placeinfodata"];
+                 
+                 
+                     for (int j = 0; j< self.PlaceaArray.count; j++)
+                     {
+                         if ([self.savePlaceId isEqualToString:[NSString stringWithFormat:@"%@",[[self.PlaceaArray objectAtIndex:j]objectForKey:@"id"]]])
+                         {
+                             if ([device.model isEqualToString:@"iPhone"]||[device.model isEqualToString:@"iPhone Simulator"]||[device.model isEqualToString:@"iPod touch"] )
+                             {
+                                 [mapSaveIphone.PlacesLabel setTitle:@"" forState:UIControlStateNormal];
+                                 [mapSaveIphone.PlacesLabel setTitle:[NSString stringWithFormat:@"%@",[[self.PlaceaArray objectAtIndex:j]objectForKey:@"name"]] forState:UIControlStateNormal];
+                             }
+                             else
+                             {
+                                 [MapSave.PlacesLabel setTitle:@"" forState:UIControlStateNormal];
+                                 [MapSave.PlacesLabel setTitle:[NSString stringWithFormat:@"%@",[[self.PlaceaArray objectAtIndex:j]objectForKey:@"name"]] forState:UIControlStateNormal];
+                             }
+                             break;
+                         }
+                     }
+                     
+                 
+                 }
+                 else
+                 {
+                     
+                 }
+           
+             [globalClass GlobalDict:[NSString stringWithFormat:@"action.php?mode=packagetypeInfo&type=%d",Typecheck] Withblock:^(id result, NSError *error)
+              {
+                  if ([[result objectForKey:@"message"] isEqualToString:[NSString success]])
+                  {
+                      self.PackageArray = [result objectForKey:@"packagetypedata"];
+                      
+                      for (int j = 0; j< self.PackageArray.count; j++)
+                      {
+                          if ([self.savePackegeId isEqualToString:[NSString stringWithFormat:@"%@",[[self.PackageArray objectAtIndex:j]objectForKey:@"id"]]])
+                          {
+                              if ([device.model isEqualToString:@"iPhone"]||[device.model isEqualToString:@"iPhone Simulator"]||[device.model isEqualToString:@"iPod touch"] )
+                              {
+                                  [mapSaveIphone.PackegeLabel setTitle:@"" forState:UIControlStateNormal];
+                                  [mapSaveIphone.PackegeLabel setTitle:[NSString stringWithFormat:@"%@",[[self.PackageArray objectAtIndex:j]objectForKey:@"name"]] forState:UIControlStateNormal];
+                              }
+                              else
+                              {
+                                  [MapSave.PackegeLabel setTitle:@"" forState:UIControlStateNormal];
+                                  [MapSave.PackegeLabel setTitle:[NSString stringWithFormat:@"%@",[[self.PackageArray objectAtIndex:j]objectForKey:@"name"]] forState:UIControlStateNormal];
+                              }
+                              break;
+                          }
+                          
+                      }
+
+                  }
+                  else{
+                      
+                      
+                  }
+                  [globalClass GlobalDict:[NSString stringWithFormat:@"action.php?mode=distanceInfo"] Withblock:^(id result, NSError *error)
+                   {
+                       if ([[result objectForKey:@"message"] isEqualToString:[NSString success]])
+                       {
+                           self.DistanceArray = [result objectForKey:@"distancedata"];
+                           
+                           for (int j = 0; j< self.DistanceArray.count; j++)
+                           {
+                               if ([self.saveDistanceId isEqualToString:[NSString stringWithFormat:@"%@",[[self.DistanceArray objectAtIndex:j]objectForKey:@"id"]]])
+                               {
+                                   if ([device.model isEqualToString:@"iPhone"]||[device.model isEqualToString:@"iPhone Simulator"]||[device.model isEqualToString:@"iPod touch"] )
+                                   {
+                                       [mapSaveIphone.DistanceLabel setTitle:@"" forState:UIControlStateNormal];
+                                       [mapSaveIphone.DistanceLabel setTitle:[NSString stringWithFormat:@"%@",[[self.DistanceArray objectAtIndex:j]objectForKey:@"name"]] forState:UIControlStateNormal];
+                                   }
+                                   else
+                                   {
+                                       [MapSave.DistanceLabel setTitle:@"" forState:UIControlStateNormal];
+                                       [MapSave.DistanceLabel setTitle:[NSString stringWithFormat:@"%@",[[self.DistanceArray objectAtIndex:j]objectForKey:@"name"]] forState:UIControlStateNormal];
+                                   }
+                                   break;
+                               }
+                               
+                           }
+
+                       }
+                       else
+                       {
+                           
+                       }
+                       [globalClass GlobalDict:[NSString stringWithFormat:@"action.php?mode=roadInfo&type=%d",Typecheck] Withblock:^(id result, NSError *error)
+                        {
+                            if ([[result objectForKey:@"message"] isEqualToString:[NSString success]])
+                            {
+                                self.RoadArray = [result objectForKey:@"roaddata"];
+                                
+                                for (int j = 0; j< self.RoadArray.count; j++)
+                                {
+                                    if ([self.saveRoadId isEqualToString:[NSString stringWithFormat:@"%@",[[self.RoadArray objectAtIndex:j]objectForKey:@"id"]]])
+                                    {
+                                        if ([device.model isEqualToString:@"iPhone"]||[device.model isEqualToString:@"iPhone Simulator"]||[device.model isEqualToString:@"iPod touch"] )
+                                        {
+                                            [mapSaveIphone.RoadLabel setTitle:@"" forState:UIControlStateNormal];
+                                            [mapSaveIphone.RoadLabel setTitle:[NSString stringWithFormat:@"%@",[[self.RoadArray objectAtIndex:j]objectForKey:@"name"]] forState:UIControlStateNormal];
+                                        }
+                                        else
+                                        {
+                                            [MapSave.RoadLabel setTitle:@"" forState:UIControlStateNormal];
+                                            [MapSave.RoadLabel setTitle:[NSString stringWithFormat:@"%@",[[self.RoadArray objectAtIndex:j]objectForKey:@"name"]] forState:UIControlStateNormal];
+                                        }
+                                         break;
+                                    }
+                                   
+                                }
+                            }
+                            else{
+                                
+                                
+                            }
+                            [globalClass GlobalDict:[NSString stringWithFormat:@"action.php?mode=colorInfo"] Withblock:^(id result, NSError *error) {
+                                if ([[result objectForKey:@"message"] isEqualToString:[NSString success]])
+                                {
+                                    
+                                    self.ColorArray = [result objectForKey:@"colordata"];
+                                    
+                                    for (int j = 0; j< self.ColorArray.count; j++)
+                                    {
+                                        if ([self.saveColorId isEqualToString:[NSString stringWithFormat:@"%@",[[self.ColorArray objectAtIndex:j]objectForKey:@"id"]]])
+                                        {
+                                            if ([device.model isEqualToString:@"iPhone"]||[device.model isEqualToString:@"iPhone Simulator"]||[device.model isEqualToString:@"iPod touch"] )
+                                            {
+                                                [mapSaveIphone.ColorLabel setTitle:@"" forState:UIControlStateNormal];
+                                                [mapSaveIphone.ColorLabel setTitle:[NSString stringWithFormat:@"%@",[[self.ColorArray objectAtIndex:j]objectForKey:@"name"]] forState:UIControlStateNormal];
+                                            }
+                                            else
+                                            {
+                                                [MapSave.ColorLabel setTitle:@"" forState:UIControlStateNormal];
+                                                [MapSave.ColorLabel setTitle:[NSString stringWithFormat:@"%@",[[self.ColorArray objectAtIndex:j]objectForKey:@"name"]] forState:UIControlStateNormal];
+                                            }
+                                             break;
+                                        }
+                                       
+                                    }
+                                }
+                                else
+                                {
+                                    
+                                }
+                            }];
+                            
+                            
+                        }];
+                       
+                       
+                   }];
+                  
+                  
+              }];
+             
+             
+         }];
+
+        [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%f",marker.position.latitude] forKey:@"arrive_lat"];
+        [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%f",marker.position.longitude] forKey:@"arrive_long"];
+        [[NSUserDefaults standardUserDefaults]synchronize];
+    }
+    else
+    {
+        for (int k = 0; k <SavedDataArray.count; k++)
+        {
+            if ([marker.userData isEqualToString:[NSString stringWithFormat:@"%@",[[SavedDataArray objectAtIndex:k]objectForKey:@"tag"]]])
+            {
+                NSLog(@"savedataarray-=-==--= %@", [[SavedDataArray objectAtIndex:k]objectForKey:@"tag"]);
+                
+                editPackageId = [[SavedDataArray objectAtIndex:k]objectForKey:@"package_id"];
+                editOrderId = [[SavedDataArray objectAtIndex:k]objectForKey:@"order_id"];
+                editOrderDate = [NSString stringWithFormat:@"%@",[[SavedDataArray objectAtIndex:k]objectForKey:@"event_date"]];
+                editPackageName = [[SavedDataArray objectAtIndex:k]objectForKey:@"package_name"];
+                editOrderFirstName =[[SavedDataArray objectAtIndex:k]objectForKey:@"firstname"];
+                editOrderSecondName = [[SavedDataArray objectAtIndex:k]objectForKey:@"lastname"];
+                break;
+            }
+            
+        }
+        
+        
+        UIView *screenshotview = [[UIView alloc]initWithFrame:CGRectMake(1025, 72.0f, 1024, 698)];
+        [screenshotview setBackgroundColor:[UIColor clearColor]];
+        [BackGroundView addSubview:screenshotview];
+        
+        
+        NSString *staticMapUrl = [NSString stringWithFormat:@"http://maps.google.com/maps/api/staticmap?markers=color:red|%f,%f&zoom=%d&size=1024x698&sensor=true",marker.position.latitude,marker.position.longitude,zoommap];
+        
+        
+        
+        NSURL *mapUrl = [NSURL URLWithString:[staticMapUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:mapUrl]];
+        
+        MapView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0.0f, 1024, 698)];
+        [MapView setImage:image];
+        [screenshotview addSubview:MapView];
+        
+        
+        UIImageView *backview = [[UIImageView alloc]initWithFrame:CGRectMake(315.0f, 102.0f, 387.5f, 237.5f)];
+        [backview setImage:[UIImage imageNamed:@"mappopupdown"]];
+        [screenshotview addSubview:backview];
+        
+        
+        UILabel *ButtonLabel = [[UILabel alloc]initWithFrame:CGRectMake(25.0f,23.0f, 340.0f, 45.0f)];
+        [ButtonLabel setBackgroundColor:[UIColor clearColor]];
+        [ButtonLabel setText:[NSString stringWithFormat:@"%@ %@  %@",editOrderFirstName,editOrderSecondName,editOrderDate]];
+        [ButtonLabel setTextAlignment:NSTextAlignmentLeft];
+        [ButtonLabel setTextColor:[UIColor BlackColor]];
+        [ButtonLabel setFont:[UIFont ButtonLabel]];
+        [backview addSubview:ButtonLabel];
+        
+        UITextView *_DescriptionText = [[UITextView alloc]initWithFrame:CGRectMake(25,75,340,120)];
+        _DescriptionText.font = [UIFont ButtonLabel];
+        _DescriptionText.backgroundColor = [UIColor clearColor];
+        _DescriptionText.textColor = [UIColor BlackColor];
+        _DescriptionText.scrollEnabled = YES;
+        _DescriptionText.pagingEnabled = YES;
+        _DescriptionText.editable = NO;
+        _DescriptionText.delegate = self;
+        _DescriptionText.text = [NSString stringWithFormat:@"%@",editPackageName];
+        _DescriptionText.layer.borderWidth = 1.5f;
+        _DescriptionText.layer.borderColor = [[UIColor colorWithRed:(179.0f/255.0f) green:(179.0f/255.0f) blue:(179.0f/255.0f) alpha:1] CGColor];
+        _DescriptionText.textAlignment = NSTextAlignmentLeft;
+        _DescriptionText.layer.cornerRadius = 3.0f;
+        [_DescriptionText setAutocorrectionType:UITextAutocorrectionTypeNo];
+        [backview addSubview:_DescriptionText];
+        
+        [self imageWithView:screenshotview];
+        
+        
+        NSData *imageData = UIImageJPEGRepresentation(img, 0.8f);
+        
+        if (globalClass.connectedToNetwork == YES ) {
+            
+            NSDictionary *dict = [globalClass saveStringDict:[NSString stringWithFormat:@"action.php?mode=chooseLocation&packageId=%@&orderId=%@&lat=%f&long=%f&sectionid=%@&place=&packagetype=&distance=&color=&road=&userid=%@",editPackageId,editOrderId,marker.position.latitude,marker.position.longitude,self.locationId,[[NSUserDefaults standardUserDefaults]objectForKey:@"userid"]] savestr:@"string" saveimagedata:imageData ];
+            
+            NSLog(@"dict--- %@",dict);
+            
+            
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:[NSString success] message:@"Successfuly Submitted" delegate:self cancelButtonTitle:[NSString Ok] otherButtonTitles:nil, nil];
+            
+            [alert show];
+        }
+        
+        [self firstdata];
+        
+        
+        DebugLog(@">>> mapView:didEndDraggingMarker:%f  ------  %f---- %@", marker.position.latitude,marker.position.longitude,marker.userData);
+
+    }
+}
+- (void)mapView:(GMSMapView *)mapView didCancelDraggingMarker:(GMSMarker *)marker
+{
+    DebugLog(@">>> mapView:didCancelDraggingMarker: %@",[marker description]);
+    
+}
+
+////oxford edit option//////
+
+-(void)DropDownoxfordevent:(UIButton *)sender
+{
+    NSLog(@"entry");
+    
+    if (blankCheck == YES) {
+        
+        DebugLog(@"DATA ARRAY BLANK");
+        
+        UIAlertView *alertBlank = [[UIAlertView alloc]initWithTitle:@"Alert" message:@"No record found" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alertBlank show];
+        
+    }else{
+    
+        DebugLog(@"Dataarray------ %@", DataArray);
+        
+        
+        [PickerBckView setHidden:NO];
+        [oxfordPicker setHidden:NO];
+        [DoneButton setHidden:NO];
+        [CancelButton setHidden:NO];
+        
+        [oxfordPicker selectRow:0 inComponent:0 animated:NO];
+        DataString = [NSString stringWithFormat:@"%@  %@",[[DataArray objectAtIndex:[oxfordPicker selectedRowInComponent:0]] objectForKey:@"event_name"],[[DataArray objectAtIndex:[oxfordPicker selectedRowInComponent:0]] objectForKey:@"event_date"]];
+        orderID = [[DataArray objectAtIndex:[oxfordPicker selectedRowInComponent:0]] objectForKey:@"event_id"];
+
+        
+    
+        
+    }
+}
+-(void)DropDownoxfordorder:(UIButton *)sender
+{
+ 
+    if (globalClass.connectedToNetwork == YES) {
+        
+        [globalClass parameterstring:[NSString stringWithFormat:@"action.php?mode=oxfordOrderList&event_id=%@",orderID] withblock:^(id result, NSError *error) {
+            
+            if ([[result objectForKey:@"message"] isEqualToString:[NSString Norecordfound] ]) {
+                
+                
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Alert" message:@"No order found" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                
+            }
+            else
+            {
+                [DataArray removeAllObjects];
+          
+                orderArray = [[NSMutableArray alloc]init];
+                orderArray = [result objectForKey:@"orderdata"];
+                
+                DebugLog(@"ORDER DATA------> %@",orderArray);
+                DebugLog(@"ORDER DATA COUNT------> %lu",(unsigned long)orderArray.count);
+                
+                for (data = 0; data < orderArray.count; data ++)
+                {
+                    orderDict = [[NSMutableDictionary alloc]init];
+                    [orderDict setObject:[[orderArray objectAtIndex:data]objectForKey:@"first_name"] forKey:@"first_name"];
+                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"last_name"] forKey:@"last_name"];
+                    [orderDict setObject:[[orderArray objectAtIndex:data]objectForKey:@"event_date"] forKey:@"event_date"];
+                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"order_date"] forKey:@"order_date"];
+                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"user_email"] forKey:@"user_email"];
+                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"transaction_id"] forKey:@"transaction_id"];
+                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"order_id"] forKey:@"order_id"];
+                    [DataArray addObject:orderDict];
+                }
+                [DataPickerView reloadAllComponents];
+            }
+            
+        }];
+       
+        
+    }
+    
+    
+}
+-(void)CanCeloxford:(UIButton *)sender
+{
+    [editoxfordmapView removeFromSuperview];
+    [SelectedBecons setHidden:YES];
+    [DisableView setHidden:YES];
+}
+-(void)Submitoxford:(UIButton *)sender
+{
+    
+}
+
 /*
  #pragma mark - Navigation
  

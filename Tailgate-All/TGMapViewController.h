@@ -15,7 +15,7 @@
     UILabel *HeaderLabel;
     UIImageView *SettingsImage,*MapImage,*MapView;
     UIView *PickerBckView,*AfterSavePickerView;
-    UIPickerView *DataPickerView,*PopupPicker;
+    UIPickerView *DataPickerView,*PopupPicker,*oxfordPicker;
     NSString *DataString;
     NSString *orderID;
     NSString *descString;
@@ -44,7 +44,8 @@
     NSString *savepickerName;
     UIDevice *device;
     NSInteger check_box_number;
-   
+    NSString *editPackageId,*editOrderId,*editOrderDate,*editPackageName,*editOrderFirstName,*editOrderSecondName;
+    
 }
 @property (nonatomic,strong)NSString *VenueName;
 @property (nonatomic, strong)NSString *locationId;
@@ -65,4 +66,5 @@
 @property (nonatomic, strong) NSString *saveDistanceId;
 @property (nonatomic, strong) NSString *saveRoadId;
 @property (nonatomic, strong) NSString *saveColorId;
+@property (nonatomic, strong) NSMutableArray *eventArray;
 @end

@@ -9,18 +9,19 @@
 #import <Foundation/Foundation.h>
 #import "TGGlobal.h"
 
-@interface TGGlobalClass : NSObject<NSURLConnectionDelegate>
+@interface TGGlobalClass : NSObject<NSURLConnectionDelegate,NSURLSessionTaskDelegate>
 {
     NSDictionary *DataDictionary;
     NSMutableData *responseData;
     NSURLConnection *connection;
     NSUserDefaults *UserData;
-    
+    NSDictionary * text;
 }
 
 -(void)GlobalDict:(NSString *)parameter Withblock:(Urlresponceblock)responce;
 -(void)GlobalStringDict:(NSString *)parameter Globalstr:(NSString *)parametercheck Withblock:(Urlresponceblock)responce;
 -(NSDictionary *)saveStringDict:(NSString *)parameter savestr:(NSString *)parametercheck saveimagedata:(NSData *)imagedata;
 - (BOOL)connectedToNetwork;
+-(void)parameterstring:(NSString *)parameter withblock:(Urlresponceblock)responce;
 -(void)Userdict:(NSDictionary *)userdetails;
 @end

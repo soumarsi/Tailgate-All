@@ -82,8 +82,8 @@
         //// ********** Button
         
         self.PlacesLabel = [[UIButton alloc]init];
-        [self.PlacesLabel setImageEdgeInsets:UIEdgeInsetsMake(0, 235, 0, 0)];
-        [self.PlacesLabel setTitleEdgeInsets:UIEdgeInsetsMake(1.0f, -15, 0, 0)];
+        [self.PlacesLabel setImageEdgeInsets:UIEdgeInsetsMake(0, 275, 0, 0)];
+        [self.PlacesLabel setTitleEdgeInsets:UIEdgeInsetsMake(1.0f, -25, 0, 0)];
         [self.PlacesLabel setBackgroundColor:[UIColor MapSaveBackgroundColor]];
         [self.PlacesLabel setTitle:@"Places" forState:UIControlStateNormal];
         self.PlacesLabel.titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -170,7 +170,7 @@
             ThirdLabel.frame = CGRectMake(ContentBackView.frame.origin.x+200, SecondLabel.frame.origin.y+35, 100, 30);
             FourthLabel.frame = CGRectMake(ContentBackView.frame.origin.x+5, ThirdLabel.frame.origin.y+70, 140, 30);
             FifthLabel.frame = CGRectMake(ContentBackView.frame.origin.x+5, FourthLabel.frame.origin.y+65, 300, 60);
-            self.PlacesLabel.frame = CGRectMake([[UIScreen mainScreen]bounds].origin.x+5, FirstLabel.frame.origin.y+35, 260, 30);
+            self.PlacesLabel.frame = CGRectMake([[UIScreen mainScreen]bounds].origin.x+5, FirstLabel.frame.origin.y+35, 300, 30);
             self.PackegeLabel.frame = CGRectMake(SecondLabel.frame.size.width+20, FirstLabel.frame.origin.y+70, 170, 30);
             self.DistanceLabel.frame = CGRectMake(ContentBackView.frame.origin.x+5, SecondLabel.frame.origin.y+35, 180, 30);
             self.RoadLabel.frame = CGRectMake(ContentBackView.frame.origin.x+5, ThirdLabel.frame.origin.y+35, 260, 30);
@@ -186,7 +186,7 @@
             ThirdLabel.frame = CGRectMake(ContentBackView.frame.origin.x+230, SecondLabel.frame.origin.y+35, 100, 30);
             FourthLabel.frame = CGRectMake(ContentBackView.frame.origin.x+35, ThirdLabel.frame.origin.y+70, 140, 30);
             FifthLabel.frame = CGRectMake(ContentBackView.frame.origin.x+35, FourthLabel.frame.origin.y+65, 300, 60);
-            self.PlacesLabel.frame = CGRectMake([[UIScreen mainScreen]bounds].origin.x+35, FirstLabel.frame.origin.y+35, 260, 30);
+            self.PlacesLabel.frame = CGRectMake([[UIScreen mainScreen]bounds].origin.x+35, FirstLabel.frame.origin.y+35, 300, 30);
             self.PackegeLabel.frame = CGRectMake(SecondLabel.frame.size.width+50, FirstLabel.frame.origin.y+70, 170, 30);
             self.DistanceLabel.frame = CGRectMake(ContentBackView.frame.origin.x+35, SecondLabel.frame.origin.y+35, 180, 30);
             self.RoadLabel.frame = CGRectMake(ContentBackView.frame.origin.x+35, ThirdLabel.frame.origin.y+35, 260, 30);
@@ -201,7 +201,7 @@
             ThirdLabel.frame = CGRectMake(ContentBackView.frame.origin.x+245, SecondLabel.frame.origin.y+35, 100, 30);
             FourthLabel.frame = CGRectMake(ContentBackView.frame.origin.x+50, ThirdLabel.frame.origin.y+70, 140, 30);
             FifthLabel.frame = CGRectMake(ContentBackView.frame.origin.x+50, FourthLabel.frame.origin.y+65, 300, 60);
-            self.PlacesLabel.frame = CGRectMake([[UIScreen mainScreen]bounds].origin.x+50, FirstLabel.frame.origin.y+35, 260, 30);
+            self.PlacesLabel.frame = CGRectMake([[UIScreen mainScreen]bounds].origin.x+50, FirstLabel.frame.origin.y+35, 300, 30);
             self.PackegeLabel.frame = CGRectMake(SecondLabel.frame.size.width+65, FirstLabel.frame.origin.y+70, 170, 30);
             self.DistanceLabel.frame = CGRectMake(ContentBackView.frame.origin.x+50, SecondLabel.frame.origin.y+35, 180, 30);
             self.RoadLabel.frame = CGRectMake(ContentBackView.frame.origin.x+50, ThirdLabel.frame.origin.y+35, 260, 30);

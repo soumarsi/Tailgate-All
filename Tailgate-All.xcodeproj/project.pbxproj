@@ -41,6 +41,7 @@
 		2C8269C21B3A8A4500D32E88 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C8269C01B3A8A4500D32E88 /* Main.storyboard */; };
 		2C8269C41B3A8A4500D32E88 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C8269C31B3A8A4500D32E88 /* Images.xcassets */; };
 		2C8269C71B3A8A4500D32E88 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C8269C51B3A8A4500D32E88 /* LaunchScreen.xib */; };
+		2C928BF51B68A36B00B55EF9 /* TGMapoxfordedit.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C5FE2A61B67946600ABF32F /* TGMapoxfordedit.m */; };
 		2C934C8C1B3BC65B008DDA62 /* Raleway-Bold_0.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C934C821B3BC65B008DDA62 /* Raleway-Bold_0.ttf */; };
 		2C934C8D1B3BC65B008DDA62 /* Raleway-ExtraBold_0.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C934C831B3BC65B008DDA62 /* Raleway-ExtraBold_0.ttf */; };
 		2C934C8E1B3BC65B008DDA62 /* Raleway-ExtraLight_0.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C934C841B3BC65B008DDA62 /* Raleway-ExtraLight_0.ttf */; };
@@ -110,7 +111,9 @@
 		2C3E26AF1B3C20B100A08D5E /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		2C3E26B11B3C20C300A08D5E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		2C3E26B31B3C20CC00A08D5E /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
-		2C8269B01B3A8A4500D32E88 /* Tailgategroup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tailgategroup.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C5FE2A51B67946600ABF32F /* TGMapoxfordedit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGMapoxfordedit.h; sourceTree = "<group>"; };
+		2C5FE2A61B67946600ABF32F /* TGMapoxfordedit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGMapoxfordedit.m; sourceTree = "<group>"; };
+		2C8269B01B3A8A4500D32E88 /* Tailgate Group.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tailgate Group.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C8269B41B3A8A4500D32E88 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2C8269B51B3A8A4500D32E88 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2C8269B71B3A8A4500D32E88 /* TGAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TGAppDelegate.h; sourceTree = "<group>"; };
@@ -236,7 +239,7 @@
 		2C8269B11B3A8A4500D32E88 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2C8269B01B3A8A4500D32E88 /* Tailgategroup.app */,
+				2C8269B01B3A8A4500D32E88 /* Tailgate Group.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -320,6 +323,8 @@
 				2C3E26821B3C1E3700A08D5E /* RTdrawline.m */,
 				2CA381A61B3EBC6C00D5230F /* TGMapSaveiphone.h */,
 				2CA381A71B3EBC6C00D5230F /* TGMapSaveiphone.m */,
+				2C5FE2A51B67946600ABF32F /* TGMapoxfordedit.h */,
+				2C5FE2A61B67946600ABF32F /* TGMapoxfordedit.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -429,7 +434,7 @@
 			);
 			name = "Tailgate-All";
 			productName = "Tailgate-All";
-			productReference = 2C8269B01B3A8A4500D32E88 /* Tailgategroup.app */;
+			productReference = 2C8269B01B3A8A4500D32E88 /* Tailgate Group.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -443,6 +448,7 @@
 				TargetAttributes = {
 					2C8269AF1B3A8A4500D32E88 = {
 						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = K22GQFS8BW;
 					};
 				};
 			};
@@ -527,6 +533,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C928BF51B68A36B00B55EF9 /* TGMapoxfordedit.m in Sources */,
 				2C934CB41B3BD742008DDA62 /* NSString+TGGlobalString.m in Sources */,
 				2C934CAF1B3BD6BF008DDA62 /* UIFont+TGGlobalFont.m in Sources */,
 				2C8269BC1B3A8A4500D32E88 /* Tailgate_All.xcdatamodeld in Sources */,
@@ -667,12 +674,12 @@
 			baseConfigurationReference = D843553E1595051477CC0BCB /* Pods-Tailgate-All.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: ESolz Technologies Pvt Ltd (K22GQFS8BW)";
 				INFOPLIST_FILE = "Tailgate-All/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = Tailgategroup;
-				PROVISIONING_PROFILE = "";
+				PRODUCT_NAME = "Tailgate Group";
+				PROVISIONING_PROFILE = "f878ef97-1e49-411b-bc79-c9da52493da2";
 			};
 			name = Debug;
 		};
@@ -681,12 +688,12 @@
 			baseConfigurationReference = 489034D543C78A075C78749A /* Pods-Tailgate-All.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: ESolz Technologies Pvt Ltd (K22GQFS8BW)";
 				INFOPLIST_FILE = "Tailgate-All/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = Tailgategroup;
-				PROVISIONING_PROFILE = "";
+				PRODUCT_NAME = "Tailgate Group";
+				PROVISIONING_PROFILE = "f878ef97-1e49-411b-bc79-c9da52493da2";
 			};
 			name = Release;
 		};

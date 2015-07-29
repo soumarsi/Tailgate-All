@@ -72,7 +72,8 @@
      NSURLResponse *response = nil;
     NSError *error;
     NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    NSDictionary *result = [NSJSONSerialization JSONObjectWithData:returnData options:kNilOptions error:&error];
+    NSDictionary *result =  [NSJSONSerialization JSONObjectWithData:returnData options:kNilOptions error:&error];
+
     return result;
     
     
@@ -161,4 +162,27 @@
     BOOL needsConnection = flags & kSCNetworkFlagsConnectionRequired;
     return (isReachable && !needsConnection) ? YES : NO;
 }
+
+-(void)parameterstring:(NSString *)parameter withblock:(Urlresponceblock)responce
+{
+    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate: self delegateQueue: [NSOperationQueue mainQueue]];
+    
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",App_Domain_Url,parameter]];
+    
+    NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithURL:url
+                                                    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                        if(error == nil)
+                                                        {
+                                                            text = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                                                            responce(text,nil);
+                                                        }
+                                                  
+                                                    }];
+
+    [dataTask resume];
+    
+  
+}
+
 @end

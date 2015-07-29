@@ -134,9 +134,9 @@
         [self.RoadLabel addTarget:_Delegate action:@selector(RoadButton:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.RoadLabel];
         
-        self.ColorLabel = [[UIButton alloc]initWithFrame:CGRectMake(ContentBackView.frame.origin.x+FourthLabel.frame.size.width-50, ThirdLabel.frame.origin.y+60, 220, 30)];
+        self.ColorLabel = [[UIButton alloc]initWithFrame:CGRectMake(ContentBackView.frame.origin.x+FourthLabel.frame.size.width-50, ThirdLabel.frame.origin.y+60, 320, 30)];
         [self.ColorLabel setBackgroundColor:[UIColor MapSaveBackgroundColor]];
-        [self.ColorLabel setImageEdgeInsets:UIEdgeInsetsMake(0, 195, 0, 0)];
+        [self.ColorLabel setImageEdgeInsets:UIEdgeInsetsMake(0, 295, 0, 0)];
         [self.ColorLabel setTitleEdgeInsets:UIEdgeInsetsMake(1.0f, -15, 0, 0)];
         [self.ColorLabel setTitle:@"Color" forState:UIControlStateNormal];
         self.ColorLabel.titleLabel.textAlignment = NSTextAlignmentCenter;

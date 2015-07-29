@@ -22,5 +22,9 @@
 -(void)DistanceButton:(UIButton *)sender;
 -(void)RoadButton:(UIButton *)sender;
 -(void)ColorButton:(UIButton *)sender;
+-(void)DropDownoxfordevent:(UIButton *)sender;
+-(void)DropDownoxfordorder:(UIButton *)sender;
+-(void)CanCeloxford:(UIButton *)sender;
+-(void)Submitoxford:(UIButton *)sender;
 typedef void(^Urlresponceblock)(id result, NSError *error);
 @end
