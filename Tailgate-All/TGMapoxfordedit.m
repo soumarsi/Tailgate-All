@@ -46,12 +46,12 @@
         DropDownButton = [[UIButton alloc]init];
         [DropDownButton setBackgroundColor:[UIColor MapSaveBackgroundColor]];
         DropDownButton.layer.cornerRadius = 4.0f;
-        [DropDownButton addTarget:_delegate action:@selector(DropDownoxfordevent:) forControlEvents:UIControlEventTouchUpInside];
+       // [DropDownButton addTarget:_delegate action:@selector(DropDownoxfordevent:) forControlEvents:UIControlEventTouchUpInside];
         [_BackPopupView addSubview:DropDownButton];
         
         _ButtonLabel = [[UILabel alloc]init];
         [_ButtonLabel setBackgroundColor:[UIColor ClearColor]];
-        [_ButtonLabel setText:@"Select the event from list"];
+        [_ButtonLabel setText:@""];
         [_ButtonLabel setTextAlignment:NSTextAlignmentLeft];
         _ButtonLabel.textColor = [UIColor MapButtonColor];
         _ButtonLabel.font = [UIFont MapEditButtonLabel];
@@ -60,7 +60,7 @@
         
         Dropdown = [[UIImageView alloc]init];
         [Dropdown setImage:[UIImage DropDwonImage]];
-        [DropDownButton addSubview:Dropdown];
+       // [DropDownButton addSubview:Dropdown];
         
         _orderDropdownButton = [[UIButton alloc]init];
         [_orderDropdownButton setBackgroundColor:[UIColor MapSaveBackgroundColor]];

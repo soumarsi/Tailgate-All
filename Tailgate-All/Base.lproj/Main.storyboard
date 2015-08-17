@@ -8,6 +8,7 @@
     <customFonts key="customFonts">
         <mutableArray key="Raleway-Bold_0.ttf">
             <string>Raleway-Bold</string>
+            <string>Raleway-Bold</string>
         </mutableArray>
         <mutableArray key="Raleway-Medium_0.ttf">
             <string>Raleway-Medium</string>
@@ -24,6 +25,7 @@
             <string>Raleway</string>
         </mutableArray>
         <mutableArray key="Raleway-SemiBold_0.ttf">
+            <string>Raleway-SemiBold</string>
             <string>Raleway-SemiBold</string>
             <string>Raleway-SemiBold</string>
         </mutableArray>
@@ -181,6 +183,119 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1003" y="275"/>
+        </scene>
+        <!--Gselect Event View Controller-->
+        <scene sceneID="C7m-71-GXs">
+            <objects>
+                <viewController storyboardIdentifier="TGselectEventViewController" id="L9o-N7-Kdt" customClass="TGselectEventViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Rcp-dz-N84"/>
+                        <viewControllerLayoutGuide type="bottom" id="Uv0-Ag-LEV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="GgO-KG-VD5">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SelectVenueHeaderImg" translatesAutoresizingMaskIntoConstraints="NO" id="9Xv-oF-5zq">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="71"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="71" id="bTa-dd-xRg"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Event" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uJ9-iv-SZm">
+                                <rect key="frame" x="246" y="34" width="109" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="iGs-Wp-UVp"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w76-uk-ejd">
+                                <rect key="frame" x="16" y="192" width="568" height="216"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="268" id="XUJ-fh-ivv"/>
+                                    <constraint firstAttribute="height" constant="216" id="yke-ia-JlF"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="XUJ-fh-ivv"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <outlet property="dataSource" destination="L9o-N7-Kdt" id="sr7-la-Rtd"/>
+                                    <outlet property="delegate" destination="L9o-N7-Kdt" id="m6s-xC-wRP"/>
+                                </connections>
+                            </pickerView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HhW-lE-A2P">
+                                <rect key="frame" x="153" y="510" width="302" height="32"/>
+                                <color key="backgroundColor" red="0.20392156859999999" green="0.4039215686" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="33" id="EDE-Rd-lI6"/>
+                                    <constraint firstAttribute="width" secondItem="HhW-lE-A2P" secondAttribute="height" multiplier="104:11" id="Ptu-Al-J5S"/>
+                                    <constraint firstAttribute="width" secondItem="HhW-lE-A2P" secondAttribute="height" multiplier="104:11" id="qEb-7b-vJo"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Raleway-SemiBold" family="Raleway" pointSize="17"/>
+                                <state key="normal" title="DONE">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="EDE-Rd-lI6"/>
+                                        <exclude reference="Ptu-Al-J5S"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="eventSubmit:" destination="L9o-N7-Kdt" eventType="touchUpInside" id="Uc2-df-FQQ"/>
+                                    <action selector="venueSelectButton:" destination="Jcb-k3-86z" eventType="touchUpInside" id="IX9-WO-3mi"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pb5-kj-6cY">
+                                <rect key="frame" x="15" y="25" width="28" height="28"/>
+                                <state key="normal" image="BackButton">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="Back:" destination="L9o-N7-Kdt" eventType="touchUpInside" id="Bem-HU-7K1"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9Xv-oF-5zq" firstAttribute="leading" secondItem="GgO-KG-VD5" secondAttribute="leading" id="33X-MU-brg"/>
+                            <constraint firstItem="HhW-lE-A2P" firstAttribute="centerX" secondItem="w76-uk-ejd" secondAttribute="centerX" constant="4" id="7R8-4p-skD"/>
+                            <constraint firstItem="uJ9-iv-SZm" firstAttribute="top" secondItem="9Xv-oF-5zq" secondAttribute="bottom" constant="-37" id="HMm-zD-Li7"/>
+                            <constraint firstItem="HhW-lE-A2P" firstAttribute="width" secondItem="HhW-lE-A2P" secondAttribute="height" multiplier="104:11" id="Hv4-Jj-QPQ"/>
+                            <constraint firstItem="9Xv-oF-5zq" firstAttribute="centerX" secondItem="uJ9-iv-SZm" secondAttribute="centerX" constant="-0.5" id="K5l-kg-dC7"/>
+                            <constraint firstItem="HhW-lE-A2P" firstAttribute="top" secondItem="w76-uk-ejd" secondAttribute="bottom" constant="102" id="Qkg-Pd-otW"/>
+                            <constraint firstItem="Pb5-kj-6cY" firstAttribute="centerY" secondItem="uJ9-iv-SZm" secondAttribute="centerY" constant="-5.5" id="R9C-Xl-xgv"/>
+                            <constraint firstItem="9Xv-oF-5zq" firstAttribute="top" secondItem="GgO-KG-VD5" secondAttribute="top" id="fSc-WT-EAF"/>
+                            <constraint firstAttribute="trailing" secondItem="9Xv-oF-5zq" secondAttribute="trailing" id="gmc-bC-nJ4"/>
+                            <constraint firstItem="9Xv-oF-5zq" firstAttribute="centerX" secondItem="w76-uk-ejd" secondAttribute="centerX" id="ktY-8d-a6s"/>
+                            <constraint firstItem="w76-uk-ejd" firstAttribute="top" secondItem="9Xv-oF-5zq" secondAttribute="bottom" constant="121" id="kth-Rx-lYh"/>
+                            <constraint firstItem="9Xv-oF-5zq" firstAttribute="leading" secondItem="Pb5-kj-6cY" secondAttribute="trailing" constant="-52" id="lgy-sU-W8g"/>
+                            <constraint firstItem="w76-uk-ejd" firstAttribute="leading" secondItem="GgO-KG-VD5" secondAttribute="leadingMargin" id="o1p-8z-S4h"/>
+                            <constraint firstItem="Pb5-kj-6cY" firstAttribute="top" secondItem="9Xv-oF-5zq" secondAttribute="bottom" constant="-46" id="oLl-1x-VNv"/>
+                            <constraint firstItem="Pb5-kj-6cY" firstAttribute="leading" secondItem="GgO-KG-VD5" secondAttribute="leading" constant="15" id="tEO-E6-kjG"/>
+                            <constraint firstItem="w76-uk-ejd" firstAttribute="trailing" secondItem="GgO-KG-VD5" secondAttribute="trailingMargin" id="wUJ-vI-ARA"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="lgy-sU-W8g"/>
+                                <exclude reference="Hv4-Jj-QPQ"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="eventDone" destination="HhW-lE-A2P" id="Lbv-5G-uoN"/>
+                        <outlet property="selectEventPicker" destination="w76-uk-ejd" id="xhg-89-4Rh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OVC-Wk-her" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1455" y="-576"/>
         </scene>
         <!--Gselect Venue View Controller-->
         <scene sceneID="Mpy-9P-ae2">
@@ -434,6 +549,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="BackButton" width="28" height="28"/>
         <image name="Header" width="1024" height="215"/>
         <image name="Logoimage" width="303" height="71"/>
         <image name="SelectVenueHeaderImg" width="1024" height="74"/>

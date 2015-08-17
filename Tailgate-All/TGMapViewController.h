@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "TGMapEdit.h"
 
-@interface TGMapViewController : UIViewController<UIGestureRecognizerDelegate,TGGlobal,UIPickerViewDataSource,UIPickerViewDelegate,UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>
+@interface TGMapViewController : UIViewController<UIGestureRecognizerDelegate,TGGlobal,UIPickerViewDataSource,UIPickerViewDelegate,UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UIScrollViewDelegate>
 {
     UIView *BackGroundView,*HeaderView,*HeaderLineView;
     UILabel *HeaderLabel;
@@ -51,12 +51,18 @@
     NSString *chekoxford;
     NSString *finalorderID,*packageInfo;
     NSString *editOxfordEventName;
+    UIImageView *oxfordMapImage;
+    UIScrollView *oxfordScroll;
+    float scrollviewContentsize;
 }
 @property (nonatomic,strong)NSString *VenueName;
 @property (nonatomic, strong)NSString *locationId;
 @property (nonatomic) float LocationLattitude;
 @property (nonatomic) float LocationLongitude;
 @property (nonatomic, strong)NSString *Type;
+@property (nonatomic, strong)NSString *EVENTID;
+@property (nonatomic, strong)NSString *eventName;
+@property (nonatomic, strong)NSString *eventDate;
 @property (nonatomic, strong) UIActionSheet *settingsPopUp;
 @property (nonatomic, strong) NSMutableArray *PlaceaArray;
 @property (nonatomic, strong) NSMutableArray *PackageArray;

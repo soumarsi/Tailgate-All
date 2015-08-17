@@ -109,9 +109,14 @@
     [SearchButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [SearchButton addTarget:self action:@selector(Search:) forControlEvents:UIControlEventTouchUpInside];
     
-//    ----------Already Saved Data--------
+//    ----------Already Saved Data--------//only for group ////
     
-    [self firstdata];
+    if ([self.Type isEqualToString:@"Group"])
+    {
+        [self firstdata];
+    }
+    
+    
     
     
     //------
@@ -130,6 +135,46 @@
     SearchTextfield.layer.cornerRadius = 5.0f;
     //[HeaderView addSubview:SearchTextfield];
     
+    if ([self.Type  isEqualToString:@"Oxford"])
+    {
+     
+        if (self.view.frame.size.width >900)
+        {
+            oxfordScroll = [[UIScrollView alloc]initWithFrame:CGRectMake(0.0f, 70.0f, self.view.frame.size.width, self.view.frame.size.height-70)];
+            [oxfordScroll setDelegate:self];
+            //[oxfordScroll setScrollEnabled:YES];
+            [BackGroundView addSubview:oxfordScroll];
+            //oxfordScroll.contentSize = CGSizeMake(1140.0f, 100.0f);
+            
+            oxfordMapImage = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height-70)];
+            [oxfordMapImage setImage:[UIImage oxfordMap]];
+            [oxfordScroll addSubview:oxfordMapImage];
+            
+            
+            editorArea = [[RTCanvas alloc] initWithFrame:CGRectMake(0, 0, oxfordMapImage.frame.size.width, oxfordMapImage.frame.size.height)];
+            editorArea.backgroundColor = [UIColor clearColor];
+            [oxfordScroll addSubview:editorArea];
+        }
+        else
+        {
+        oxfordScroll = [[UIScrollView alloc]initWithFrame:CGRectMake(0.0f, 70.0f, self.view.frame.size.width, self.view.frame.size.height-70)];
+        [oxfordScroll setDelegate:self];
+        [oxfordScroll setScrollEnabled:YES];
+        [BackGroundView addSubview:oxfordScroll];
+        oxfordScroll.contentSize = CGSizeMake(1140.0f, 100.0f);
+        
+        oxfordMapImage = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 1140.0f, self.view.frame.size.height-70)];
+        [oxfordMapImage setImage:[UIImage oxfordMap]];
+        [oxfordScroll addSubview:oxfordMapImage];
+        
+        
+        editorArea = [[RTCanvas alloc] initWithFrame:CGRectMake(0, 0, oxfordMapImage.frame.size.width, oxfordMapImage.frame.size.height)];
+        editorArea.backgroundColor = [UIColor clearColor];
+        [oxfordScroll addSubview:editorArea];
+        }
+    }
+    else
+    {
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:_LocationLattitude
                                                             longitude:_LocationLongitude
                                                                  zoom:16];
@@ -140,7 +185,7 @@
     mapView_.userInteractionEnabled = YES;
     
     
-    
+    }
     
     ///Header line-=====
     
@@ -325,6 +370,8 @@
                     [SavedDataArray addObject:preSavedDict];
                 }
                 
+                
+                
                 [self applymapview];
                 
                 
@@ -341,8 +388,10 @@
     // Create a GMSCameraPosition that tells the map to display the
     // coordinate -33.86,151.20 at zoom level 6.
     
-    [SelectedBecons removeFromSuperview];
- 
+    if ([self.Type isEqualToString:@"Group"])
+    {
+        
+    
     draggableMarkerManager = [[GMDraggableMarkerManager alloc] initWithMapView:mapView_ delegate:self];
 
     markerpoint.map = nil;
@@ -370,7 +419,22 @@
         }
     }
     DebugLog(@"MAP PIN COORDINATE--------> %@",sampleMarkerLocations);
-    
+    }
+    else
+    {
+        DebugLog(@"savetablearray--------- > : %@", SavedDataArray);
+        
+            sampleMarkerLocations = [[NSMutableArray alloc] initWithObjects:[[CLLocation alloc] initWithLatitude:[[NSString stringWithFormat:@"%@",[[SavedDataArray objectAtIndex:0]objectForKey:@"lat"]]floatValue ] longitude:[[NSString stringWithFormat:@"%@",[[SavedDataArray objectAtIndex:0]objectForKey:@"long"]]floatValue ]],nil];
+            DebugLog(@"samplemarkerlocation-------- %@", sampleMarkerLocations);
+            
+            for (CLLocation *sampleMarkerLocation in sampleMarkerLocations)
+            {
+                markerpoint = [GMSMarker markerWithPosition:sampleMarkerLocation.coordinate];
+                markerpoint.map = mapView_;
+            }
+        
+        DebugLog(@"MAP PIN COORDINATE--------> %@",sampleMarkerLocations);
+    }
 }
 
 -(void)Submit:(UIButton *)sender
@@ -393,8 +457,8 @@
                 
                 NSString *staticMapUrl = [NSString stringWithFormat:@"http://maps.google.com/maps/api/staticmap?markers=color:red|%f,%f&zoom=%d&size=1024x698&sensor=true",[[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"]]floatValue],[[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"]]floatValue],zoommap];
                 
-                
-                
+                DebugLog(@"mapurl--:%@", staticMapUrl);
+            
                 NSURL *mapUrl = [NSURL URLWithString:[staticMapUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
                 UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:mapUrl]];
                 
@@ -950,15 +1014,12 @@
         }
         else
         {
-            NSLog(@"asche oxford");
             
         [PickerBckView setHidden:YES];
         [oxfordPicker setHidden:YES];
         [DoneButton setHidden:YES];
         [CancelButton setHidden:YES];
-        editoxfordmapView.ButtonLabel.text = [NSString stringWithFormat:@"%@",DataString];
-//        [editoxfordmapView.orderDropdownButton setBackgroundColor:[UIColor greenColor]];
-        [editoxfordmapView.orderDropdownButton setHidden:NO];
+        
         
         }
       }
@@ -1060,7 +1121,7 @@
     UIView *piece = [gestureRecognizer view];
     
     SelectedBecons = targetView;
-    
+  
     
     [self adjustAnchorPointForGestureRecognizer:gestureRecognizer targetView:targetView];
     
@@ -1104,7 +1165,7 @@
     
     if ([gestureRecognizer state] == UIGestureRecognizerStateEnded)
     {
-         NSLog(@"---- %f------%f-------%f------%f",piece.frame.origin.x,piece.frame.origin.y,piece.frame.size.width,piece.frame.size.height);
+         NSLog(@"---- %f------%f-------%f------%f----%f",piece.frame.origin.x,piece.frame.origin.y,piece.frame.size.width,piece.frame.size.height,SelectedBecons.frame.origin.y);
         
         
         if (piece.frame.origin.y >68)
@@ -1118,7 +1179,7 @@
                 if ([self.Type isEqualToString:@"Oxford"])
                 {
                     
-                  [globalClass parameterstring:@"action.php?mode=eventList" withblock:^(id result, NSError *error) {
+              /*    [globalClass parameterstring:@"action.php?mode=eventList" withblock:^(id result, NSError *error) {
                       
                  
                     
@@ -1149,6 +1210,7 @@
                         
                     }
                        }];
+               */
                 }
                 else
                 {
@@ -1206,7 +1268,8 @@
                 if ([self.Type isEqualToString:@"Oxford"])
                 {
                     editoxfordmapView = [[TGMapoxfordedit alloc]init];
-                    [editoxfordmapView.orderDropdownButton setHidden:YES];
+                    [editoxfordmapView.orderDropdownButton setHidden:NO];
+                     editoxfordmapView.ButtonLabel.text = [NSString stringWithFormat:@"%@ - %@",_eventName,_eventDate];
                     [BackGroundView addSubview:editoxfordmapView];
                     if(self.view.frame.size.width == 320)
                     {
@@ -1248,7 +1311,8 @@
                 if ([self.Type isEqualToString:@"Oxford"])
                 {
                     editoxfordmapView = [[TGMapoxfordedit alloc]init];
-                    [editoxfordmapView.orderDropdownButton setHidden:YES];
+                    [editoxfordmapView.orderDropdownButton setHidden:NO];
+                     editoxfordmapView.ButtonLabel.text = [NSString stringWithFormat:@"%@ - %@",_eventName,_eventDate];
                     [BackGroundView addSubview:editoxfordmapView];
                     //BeconsView.userInteractionEnabled = NO;
                     NSLog(@"---- %f------%f-------%f------%f",piece.frame.origin.x,piece.frame.origin.y,piece.frame.size.width,piece.frame.size.height);
@@ -1824,8 +1888,10 @@
     
     if (globalClass.connectedToNetwork == YES ) {
         
-        NSDictionary*dict = [globalClass saveStringDict:[NSString stringWithFormat:@"action.php?mode=chooseLocation&packageId=1&orderId=%@&lat=%@&long=%@&sectionid=%@&place=%@&packagetype=%@&distance=%@&color=%@&road=%@&userid=%@",finalorderID,[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"],[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"],self.locationId,self.savePlaceId,self.savePackegeId,self.saveDistanceId,self.saveColorId,self.saveRoadId,[[NSUserDefaults standardUserDefaults]objectForKey:@"userid"]] savestr:@"string" saveimagedata:imageData];
-            
+        NSDictionary*dict = [globalClass saveStringDict:[NSString stringWithFormat:@"action.php?mode=chooseLocation&packageId=1&orderId=%@&lat=&long=&sectionid=%@&place=%@&packagetype=%@&distance=%@&color=%@&road=%@&userid=%@",finalorderID,self.locationId,self.savePlaceId,self.savePackegeId,self.saveDistanceId,self.saveColorId,self.saveRoadId,[[NSUserDefaults standardUserDefaults]objectForKey:@"userid"]] savestr:@"string" saveimagedata:imageData];
+        
+        DebugLog(@"finalsubmit----: %@", [NSString stringWithFormat:@"action.php?mode=chooseLocation&packageId=1&orderId=%@&lat=%@&long=%@&sectionid=%@&place=%@&packagetype=%@&distance=%@&color=%@&road=%@&userid=%@",finalorderID,[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"],[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"],self.locationId,self.savePlaceId,self.savePackegeId,self.saveDistanceId,self.saveColorId,self.saveRoadId,[[NSUserDefaults standardUserDefaults]objectForKey:@"userid"]]);
+        
             DebugLog(@"result--- %@",dict);
 
         
@@ -1848,9 +1914,10 @@
 }
 -(void)FinalCanCel:(UIButton *)sender
 {
-    [self firstdata];
+   // [self firstdata];
     
     [MapSave removeFromSuperview];
+    [SelectedBecons setHidden:YES];
     [mapSaveIphone removeFromSuperview];
 }
 -(void)PickerCancelButton:(UIButton *)sender
@@ -2294,6 +2361,7 @@
 }
 
 ////oxford edit option//////
+/*
 
 -(void)DropDownoxfordevent:(UIButton *)sender
 {
@@ -2326,6 +2394,8 @@
         
     }
 }
+ 
+ */
 -(void)DropDownoxfordorder:(UIButton *)sender
 {
     chekoxford = @"order";
@@ -2334,7 +2404,7 @@
  
     if (globalClass.connectedToNetwork == YES) {
         
-        [globalClass parameterstring:[NSString stringWithFormat:@"action.php?mode=oxfordOrderUserList&event_id=%@",orderID] withblock:^(id result, NSError *error) {
+        [globalClass parameterstring:[NSString stringWithFormat:@"action.php?mode=oxfordOrderUserList&event_id=%@",_EVENTID] withblock:^(id result, NSError *error) {
             
             if ([[result objectForKey:@"message"] isEqualToString:[NSString Norecordfound] ]) {
                 
@@ -2404,28 +2474,77 @@
             
             [DisableView setHidden:YES];
             
-            UIView *screenshotview = [[UIView alloc]initWithFrame:CGRectMake(1025, 72.0f, 1024,698)];
+            UIView *screenshotview = [[UIView alloc]initWithFrame:CGRectMake(1025, 70.0f, 1140,self.view.frame.size.height-70)];
             [screenshotview setBackgroundColor:[UIColor clearColor]];
             [BackGroundView addSubview:screenshotview];
             
             
-            NSString *staticMapUrl = [NSString stringWithFormat:@"http://maps.google.com/maps/api/staticmap?markers=color:red|%f,%f&zoom=%d&size=1024x698&sensor=true",[[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"]]floatValue],[[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"]]floatValue],zoommap];
+//            NSString *staticMapUrl = [NSString stringWithFormat:@"http://maps.google.com/maps/api/staticmap?markers=color:red|%f,%f&zoom=%d&size=1024x698&sensor=true",[[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"]]floatValue],[[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"]]floatValue],zoommap];
+//            
+//            NSLog(@"-=-=-= %@", staticMapUrl);
+//            
+//            NSURL *mapUrl = [NSURL URLWithString:[staticMapUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+//            UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:mapUrl]];
             
-            
-            
-            NSURL *mapUrl = [NSURL URLWithString:[staticMapUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-            UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:mapUrl]];
-            
-            MapView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0.0f, 1024, 698)];
-            [MapView setImage:image];
+            MapView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0.0f, 1140, self.view.frame.size.height-70)];
+            [MapView setImage:[UIImage oxfordMap]];
             [screenshotview addSubview:MapView];
             
             
-            UIImageView *backview = [[UIImageView alloc]initWithFrame:CGRectMake(315.0f, 102.0f, 387.5f, 237.5f)];
-            [backview setImage:[UIImage imageNamed:@"mappopupdown"]];
+            BeconsView = [[TGBecons alloc]initWithFrame:CGRectMake(SelectedBecons.frame.origin.x+scrollviewContentsize, SelectedBecons.frame.origin.y, 40, 40)];
+            BeconsView.TgDelegate = self;
+            [BeconsView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Becons"]]];
+            [MapView addSubview:BeconsView];
+            
+            UIImageView *backview = [[UIImageView alloc]init];
             [screenshotview addSubview:backview];
             
-            
+            if ( SelectedBecons.frame.origin.x+scrollviewContentsize< 650 && SelectedBecons.frame.origin.y > 170 && SelectedBecons.frame.origin.y< 515)
+            {
+                DebugLog(@"1st");
+                
+                backview.frame = CGRectMake(SelectedBecons.frame.origin.x+scrollviewContentsize+30, SelectedBecons.frame.origin.y-140, 387.5f, 237.5f);
+                backview.image = [UIImage imageNamed:@"mappopup"];
+                
+            }
+            else if (SelectedBecons.frame.origin.x+scrollviewContentsize > 650 && SelectedBecons.frame.origin.x+scrollviewContentsize < 1140 && SelectedBecons.frame.origin.y > 170 && SelectedBecons.frame.origin.y< 515)
+            {
+                DebugLog(@"2nd");
+                
+                backview.frame = CGRectMake(SelectedBecons.frame.origin.x+scrollviewContentsize-380, SelectedBecons.frame.origin.y-140, 387.5f, 237.5f);
+                backview.image = [UIImage imageNamed:@"mappopupright"];
+                
+            }
+            else if (SelectedBecons.frame.origin.x+scrollviewContentsize > 0 && SelectedBecons.frame.origin.x+scrollviewContentsize < 650 && SelectedBecons.frame.origin.y < 170 && SelectedBecons.frame.origin.y > 0)
+            {
+                DebugLog(@"3rd");
+                
+                backview.frame = CGRectMake(SelectedBecons.frame.origin.x+scrollviewContentsize-140, SelectedBecons.frame.origin.y+45, 387.5f, 237.5f);
+                backview.image = [UIImage imageNamed:@"mappopupup"];
+            }
+            else if (SelectedBecons.frame.origin.x+scrollviewContentsize > 650 && SelectedBecons.frame.origin.x+scrollviewContentsize < 980 && SelectedBecons.frame.origin.y < 170 && SelectedBecons.frame.origin.y > 0)
+            {
+                DebugLog(@"4th");
+                
+                backview.frame = CGRectMake(SelectedBecons.frame.origin.x+scrollviewContentsize-300, SelectedBecons.frame.origin.y+45, 387.5f, 237.5f);
+                backview.image = [UIImage imageNamed:@"mappopupup"];
+            }
+            else if (SelectedBecons.frame.origin.x+scrollviewContentsize > 0 && SelectedBecons.frame.origin.x+scrollviewContentsize< 650 && SelectedBecons.frame.origin.y > 515 && SelectedBecons.frame.origin.y < 729)
+            {
+                DebugLog(@"5th");
+                
+                backview.frame=CGRectMake(SelectedBecons.frame.origin.x+scrollviewContentsize-30, SelectedBecons.frame.origin.y-250, 387.5f, 237.5f);
+                backview.image = [UIImage imageNamed:@"mappopupdown"];
+            }
+            else if (SelectedBecons.frame.origin.x+scrollviewContentsize > 650 && SelectedBecons.frame.origin.x+scrollviewContentsize < 980 && SelectedBecons.frame.origin.y > 515 && SelectedBecons.frame.origin.y < 729)
+            {
+                DebugLog(@"7th");
+                
+                backview.frame = CGRectMake(SelectedBecons.frame.origin.x+scrollviewContentsize-330, SelectedBecons.frame.origin.y-250, 387.5f, 237.5f);
+                backview.image = [UIImage imageNamed:@"mappopupdown"];
+            }
+
+     
             UILabel *ButtonLabel = [[UILabel alloc]initWithFrame:CGRectMake(25.0f,23.0f, 340.0f, 45.0f)];
             [ButtonLabel setBackgroundColor:[UIColor clearColor]];
             [ButtonLabel setText:[NSString stringWithFormat:@"%@",editoxfordmapView.ButtonLabel.text]];
@@ -2520,8 +2639,6 @@
                 PopupCancelButton.frame = CGRectMake(800, 610, 83, 35);
             }
             
-            
-            
             if ([self.Type isEqualToString:@"Oxford"])
             {
                 Typecheck = 2;
@@ -2600,6 +2717,14 @@
         
     
     
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    //    NSLog(@"Did scroll");
+    
+    NSLog(@"scrollview ---=-=-=-= %f", scrollView.contentOffset.x);
+    
+    scrollviewContentsize = scrollView.contentOffset.x;
 }
 
 /*

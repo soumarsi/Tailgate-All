@@ -8,6 +8,7 @@
 
 #import "TGselectVenueViewController.h"
 #import "TGMapViewController.h"
+#import "TGselectEventViewController.h"
 #ifdef DEBUG
 
 #define DebugLog(...) NSLog(__VA_ARGS__)
@@ -161,7 +162,19 @@
 
 - (IBAction)venueSelectButton:(id)sender {
     
-    
+    if ([self.type isEqualToString:@"Oxford"])
+    {
+        TGselectEventViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"TGselectEventViewController"];
+        [vc setVenueName:self.venueString];
+        [vc setLocationId:self.locId];
+        [vc setLocationLattitude:self.latitude];
+        [vc setLocationLongitude:self.longitude];
+        [vc setType:self.type];
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }
+    else
+    {
     TGMapViewController *map = [[TGMapViewController alloc]init];
     [map setVenueName:self.venueString];
     [map setLocationId:self.locId];
@@ -169,7 +182,7 @@
     [map setLocationLongitude:self.longitude];
     [map setType:self.type];
     [self.navigationController pushViewController:map animated:YES];
-
+    }
 }
 
 - (IBAction)settingsButton:(UIButton *)sender {

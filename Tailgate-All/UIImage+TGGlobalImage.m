@@ -27,4 +27,8 @@
 {
     return [UIImage imageNamed:@"topbar"];
 }
++(UIImage *) oxfordMap
+{
+    return [UIImage imageNamed:@"oxfordMapImage"];
+}
 @end
