@@ -13,7 +13,8 @@
 #import <arpa/inet.h>
 #import <netdb.h>
 
-#define App_Domain_Url @"http://www.esolz.co.in/lab6/tailgate/web_service/"
+//#define App_Domain_Url @"http://esolz.co.in/lab6/tailgate/web_service/"
+#define App_Domain_Url @"http://tailgategroup.com/web_service/"
 
 #ifdef DEBUG
 
@@ -34,9 +35,10 @@
 -(void)GlobalDict:(NSString *)parameter Withblock:(Urlresponceblock)responce
 {
     
-    DebugLog(@"URL---- %@",parameter);
+    
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",App_Domain_Url,parameter]];
+    DebugLog(@"URL---- %@",[NSString stringWithFormat:@"%@%@",App_Domain_Url,parameter]);
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     connection=nil;
@@ -81,9 +83,10 @@
 -(void)GlobalStringDict:(NSString *)parameter Globalstr:(NSString *)parametercheck Withblock:(Urlresponceblock)responce
 {
     
-    DebugLog(@"---- %@",parameter);
+   
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",App_Domain_Url,parameter]];
+    DebugLog(@"URL---- %@",[NSString stringWithFormat:@"%@%@",App_Domain_Url,parameter]);
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     check = parametercheck;
@@ -169,7 +172,7 @@
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate: self delegateQueue: [NSOperationQueue mainQueue]];
     
     NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",App_Domain_Url,parameter]];
-    
+    DebugLog(@"URL---- %@",[NSString stringWithFormat:@"%@%@",App_Domain_Url,parameter]);
     NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithURL:url
                                                     completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
                                                         if(error == nil)

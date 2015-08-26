@@ -912,6 +912,8 @@
         if ([self.Type isEqualToString:@"Oxford"])
         {
             DataString = [NSString stringWithFormat:@"%@ %@",[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"first_name"],[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"last_name"]];
+            eventID = [[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"event_id"];
+            buyerID = [[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"buyer_id"];
         }else{
         
             DataString = [NSString stringWithFormat:@"%@ %@  %@",[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"first_name"],[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"last_name"],[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"event_date"]];
@@ -1890,7 +1892,7 @@
         
         NSDictionary*dict = [globalClass saveStringDict:[NSString stringWithFormat:@"action.php?mode=chooseLocation&packageId=1&orderId=%@&lat=&long=&sectionid=%@&place=%@&packagetype=%@&distance=%@&color=%@&road=%@&userid=%@",finalorderID,self.locationId,self.savePlaceId,self.savePackegeId,self.saveDistanceId,self.saveColorId,self.saveRoadId,[[NSUserDefaults standardUserDefaults]objectForKey:@"userid"]] savestr:@"string" saveimagedata:imageData];
         
-        DebugLog(@"finalsubmit----: %@", [NSString stringWithFormat:@"action.php?mode=chooseLocation&packageId=1&orderId=%@&lat=%@&long=%@&sectionid=%@&place=%@&packagetype=%@&distance=%@&color=%@&road=%@&userid=%@",finalorderID,[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"],[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"],self.locationId,self.savePlaceId,self.savePackegeId,self.saveDistanceId,self.saveColorId,self.saveRoadId,[[NSUserDefaults standardUserDefaults]objectForKey:@"userid"]]);
+        DebugLog(@"finalsubmit----: %@", [NSString stringWithFormat:@"action.php?mode=chooseLocation&packageId=1&orderId=%@&lat=&long=&sectionid=%@&place=%@&packagetype=%@&distance=%@&color=%@&road=%@&userid=%@",finalorderID,self.locationId,self.savePlaceId,self.savePackegeId,self.saveDistanceId,self.saveColorId,self.saveRoadId,[[NSUserDefaults standardUserDefaults]objectForKey:@"userid"]]);
         
             DebugLog(@"result--- %@",dict);
 
@@ -2491,7 +2493,7 @@
             [screenshotview addSubview:MapView];
             
             
-            BeconsView = [[TGBecons alloc]initWithFrame:CGRectMake(SelectedBecons.frame.origin.x+scrollviewContentsize, SelectedBecons.frame.origin.y, 40, 40)];
+            BeconsView = [[TGBecons alloc]initWithFrame:CGRectMake(SelectedBecons.frame.origin.x+scrollviewContentsize, SelectedBecons.frame.origin.y-30, 40, 40)];
             BeconsView.TgDelegate = self;
             [BeconsView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Becons"]]];
             [MapView addSubview:BeconsView];
