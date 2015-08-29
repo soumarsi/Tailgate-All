@@ -63,6 +63,7 @@
 		2C934CBA1B3BE4B0008DDA62 /* TGselectVenueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C934CB91B3BE4B0008DDA62 /* TGselectVenueViewController.m */; };
 		2CA381A81B3EBC6C00D5230F /* TGMapSaveiphone.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA381A71B3EBC6C00D5230F /* TGMapSaveiphone.m */; };
 		2CA7AD351B7C705500E9CCC5 /* TGselectEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA7AD341B7C705500E9CCC5 /* TGselectEventViewController.m */; };
+		2CCB19DC1B8DC2AB00905B61 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CCB19DB1B8DC2AB00905B61 /* MessageUI.framework */; };
 		8788A4188DE13F39FDFB5246 /* libPods-Tailgate-All.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB79F4F155DC11B9D6F58E9 /* libPods-Tailgate-All.a */; };
 /* End PBXBuildFile section */
 
@@ -157,6 +158,7 @@
 		2CA381A71B3EBC6C00D5230F /* TGMapSaveiphone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGMapSaveiphone.m; sourceTree = "<group>"; };
 		2CA7AD331B7C705500E9CCC5 /* TGselectEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGselectEventViewController.h; sourceTree = "<group>"; };
 		2CA7AD341B7C705500E9CCC5 /* TGselectEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGselectEventViewController.m; sourceTree = "<group>"; };
+		2CCB19DB1B8DC2AB00905B61 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		40CC305035C9823589A06768 /* libPods-Tailgate-AllTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tailgate-AllTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		489034D543C78A075C78749A /* Pods-Tailgate-All.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tailgate-All.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tailgate-All/Pods-Tailgate-All.release.xcconfig"; sourceTree = "<group>"; };
 		572E0C7588F3A19CCF14799E /* Pods-Tailgate-AllTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tailgate-AllTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tailgate-AllTests/Pods-Tailgate-AllTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CCB19DC1B8DC2AB00905B61 /* MessageUI.framework in Frameworks */,
 				2C3E26B41B3C20CC00A08D5E /* GLKit.framework in Frameworks */,
 				2C3E26B21B3C20C300A08D5E /* CoreData.framework in Frameworks */,
 				2C3E26B01B3C20B100A08D5E /* libc++.dylib in Frameworks */,
@@ -393,6 +396,7 @@
 		5C6EA2F667BC80497E5ABDD8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2CCB19DB1B8DC2AB00905B61 /* MessageUI.framework */,
 				2C3E26B31B3C20CC00A08D5E /* GLKit.framework */,
 				2C3E26B11B3C20C300A08D5E /* CoreData.framework */,
 				2C3E26AF1B3C20B100A08D5E /* libc++.dylib */,

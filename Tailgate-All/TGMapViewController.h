@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "TGMapEdit.h"
-
-@interface TGMapViewController : UIViewController<UIGestureRecognizerDelegate,TGGlobal,UIPickerViewDataSource,UIPickerViewDelegate,UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UIScrollViewDelegate>
+#import <MessageUI/MessageUI.h>
+@interface TGMapViewController : UIViewController<UIGestureRecognizerDelegate,TGGlobal,UIPickerViewDataSource,UIPickerViewDelegate,UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UIScrollViewDelegate,MFMessageComposeViewControllerDelegate>
 {
     UIView *BackGroundView,*HeaderView,*HeaderLineView;
     UILabel *HeaderLabel;
@@ -54,6 +54,8 @@
     UIImageView *oxfordMapImage;
     UIScrollView *oxfordScroll;
     float scrollviewContentsize;
+    NSString *groupemployeename, *groupeventemail, *groupeventphone,*groupeventname;
+    
 }
 @property (nonatomic,strong)NSString *VenueName;
 @property (nonatomic, strong)NSString *locationId;

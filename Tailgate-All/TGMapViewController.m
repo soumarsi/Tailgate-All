@@ -780,6 +780,11 @@
         DataString = [NSString stringWithFormat:@"%@ %@  %@",[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:0]] objectForKey:@"first_name"],[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:0]] objectForKey:@"last_name"],[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:0]] objectForKey:@"event_date"]];
         orderID = [[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:0]] objectForKey:@"order_id"];
         
+        groupemployeename = [NSString stringWithFormat:@"%@ %@",[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:0]] objectForKey:@"first_name"],[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:0]] objectForKey:@"last_name"]];
+        groupeventemail = [[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:0]] objectForKey:@"user_email"];
+        groupeventphone = [[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:0]] objectForKey:@"user_phone"];
+        
+        groupeventname =[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:0]] objectForKey:@"event_name"];
     }
 }
 
@@ -912,14 +917,21 @@
         if ([self.Type isEqualToString:@"Oxford"])
         {
             DataString = [NSString stringWithFormat:@"%@ %@",[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"first_name"],[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"last_name"]];
+            groupemployeename = [NSString stringWithFormat:@"%@",[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"first_name"]];
+            
             eventID = [[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"event_id"];
             buyerID = [[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"buyer_id"];
+            groupeventphone = [[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"user_phone"];
         }else{
         
             DataString = [NSString stringWithFormat:@"%@ %@  %@",[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"first_name"],[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"last_name"],[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"event_date"]];
             
             orderID = [[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"order_id"]; //-----------Required Final PK
 
+            groupemployeename = [NSString stringWithFormat:@"%@ %@",[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"first_name"],[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"last_name"]];
+            groupeventemail = [[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"user_email"];
+            groupeventphone = [[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"user_phone"];
+            groupeventname =[[DataArray objectAtIndex:[DataPickerView selectedRowInComponent:component]] objectForKey:@"event_name"];
         }
     
     DebugLog(@"ORDER ID---------> %@",orderID);
@@ -1249,6 +1261,8 @@
                             [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"user_email"] forKey:@"user_email"];
                             [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"transaction_id"] forKey:@"transaction_id"];
                             [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"order_id"] forKey:@"order_id"];
+                            [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"event_name"] forKey:@"event_name"];
+                            [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"user_phone"] forKey:@"user_phone"];
                             [DataArray addObject:orderDict];
                         }
                         
@@ -1296,7 +1310,7 @@
                 if(self.view.frame.size.width == 320)
                 {
                     EditView.frame = CGRectMake(0, 140, 320, 237.5f);
-                    EditView.backview.image = [UIImage imageNamed:@"mappopupdown5s"];
+                    EditView.backview.image = [UIImage imageNamed:@"mappopup5s"];
                 }
                 else
                 {
@@ -1770,14 +1784,55 @@
             NSDictionary *dict = [globalClass saveStringDict:[NSString stringWithFormat:@"action.php?mode=chooseLocation&packageId=%@&orderId=%@&lat=%@&long=%@&sectionid=%@&place=&packagetype=&distance=&color=&road=&userid=%@",self.packegeIdString,orderID,[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_lat"],[[NSUserDefaults standardUserDefaults]objectForKey:@"arrive_long"],self.locationId,[[NSUserDefaults standardUserDefaults]objectForKey:@"userid"]] savestr:@"string" saveimagedata:imageData ];
             
             NSLog(@"dict--- %@",dict);
+        
+            
+        
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:[NSString success] message:@"Successfuly Submitted" delegate:self cancelButtonTitle:[NSString Ok] otherButtonTitles:nil, nil];
             
             [alert show];
-            
         
+        if(![MFMessageComposeViewController canSendText]) {
+            UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Your device doesn't support SMS!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [warningAlert show];
+            return;
+        }
+        
+        NSArray *recipents = @[groupeventphone];
+        NSString *message = [NSString stringWithFormat:@"Your tailgating package for the %@ has been setup and is ready for your group!\nFor more information,please contact %@, your personal Event Operator for the day.\nHope your group is ready for a great day! \n\nThanks, \n\n%@ \n%@",groupeventname,groupemployeename,groupemployeename,groupeventemail];
+        
+        MFMessageComposeViewController *messageController = [[MFMessageComposeViewController alloc] init];
+        messageController.messageComposeDelegate = self;
+        [messageController setRecipients:recipents];
+        [messageController setBody:message];
+        
+        // Present message view controller on screen
+        [self presentViewController:messageController animated:YES completion:nil];
+    
   
     }
     
+}
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult) result
+{
+    switch (result) {
+        case MessageComposeResultCancelled:
+            break;
+            
+        case MessageComposeResultFailed:
+        {
+            UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to send SMS!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [warningAlert show];
+            break;
+        }
+            
+        case MessageComposeResultSent:
+            break;
+            
+        default:
+            break;
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 ///////-----------AfterSavePopUpView----.-----/////////
 
@@ -1900,6 +1955,23 @@
                 UIAlertView *alert = [[UIAlertView alloc]initWithTitle:[NSString success] message:@"Successfuly Submitted" delegate:self cancelButtonTitle:[NSString Ok] otherButtonTitles:nil, nil];
                 
                 [alert show];
+        
+        if(![MFMessageComposeViewController canSendText]) {
+            UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Your device doesn't support SMS!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [warningAlert show];
+            return;
+        }
+        
+        NSArray *recipents = @[groupeventphone];
+        NSString *message = [NSString stringWithFormat:@"%@,\nYou are setup across from %@ in the %@. %@ yards off of %@. Your tent color is %@ with a name ID Tag hanging from your tent with your name on it. \n\nThanks & Regards.\nTailgate Team",groupemployeename,mapSaveIphone.PlacesLabel.titleLabel.text,mapSaveIphone.PackegeLabel.titleLabel.text,mapSaveIphone.DistanceLabel.titleLabel.text,mapSaveIphone.RoadLabel.titleLabel.text,mapSaveIphone.ColorLabel.titleLabel.text];
+        
+        MFMessageComposeViewController *messageController = [[MFMessageComposeViewController alloc] init];
+        messageController.messageComposeDelegate = self;
+        [messageController setRecipients:recipents];
+        [messageController setBody:message];
+        
+        // Present message view controller on screen
+        [self presentViewController:messageController animated:YES completion:nil];
                 
 
          [self firstdata];
@@ -2432,15 +2504,18 @@
                     [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"last_name"] forKey:@"last_name"];
                     [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"event_id"] forKey:@"event_id"];
                     [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"buyer_id"] forKey:@"buyer_id"];
+                    [orderDict setObject:[[orderArray objectAtIndex:data] objectForKey:@"user_phone"] forKey:@"user_phone"];
                     [DataArray addObject:orderDict];
                 }
                 [DataPickerView reloadAllComponents];
                 
                 [DataPickerView selectRow:0 inComponent:0 animated:NO];
                 DataString = [NSString stringWithFormat:@"%@ %@",[[orderArray objectAtIndex:[DataPickerView selectedRowInComponent:0]] objectForKey:@"first_name"],[[orderArray objectAtIndex:[DataPickerView selectedRowInComponent:0]] objectForKey:@"last_name"]];
+                groupemployeename = [NSString stringWithFormat:@"%@",[[orderArray objectAtIndex:[DataPickerView selectedRowInComponent:0]] objectForKey:@"first_name"]];
+                
                 eventID = [[orderArray objectAtIndex:[DataPickerView selectedRowInComponent:0]] objectForKey:@"event_id"];
                 buyerID = [[orderArray objectAtIndex:[DataPickerView selectedRowInComponent:0]] objectForKey:@"buyer_id"];
-                
+                groupeventphone = [[orderArray objectAtIndex:[DataPickerView selectedRowInComponent:0]] objectForKey:@"user_phone"];
                 DebugLog(@"ORDER STRING------> %@",orderString);
                 DebugLog(@"ORDER STRING ID---> %@",orderID);
                 
